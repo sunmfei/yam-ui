@@ -1,0 +1,57 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# pnpm
+.pnpm-store
+
+# Environment variables
+.env.local
+.env.*.local
+!.env.development
+!.env.production
+
+# Build output
+build
+.next
+.nuxt
+.out
+
+# Test coverage
+coverage
+*.lcov
+.nyc_output
+playwright-report
+playwright/.cache
+
+# IDE
+*.iml
+.cache
+.temp
+.tmp
+
+# OS
+Thumbs.db
+.Spotlight-V100
+.Trashes
