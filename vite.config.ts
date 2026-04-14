@@ -7,8 +7,8 @@ import { visualizer } from 'rollup-plugin-visualizer'
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
-  // 加载环境变量（用于后续配置）
-  loadEnv(mode, process.cwd(), '')
+  // 加载环境变量（仅 VITE_ 前缀）
+  const env = loadEnv(mode, process.cwd(), 'VITE_')
 
   return {
     plugins: [
@@ -46,18 +46,10 @@ export default defineConfig(({ mode }) => {
     },
     // 服务器配置
     server: {
-      port: 5173,
+      port: Number(env.VITE_SERVER_PORT) || 5173,
       host: true,
       open: false,
       cors: true,
-      proxy: {
-        // 示例：API 代理配置
-        // '/api': {
-        //     target: env.VITE_API_URL,
-        //     changeOrigin: true,
-        //     rewrite: (path) => path.replace(/^\/api/, '')
-        // }
-      },
     },
     // 构建配置
     build: {
