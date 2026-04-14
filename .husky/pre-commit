@@ -1,1 +1,7 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# 设置 Node.js 内存限制,防止 ESLint 内存溢出
+export NODE_OPTIONS="--max-old-space-size=4096"
+
 pnpm lint-staged
