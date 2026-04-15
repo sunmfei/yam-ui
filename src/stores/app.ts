@@ -1,14 +1,14 @@
 import { defineStore } from 'pinia'
 import { ref, computed, watch } from 'vue'
+import type { BackgroundType } from '@/types/background'
+import { localCache, LocalCacheKey } from '@/utils/cache'
 
 export const useAppStore = defineStore('app', () => {
   // State
   const isDark = ref(false)
   const sidebarCollapsed = ref(false)
   const language = ref('zh-CN')
-  const backgroundType = ref<'particles' | 'gradient' | 'grid' | 'wave' | 'nature' | 'none'>(
-    'nature'
-  )
+  const backgroundType = ref<BackgroundType>('nature')
 
   // Getters
   const theme = computed(() => (isDark.value ? 'dark' : 'light'))
@@ -31,12 +31,8 @@ export const useAppStore = defineStore('app', () => {
     } else {
       document.documentElement.classList.remove('dark')
     }
-    // 保存到 localStorage
-    try {
-      localStorage.setItem('theme', isDark.value ? 'dark' : 'light')
-    } catch (error) {
-      console.error('Failed to save theme preference:', error)
-    }
+    // 保存到本地缓存
+    localCache.set(LocalCacheKey.THEME, isDark.value ? 'dark' : 'light')
   }
 
   function toggleSidebar() {
@@ -45,56 +41,38 @@ export const useAppStore = defineStore('app', () => {
 
   function setLanguage(lang: string) {
     language.value = lang
-    // 保存到 localStorage
-    try {
-      localStorage.setItem('language', lang)
-    } catch (error) {
-      console.error('Failed to save language preference:', error)
-    }
+    // 保存到本地缓存
+    localCache.set(LocalCacheKey.LANGUAGE, lang)
   }
 
-  function setBackgroundType(type: 'particles' | 'gradient' | 'grid' | 'wave' | 'nature' | 'none') {
+  function setBackgroundType(type: BackgroundType) {
     backgroundType.value = type
-    // 保存到 localStorage
-    try {
-      localStorage.setItem('backgroundType', type)
-    } catch (error) {
-      console.error('Failed to save background type preference:', error)
-    }
+    // 保存到本地缓存
+    localCache.set(LocalCacheKey.BACKGROUND_TYPE, type)
   }
 
-  // 初始化：从 localStorage 恢复设置
+  // 初始化：从本地缓存恢复设置
   function initFromStorage() {
-    try {
-      const savedTheme = localStorage.getItem('theme')
-      const savedLanguage = localStorage.getItem('language')
-      const savedBackgroundType = localStorage.getItem('backgroundType')
+    const savedTheme = localCache.get<string>(LocalCacheKey.THEME)
+    const savedLanguage = localCache.get<string>(LocalCacheKey.LANGUAGE)
+    const savedBackgroundType = localCache.get<BackgroundType>(LocalCacheKey.BACKGROUND_TYPE)
 
-      if (savedTheme) {
-        isDark.value = savedTheme === 'dark'
-        updateThemeClass()
-      } else {
-        // 检测系统主题偏好
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-        isDark.value = prefersDark
-        updateThemeClass()
-      }
+    if (savedTheme) {
+      isDark.value = savedTheme === 'dark'
+      updateThemeClass()
+    } else {
+      // 检测系统主题偏好
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+      isDark.value = prefersDark
+      updateThemeClass()
+    }
 
-      if (savedLanguage) {
-        language.value = savedLanguage
-      }
+    if (savedLanguage) {
+      language.value = savedLanguage
+    }
 
-      if (savedBackgroundType) {
-        backgroundType.value = savedBackgroundType as
-          | 'particles'
-          | 'gradient'
-          | 'grid'
-          | 'wave'
-          | 'nature'
-          | 'none'
-      }
-    } catch (error) {
-      console.error('Failed to restore app settings from storage:', error)
+    if (savedBackgroundType) {
+      backgroundType.value = savedBackgroundType
     }
   }
 

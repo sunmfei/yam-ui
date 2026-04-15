@@ -1,38 +1,9 @@
-import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 import { useUserStore } from '@/stores/user'
+import { routeManager } from './manager'
 
-const routes: RouteRecordRaw[] = [
-  {
-    path: '/',
-    name: 'Home',
-    component: () => import('@/views/HomeView.vue'),
-    meta: {
-      title: '首页',
-      keepAlive: true,
-      requiresAuth: false, // 不需要登录
-    },
-  },
-  {
-    path: '/about',
-    name: 'About',
-    component: () => import('@/views/AboutView.vue'),
-    meta: {
-      title: '关于',
-      keepAlive: false,
-      requiresAuth: false,
-    },
-  },
-  // 404 页面
-  {
-    path: '/:pathMatch(.*)*',
-    name: 'NotFound',
-    component: () => import('@/views/NotFoundView.vue'),
-    meta: {
-      title: '页面未找到',
-      requiresAuth: false,
-    },
-  },
-]
+// 获取完整的路由配置（包含前端静态路由、后端动态路由和404）
+const routes = routeManager.getCompleteRoutes()
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),

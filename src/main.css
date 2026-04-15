@@ -98,3 +98,18 @@ html.dark {
 html.light {
   color-scheme: light;
 }
+
+/* Element Plus 透明背景样式 */
+.el-card {
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.el-button {
+  backdrop-filter: blur(5px);
+}
+
+.el-select-dropdown,
+.el-dropdown-menu {
+  backdrop-filter: blur(12px);
+}

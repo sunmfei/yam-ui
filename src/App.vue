@@ -1,30 +1,42 @@
 <script setup lang="ts">
-import { NConfigProvider } from 'naive-ui'
-import { useNaiveTheme } from '@/config/theme'
+import { watch } from 'vue'
+import { useAppStore } from '@/stores/app'
+import { useElementTheme } from '@/config/element-theme'
 import AppBackground from '@/components/ui/AppBackground.vue'
 
-const { naiveTheme, themeOverrides } = useNaiveTheme()
+const appStore = useAppStore()
+const { customProperties } = useElementTheme()
+
+// 监听主题变化，更新 Element Plus 的深色模式和自定义样式
+watch(
+  () => appStore.isDark,
+  (isDark) => {
+    if (isDark) {
+      document.documentElement.classList.add('dark')
+    } else {
+      document.documentElement.classList.remove('dark')
+    }
+  },
+  { immediate: true }
+)
 </script>
 
 <template>
-  <NConfigProvider :theme="naiveTheme" :theme-overrides="themeOverrides">
-    <div class="relative min-h-screen w-full">
-      <!-- 全局背景 -->
-      <AppBackground />
-
-      <!-- 内容区域 -->
-      <div class="relative z-50">
-        <!--        <AppNavbar />-->
-        <main class="w-full">
-          <router-view v-slot="{ Component }">
-            <transition name="fade" mode="out-in">
-              <component :is="Component" />
-            </transition>
-          </router-view>
-        </main>
-      </div>
+  <div class="relative min-h-screen w-full" :style="customProperties">
+    <!-- 全局背景 -->
+    <AppBackground />
+    <!-- 内容区域 -->
+    <div class="relative z-50">
+      <!--        <AppNavbar />-->
+      <main class="w-full">
+        <router-view v-slot="{ Component }">
+          <transition name="fade" mode="out-in">
+            <component :is="Component" />
+          </transition>
+        </router-view>
+      </main>
     </div>
-  </NConfigProvider>
+  </div>
 </template>
 
 <style>
