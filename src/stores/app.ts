@@ -6,6 +6,9 @@ export const useAppStore = defineStore('app', () => {
   const isDark = ref(false)
   const sidebarCollapsed = ref(false)
   const language = ref('zh-CN')
+  const backgroundType = ref<'particles' | 'gradient' | 'grid' | 'wave' | 'nature' | 'none'>(
+    'nature'
+  )
 
   // Getters
   const theme = computed(() => (isDark.value ? 'dark' : 'light'))
@@ -50,11 +53,22 @@ export const useAppStore = defineStore('app', () => {
     }
   }
 
+  function setBackgroundType(type: 'particles' | 'gradient' | 'grid' | 'wave' | 'nature' | 'none') {
+    backgroundType.value = type
+    // 保存到 localStorage
+    try {
+      localStorage.setItem('backgroundType', type)
+    } catch (error) {
+      console.error('Failed to save background type preference:', error)
+    }
+  }
+
   // 初始化：从 localStorage 恢复设置
   function initFromStorage() {
     try {
       const savedTheme = localStorage.getItem('theme')
       const savedLanguage = localStorage.getItem('language')
+      const savedBackgroundType = localStorage.getItem('backgroundType')
 
       if (savedTheme) {
         isDark.value = savedTheme === 'dark'
@@ -68,6 +82,16 @@ export const useAppStore = defineStore('app', () => {
 
       if (savedLanguage) {
         language.value = savedLanguage
+      }
+
+      if (savedBackgroundType) {
+        backgroundType.value = savedBackgroundType as
+          | 'particles'
+          | 'gradient'
+          | 'grid'
+          | 'wave'
+          | 'nature'
+          | 'none'
       }
     } catch (error) {
       console.error('Failed to restore app settings from storage:', error)
@@ -84,6 +108,7 @@ export const useAppStore = defineStore('app', () => {
     isDark,
     sidebarCollapsed,
     language,
+    backgroundType,
     // Getters
     theme,
     // Actions
@@ -91,6 +116,7 @@ export const useAppStore = defineStore('app', () => {
     setTheme,
     toggleSidebar,
     setLanguage,
+    setBackgroundType,
     initFromStorage,
   }
 })

@@ -2,6 +2,8 @@
 import { useAppStore } from '@/stores/app'
 import { useUserStore } from '@/stores/user'
 import { useRouter, useRoute } from 'vue-router'
+import { NButton, NSpace, NIcon, NDropdown } from 'naive-ui'
+import { computed, h } from 'vue'
 
 const appStore = useAppStore()
 const userStore = useUserStore()
@@ -15,6 +17,37 @@ function navigateTo(path: string) {
 function toggleTheme() {
   appStore.toggleTheme()
 }
+
+// 主题图标
+const themeIcon = computed(() => {
+  return h('span', { class: 'text-lg' }, appStore.isDark ? '🌙' : '☀️')
+})
+
+// 用户下拉菜单选项
+const userOptions = computed(() => [
+  {
+    label: 'Profile',
+    key: 'profile',
+  },
+  {
+    label: 'Settings',
+    key: 'settings',
+  },
+  {
+    type: 'divider',
+    key: 'd1',
+  },
+  {
+    label: 'Logout',
+    key: 'logout',
+  },
+])
+
+function handleUserMenuSelect(key: string) {
+  if (key === 'logout') {
+    userStore.logout()
+  }
+}
 </script>
 
 <template>
@@ -22,64 +55,66 @@ function toggleTheme() {
     <div class="container mx-auto flex h-16 items-center justify-between px-4">
       <!-- Logo -->
       <div class="flex items-center space-x-2">
-        <span class="text-xl font-bold" @click="navigateTo('/')">Yam UI</span>
+        <span class="cursor-pointer text-xl font-bold" @click="navigateTo('/')">Yam UI</span>
       </div>
 
       <!-- Navigation Links -->
       <div class="hidden space-x-6 md:flex">
-        <button
-          @click="navigateTo('/')"
+        <NButton
+          text
           :class="[
             'transition hover:text-blue-500',
             route.path === '/' ? 'text-blue-500' : 'text-gray-700 dark:text-gray-300',
           ]"
+          @click="navigateTo('/')"
         >
           Home
-        </button>
-        <button
-          @click="navigateTo('/about')"
+        </NButton>
+        <NButton
+          text
           :class="[
             'transition hover:text-blue-500',
             route.path === '/about' ? 'text-blue-500' : 'text-gray-700 dark:text-gray-300',
           ]"
+          @click="navigateTo('/about')"
         >
           About
-        </button>
+        </NButton>
       </div>
 
       <!-- Actions -->
-      <div class="flex items-center space-x-4">
+      <NSpace :size="12">
         <!-- Theme Toggle -->
-        <button
-          @click="toggleTheme"
-          class="rounded-lg p-2 transition hover:bg-gray-100 dark:hover:bg-gray-800"
+        <NButton
+          circle
           :title="appStore.isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode'"
+          @click="toggleTheme"
         >
-          <span v-if="appStore.isDark">🌙</span>
-          <span v-else>☀️</span>
-        </button>
+          <template #icon>
+            <NIcon :component="themeIcon" />
+          </template>
+        </NButton>
 
         <!-- User Info or Login -->
-        <div v-if="userStore.isLoggedIn" class="flex items-center space-x-2">
-          <img
-            v-if="userStore.userInfo?.avatar"
-            :src="userStore.userInfo.avatar"
-            :alt="userStore.userInfo.name"
-            class="h-8 w-8 rounded-full"
-          />
-          <span class="text-sm">{{ userStore.userInfo?.name }}</span>
-          <button @click="userStore.logout()" class="text-sm text-red-500 hover:text-red-600">
-            Logout
-          </button>
-        </div>
-        <button
-          v-else
-          @click="navigateTo('/login')"
-          class="rounded-lg bg-blue-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-600"
+        <NDropdown
+          v-if="userStore.isLoggedIn"
+          :options="userOptions"
+          @select="handleUserMenuSelect"
         >
-          Login
-        </button>
-      </div>
+          <NButton quaternary>
+            <NSpace align="center">
+              <img
+                v-if="userStore.userInfo?.avatar"
+                :src="userStore.userInfo.avatar"
+                :alt="userStore.userInfo.name"
+                class="h-8 w-8 rounded-full"
+              />
+              <span class="text-sm">{{ userStore.userInfo?.name }}</span>
+            </NSpace>
+          </NButton>
+        </NDropdown>
+        <NButton v-else type="primary" @click="navigateTo('/login')">Login</NButton>
+      </NSpace>
     </div>
   </nav>
 </template>

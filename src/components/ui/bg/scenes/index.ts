@@ -1,0 +1,11 @@
+// 场景元素组件导出
+export { default as Sun } from './Sun.vue'
+export { default as Moon } from './Moon.vue'
+export { default as Stars } from './Stars.vue'
+export { default as Clouds } from './Clouds.vue'
+export { default as Grass } from './Grass.vue'
+export { default as Flowers } from './Flowers.vue'
+export { default as Dandelion } from './Dandelion.vue'
+export { default as Bee } from './Bee.vue'
+export { default as Birds } from './Birds.vue'
+export { default as ShootingStars } from './ShootingStars.vue'

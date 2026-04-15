@@ -1,18 +1,30 @@
 <script setup lang="ts">
-import AppNavbar from '@/components/layout/AppNavbar.vue'
+import { NConfigProvider } from 'naive-ui'
+import { useNaiveTheme } from '@/config/theme'
+import AppBackground from '@/components/ui/AppBackground.vue'
+
+const { naiveTheme, themeOverrides } = useNaiveTheme()
 </script>
 
 <template>
-  <div class="min-h-screen bg-white dark:bg-gray-900">
-    <AppNavbar />
-    <main>
-      <router-view v-slot="{ Component }">
-        <transition name="fade" mode="out-in">
-          <component :is="Component" />
-        </transition>
-      </router-view>
-    </main>
-  </div>
+  <NConfigProvider :theme="naiveTheme" :theme-overrides="themeOverrides">
+    <div class="relative min-h-screen w-full">
+      <!-- 全局背景 -->
+      <AppBackground />
+
+      <!-- 内容区域 -->
+      <div class="relative z-50">
+        <!--        <AppNavbar />-->
+        <main class="w-full">
+          <router-view v-slot="{ Component }">
+            <transition name="fade" mode="out-in">
+              <component :is="Component" />
+            </transition>
+          </router-view>
+        </main>
+      </div>
+    </div>
+  </NConfigProvider>
 </template>
 
 <style>
