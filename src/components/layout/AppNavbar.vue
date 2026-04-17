@@ -31,7 +31,9 @@ function handleUserMenuSelect(key: string) {
 </script>
 
 <template>
-  <nav class="sticky top-0 z-50 border-b border-gray-200/50 bg-white/70 backdrop-blur-xl transition-all duration-300 dark:border-gray-700/50 dark:bg-gray-900/70">
+  <nav
+    class="sticky top-0 z-50 border-b border-gray-200/50 bg-white/70 backdrop-blur-xl transition-all duration-300 dark:border-gray-700/50 dark:bg-gray-900/70"
+  >
     <div class="container mx-auto flex h-16 items-center justify-between px-4">
       <!-- Logo -->
       <div class="flex items-center space-x-3">
@@ -107,9 +109,9 @@ function handleUserMenuSelect(key: string) {
                 :size="32"
                 class="border-2 border-gray-200 dark:border-gray-700"
               />
-              <span class="text-sm font-medium text-gray-700 dark:text-gray-200">{{
-                userStore.userInfo?.name
-              }}</span>
+              <span class="text-sm font-medium text-gray-700 dark:text-gray-200">
+                {{ userStore.userInfo?.name }}
+              </span>
             </div>
           </ElButton>
           <template #dropdown>

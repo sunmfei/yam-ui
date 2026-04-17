@@ -95,8 +95,8 @@ function reportError(error: unknown, context: Record<string, unknown>) {
   // 临时方案：可以发送到自己的错误收集接口
   try {
     const errorData = {
-      message: error?.message || String(error),
-      stack: error?.stack,
+      message: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined,
       context,
       timestamp: new Date().toISOString(),
       url: window.location.href,

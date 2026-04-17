@@ -3,7 +3,13 @@
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { localCache, systemCache, LocalCacheKey, SystemCacheKey, getAllCacheKeys } from '@/utils/cache'
+import {
+  localCache,
+  systemCache,
+  LocalCacheKey,
+  SystemCacheKey,
+  getAllCacheKeys,
+} from '@/utils/cache'
 
 // ==================== 本地缓存示例（用户行为数据）====================
 
@@ -118,16 +124,10 @@ export function logout(): void {
  */
 export function clearSpecificCache(): void {
   // 清理本地缓存的指定 key
-  localCache.clearKeys(
-    LocalCacheKey.SEARCH_HISTORY,
-    LocalCacheKey.USER_PREFERENCES
-  )
+  localCache.clearKeys(LocalCacheKey.SEARCH_HISTORY, LocalCacheKey.USER_PREFERENCES)
 
   // 清理系统缓存的指定 key
-  systemCache.clearKeys(
-    SystemCacheKey.API_DATA,
-    SystemCacheKey.DICTIONARY
-  )
+  systemCache.clearKeys(SystemCacheKey.API_DATA, SystemCacheKey.DICTIONARY)
 }
 
 /**
@@ -136,7 +136,7 @@ export function clearSpecificCache(): void {
 export function clearCacheByPrefixExample(): void {
   // 清理所有 API 数据缓存
   systemCache.clearByPrefix('sys_apiData')
-  
+
   // 清理所有用户相关缓存
   localCache.clearByPrefix('local_user')
 }

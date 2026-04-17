@@ -12,6 +12,7 @@ export const LocalCacheKey = {
   BACKGROUND_TYPE: 'local_backgroundType', // 背景类型
   SEARCH_HISTORY: 'local_searchHistory', // 搜索历史
   USER_PREFERENCES: 'local_userPreferences', // 用户偏好
+  MENU_CONFIG: 'local_menuConfig', // 用户自定义菜单配置
 } as const
 
 export type LocalCacheKey = (typeof LocalCacheKey)[keyof typeof LocalCacheKey]
@@ -26,6 +27,7 @@ export const SystemCacheKey = {
   API_DATA: 'sys_apiData', // API 响应数据
   CONFIG: 'sys_config', // 系统配置
   DICTIONARY: 'sys_dictionary', // 字典数据
+  MENU_DATA: 'sys_menuData', // 后端菜单数据
 } as const
 
 export type SystemCacheKey = (typeof SystemCacheKey)[keyof typeof SystemCacheKey]

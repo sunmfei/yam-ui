@@ -7,7 +7,7 @@ const routes = routeManager.getCompleteRoutes()
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes,
+  routes: routes as any,
   scrollBehavior(to, _from, savedPosition) {
     // 如果有保存的位置，返回到保存的位置
     if (savedPosition) {
@@ -26,7 +26,7 @@ const router = createRouter({
 })
 
 // 路由守卫
-router.beforeEach(async (to, _from, next) => {
+router.beforeEach(async (to, _from) => {
   const userStore = useUserStore()
 
   // 设置页面标题
@@ -42,12 +42,11 @@ router.beforeEach(async (to, _from, next) => {
   if (requiresAuth) {
     // 需要登录的路由
     if (!hasToken) {
-      // 没有 token，重定向到登录页（这里假设登录页是 /login）
-      // 可以在 query 中保存当前路径，登录后跳转回来
-      next({
+      // 没有 token，重定向到登录页
+      return {
         path: '/login',
         query: { redirect: to.fullPath },
-      })
+      }
     } else {
       // 有 token，检查用户信息是否存在
       if (!userStore.userInfo) {
@@ -58,32 +57,31 @@ router.beforeEach(async (to, _from, next) => {
           // 如果仍然没有用户信息，可能需要重新登录
           if (!userStore.userInfo) {
             userStore.logout()
-            next({
+            return {
               path: '/login',
               query: { redirect: to.fullPath },
-            })
-            return
+            }
           }
         } catch (error) {
           console.error('Failed to restore user session:', error)
           userStore.logout()
-          next({
+          return {
             path: '/login',
             query: { redirect: to.fullPath },
-          })
-          return
+          }
         }
       }
-      next()
+      // 继续导航
+      return true
     }
   } else {
     // 不需要登录的路由
     if (hasToken && to.path === '/login') {
       // 已登录用户访问登录页，重定向到首页
-      next({ path: '/' })
-    } else {
-      next()
+      return { path: '/' }
     }
+    // 继续导航
+    return true
   }
 })
 
@@ -97,3 +95,9 @@ router.afterEach((_to, _from) => {
 })
 
 export default router
+
+// 导出路由管理器和工具函数
+export { routeManager } from './manager'
+export { getMenuRoutes, getRouteTree, findRouteByName, hasRoute, logRoutes } from './utils'
+export type { BackendRoute } from '@/types/route'
+export { RouteSource } from '@/types/route'

@@ -18,7 +18,9 @@ export function preloadRoute(componentLoader: () => Promise<unknown>) {
 export function preloadRoutes(loaders: Array<() => Promise<unknown>>) {
   // 使用 requestIdleCallback 在浏览器空闲时加载
   if ('requestIdleCallback' in window) {
-    ;(window as typeof window & { requestIdleCallback: Function }).requestIdleCallback(() => {
+    ;(
+      window as typeof window & { requestIdleCallback: (cb: IdleRequestCallback) => number }
+    ).requestIdleCallback(() => {
       loaders.forEach((loader) => preloadRoute(loader))
     })
   } else {

@@ -1,21 +1,21 @@
 <script lang="ts" setup>
-import { cn } from "@inspira-ui/plugins";
+import { cn } from '@inspira-ui/plugins'
 interface ShimmerButtonProps {
-  shimmerColor?: string;
-  shimmerSize?: string;
-  borderRadius?: string;
-  shimmerDuration?: string;
-  background?: string;
-  class?: string;
+  shimmerColor?: string
+  shimmerSize?: string
+  borderRadius?: string
+  shimmerDuration?: string
+  background?: string
+  class?: string
 }
 
 withDefaults(defineProps<ShimmerButtonProps>(), {
-  shimmerColor: "#ffffff",
-  shimmerSize: "0.05em",
-  shimmerDuration: "3s",
-  borderRadius: "100px",
-  background: "rgba(0, 0, 0, 1)",
-});
+  shimmerColor: '#ffffff',
+  shimmerSize: '0.05em',
+  shimmerDuration: '3s',
+  borderRadius: '100px',
+  background: 'rgba(0, 0, 0, 1)',
+})
 </script>
 
 <template>
@@ -31,7 +31,7 @@ withDefaults(defineProps<ShimmerButtonProps>(), {
     :class="
       cn(
         `group relative z-0 flex transform-gpu cursor-pointer items-center justify-center overflow-hidden [border-radius:var(--radius)] border border-white/10 px-6 py-3 whitespace-nowrap text-white transition-transform duration-300 ease-in-out [background:var(--bg)] active:translate-y-px dark:text-black`,
-        $props.class,
+        $props.class
       )
     "
   >
@@ -88,4 +88,3 @@ withDefaults(defineProps<ShimmerButtonProps>(), {
   animation: shimmer-btn-spin-around calc(var(--speed) * 2) infinite linear;
 }
 </style>
-

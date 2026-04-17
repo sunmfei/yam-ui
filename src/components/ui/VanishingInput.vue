@@ -1,184 +1,184 @@
 <!-- eslint-disable no-undef -->
 <script setup lang="ts">
-import { cn } from "@inspira-ui/plugins";
-import {onBeforeUnmount, onMounted, ref, useTemplateRef, watch} from "vue";
+import { cn } from '@inspira-ui/plugins'
+import { onBeforeUnmount, onMounted, ref, useTemplateRef, watch } from 'vue'
 
 // Define interfaces for props and data structures
 interface Props {
-  placeholders?: string[];
+  placeholders?: string[]
 }
 
 interface PixelData {
-  x: number;
-  y: number;
-  color: string;
+  x: number
+  y: number
+  color: string
 }
 
 interface AnimatedPixel extends PixelData {
-  r: number;
+  r: number
 }
 
 // props
 const props = withDefaults(defineProps<Props>(), {
-  placeholders: () => ["Placeholder 1", "Placeholder 2", "Placeholder 3"],
-});
-const emit = defineEmits(["submit", "change"]);
+  placeholders: () => ['Placeholder 1', 'Placeholder 2', 'Placeholder 3'],
+})
+const emit = defineEmits(['submit', 'change'])
 const vanishingText = defineModel<string>({
-  default: "",
-});
-const canvasRef = useTemplateRef<HTMLCanvasElement>("canvasRef");
-const inputRef = useTemplateRef<HTMLInputElement>("inputRef");
-const currentPlaceholder = ref<number>(0);
-const animating = ref<boolean>(false);
-const intervalRef = ref<number | null>(null);
-const newDataRef = ref<AnimatedPixel[]>([]);
-const animationFrame = ref<number | null>(null);
+  default: '',
+})
+const canvasRef = useTemplateRef<HTMLCanvasElement>('canvasRef')
+const inputRef = useTemplateRef<HTMLInputElement>('inputRef')
+const currentPlaceholder = ref<number>(0)
+const animating = ref<boolean>(false)
+const intervalRef = ref<number | null>(null)
+const newDataRef = ref<AnimatedPixel[]>([])
+const animationFrame = ref<number | null>(null)
 
 // Focus on input when mounted
 onMounted(() => {
-  if (!inputRef.value) return;
-  inputRef.value.focus();
-});
+  if (!inputRef.value) return
+  inputRef.value.focus()
+})
 
 function changePlaceholder(): void {
   intervalRef.value = window.setInterval(() => {
-    currentPlaceholder.value = (currentPlaceholder.value + 1) % props.placeholders.length;
-  }, 3000);
+    currentPlaceholder.value = (currentPlaceholder.value + 1) % props.placeholders.length
+  }, 3000)
 }
 
 function handleVisibilityChange(): void {
-  if (document.visibilityState !== "visible" && intervalRef.value) {
-    clearInterval(intervalRef.value);
-    intervalRef.value = null;
-  } else if (document.visibilityState === "visible") {
-    changePlaceholder();
+  if (document.visibilityState !== 'visible' && intervalRef.value) {
+    clearInterval(intervalRef.value)
+    intervalRef.value = null
+  } else if (document.visibilityState === 'visible') {
+    changePlaceholder()
   }
 }
 
 function draw(): void {
-  if (!inputRef.value || !canvasRef.value) return;
+  if (!inputRef.value || !canvasRef.value) return
 
-  const canvas = canvasRef.value;
-  const ctx = canvas.getContext("2d");
-  if (!ctx) return;
+  const canvas = canvasRef.value
+  const ctx = canvas.getContext('2d')
+  if (!ctx) return
 
-  const computedStyles = getComputedStyle(inputRef.value);
+  const computedStyles = getComputedStyle(inputRef.value)
 
-  canvas.width = 800;
-  canvas.height = 800;
-  ctx.clearRect(0, 0, 800, 800);
+  canvas.width = 800
+  canvas.height = 800
+  ctx.clearRect(0, 0, 800, 800)
 
-  const fontSize = Number.parseFloat(computedStyles.getPropertyValue("font-size"));
-  ctx.font = `${fontSize * 2}px ${computedStyles.fontFamily}`;
-  ctx.fillStyle = "#FFF";
-  ctx.fillText(vanishingText.value, 16, 40);
+  const fontSize = Number.parseFloat(computedStyles.getPropertyValue('font-size'))
+  ctx.font = `${fontSize * 2}px ${computedStyles.fontFamily}`
+  ctx.fillStyle = '#FFF'
+  ctx.fillText(vanishingText.value, 16, 40)
 
-  const imageData = ctx.getImageData(0, 0, 800, 800);
-  const pixelData = imageData.data;
-  const newData: PixelData[] = [];
+  const imageData = ctx.getImageData(0, 0, 800, 800)
+  const pixelData = imageData.data
+  const newData: PixelData[] = []
 
   for (let t = 0; t < 800; t++) {
-    const i = 4 * t * 800;
+    const i = 4 * t * 800
     for (let n = 0; n < 800; n++) {
-      const e = i + 4 * n;
+      const e = i + 4 * n
       if (pixelData[e] !== 0 && pixelData[e + 1] !== 0 && pixelData[e + 2] !== 0) {
         newData.push({
           x: n,
           y: t,
           color: `rgba(${pixelData[e]}, ${pixelData[e + 1]}, ${pixelData[e + 2]}, ${pixelData[e + 3]})`,
-        });
+        })
       }
     }
   }
-  newDataRef.value = newData.map(({ x, y, color }) => ({ x, y, r: 1, color }));
+  newDataRef.value = newData.map(({ x, y, color }) => ({ x, y, r: 1, color }))
 }
 
 function animate(start: number = 0): void {
   animationFrame.value = requestAnimationFrame(() => {
-    const newArr: AnimatedPixel[] = [];
+    const newArr: AnimatedPixel[] = []
     for (const current of newDataRef.value) {
       if (current.x < start) {
-        newArr.push(current);
+        newArr.push(current)
       } else {
         if (current.r <= 0) {
-          current.r = 0;
-          continue;
+          current.r = 0
+          continue
         }
-        current.x += Math.random() > 0.5 ? 1 : -1;
-        current.y += Math.random() > 0.5 ? 1 : -1;
-        current.r -= 0.05 * Math.random();
-        newArr.push(current);
+        current.x += Math.random() > 0.5 ? 1 : -1
+        current.y += Math.random() > 0.5 ? 1 : -1
+        current.r -= 0.05 * Math.random()
+        newArr.push(current)
       }
     }
-    newDataRef.value = newArr;
-    const ctx = canvasRef.value?.getContext("2d");
+    newDataRef.value = newArr
+    const ctx = canvasRef.value?.getContext('2d')
     if (ctx) {
-      ctx.clearRect(start, 0, 800, 800);
+      ctx.clearRect(start, 0, 800, 800)
       newDataRef.value.forEach(({ x, y, r, color }) => {
         if (x > start) {
-          ctx.beginPath();
-          ctx.rect(x, y, r, r);
-          ctx.fillStyle = color;
-          ctx.strokeStyle = color;
-          ctx.stroke();
+          ctx.beginPath()
+          ctx.rect(x, y, r, r)
+          ctx.fillStyle = color
+          ctx.strokeStyle = color
+          ctx.stroke()
         }
-      });
+      })
     }
     if (newDataRef.value.length > 0) {
-      animate(start - 8);
+      animate(start - 8)
     } else {
-      vanishingText.value = "";
-      animating.value = false;
+      vanishingText.value = ''
+      animating.value = false
       setTimeout(() => {
         // regain focus after animation
-        inputRef.value?.focus();
-      }, 100);
+        inputRef.value?.focus()
+      }, 100)
     }
-  });
+  })
 }
 
 function handleKeyDown(e: KeyboardEvent): void {
-  if (vanishingText.value === "") return;
-  if (e.key === "Enter" && !animating.value) {
-    vanishAndSubmit();
+  if (vanishingText.value === '') return
+  if (e.key === 'Enter' && !animating.value) {
+    vanishAndSubmit()
   }
 }
 
 function vanishAndSubmit(): void {
-  animating.value = true;
-  draw();
+  animating.value = true
+  draw()
   if (vanishingText.value) {
-    const maxX = Math.max(...newDataRef.value.map(({ x }) => x));
-    animate(maxX);
-    emit("submit", vanishingText.value);
+    const maxX = Math.max(...newDataRef.value.map(({ x }) => x))
+    animate(maxX)
+    emit('submit', vanishingText.value)
   }
 }
 
 function handleSubmit(): void {
-  vanishAndSubmit();
+  vanishAndSubmit()
 }
 
 // Watch for value changes
 watch(vanishingText, (newVal: string) => {
   if (!animating.value) {
-    emit("change", { target: { value: newVal } });
+    emit('change', { target: { value: newVal } })
   }
-});
+})
 
 onMounted(() => {
-  changePlaceholder();
-  document.addEventListener("visibilitychange", handleVisibilityChange);
-});
+  changePlaceholder()
+  document.addEventListener('visibilitychange', handleVisibilityChange)
+})
 
 onBeforeUnmount(() => {
   if (intervalRef.value) {
-    clearInterval(intervalRef.value);
+    clearInterval(intervalRef.value)
   }
   if (animationFrame.value) {
-    cancelAnimationFrame(animationFrame.value);
+    cancelAnimationFrame(animationFrame.value)
   }
-  document.removeEventListener("visibilitychange", handleVisibilityChange);
-});
+  document.removeEventListener('visibilitychange', handleVisibilityChange)
+})
 </script>
 
 <template>
@@ -186,7 +186,7 @@ onBeforeUnmount(() => {
     :class="
       cn(
         `relative mx-auto h-12 w-full max-w-xl overflow-hidden rounded-full bg-white shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] transition duration-200 dark:bg-zinc-800`,
-        vanishingText && 'bg-gray-50',
+        vanishingText && 'bg-gray-50'
       )
     "
     @submit.prevent="handleSubmit"
@@ -197,7 +197,7 @@ onBeforeUnmount(() => {
       :class="
         cn(
           `pointer-events-none absolute top-[20%] left-2 origin-top-left scale-50 pr-20 text-base invert sm:left-8 dark:invert-0`,
-          animating ? 'opacity-100' : 'opacity-0',
+          animating ? 'opacity-100' : 'opacity-0'
         )
       "
     />
@@ -211,7 +211,7 @@ onBeforeUnmount(() => {
       :class="
         cn(
           `relative z-50 size-full rounded-full border-none bg-transparent pr-20 pl-4 text-sm text-black focus:ring-0 focus:outline-none sm:pl-10 sm:text-base dark:text-white`,
-          animating && 'text-transparent dark:text-transparent',
+          animating && 'text-transparent dark:text-transparent'
         )
       "
       @keydown.enter="handleKeyDown"
@@ -235,11 +235,7 @@ onBeforeUnmount(() => {
         stroke-linejoin="round"
         class="size-4 text-gray-300"
       >
-        <path
-          stroke="none"
-          d="M0 0h24v24H0z"
-          fill="none"
-        />
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
         <path
           d="M5 12l14 0"
           :style="{
@@ -275,4 +271,3 @@ onBeforeUnmount(() => {
     </div>
   </form>
 </template>
-

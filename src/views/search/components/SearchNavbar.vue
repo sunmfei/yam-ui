@@ -1,93 +1,132 @@
 <template>
-  <div class="flex items-center gap-4">
-    <el-menu
-      v-model:active="activeKey"
-      mode="horizontal"
-      :ellipsis="false"
-      class="w-full transparent-menu"
-    >
-      <el-menu-item index="1" @click="toggleTheme">
-        <el-icon><component :is="ThemeIcon" /></el-icon>
-        <span>主题切换</span>
-      </el-menu-item>
-      <el-menu-item index="2" disabled>
-        <el-icon><BookIcon /></el-icon>
-        <span>1973年的弹珠玩具</span>
-      </el-menu-item>
-      <el-sub-menu index="3">
-        <template #title>
-          <el-icon><BookIcon /></el-icon>
-          <span>{{ currentBackgroundLabel }}</span>
-        </template>
-        <el-menu-item v-for="item in backgroundOptions" :key="item.value" :index="item.value" @click="appStore.setBackgroundType(item.value)">
-          {{ item.label }}
-        </el-menu-item>
+  <!-- button -->
+  <button v-if="node.type === 'button'" class="nav-button" @click="emitAction(node)">
+    <el-icon>
+      <component :is="getIcon(node)" />
+    </el-icon>
+    {{ node.name }}
+  </button>
 
-      </el-sub-menu>
-    </el-menu>
-  </div>
+  <!-- route -->
+  <button v-else-if="node.type === 'route'" class="nav-button" @click="goRoute(node)">
+    <el-icon>
+      <component :is="getIcon(node)" />
+    </el-icon>
+    {{ node.name }}
+  </button>
+
+  <!-- dropdown -->
+  <el-dropdown v-else-if="node.type === 'dropdown'">
+    <button class="nav-button">
+      <el-icon>
+        <component :is="getIcon(node)" />
+      </el-icon>
+      {{ node.name }}
+    </button>
+
+    <template #dropdown>
+      <el-dropdown-menu>
+        <SearchNavbar
+          v-for="child in node.children"
+          :key="child.id"
+          :node="child"
+          @action="emitAction"
+        />
+      </el-dropdown-menu>
+    </template>
+  </el-dropdown>
+
+  <!-- list -->
+  <el-dropdown v-else-if="node.type === 'list'">
+    <button class="nav-button">
+      {{ getSelectedLabel(node) }}
+    </button>
+
+    <template #dropdown>
+      <el-dropdown-menu>
+        <el-dropdown-item
+          v-for="item in node.children"
+          :key="item.id"
+          @click="emitListItem(node, item)"
+        >
+          {{ item.name }}
+        </el-dropdown-item>
+      </el-dropdown-menu>
+    </template>
+  </el-dropdown>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
-import { ElMenu, ElMenuItem, ElSubMenu, ElIcon } from 'element-plus'
-import { Sunny, Moon, Reading } from '@element-plus/icons-vue'
-import { useAppStore } from '@/stores/app'
-import { BACKGROUND_OPTIONS } from '@/types/background'
+import type { MenuNode } from '@/types/menu'
+import { useRouter } from 'vue-router'
+import actionHub from '@/types/ActionHub.ts'
 
-const appStore = useAppStore()
+const router = useRouter()
 
-function toggleTheme() {
-  appStore.toggleTheme()
+const _props = defineProps<{
+  node: MenuNode
+}>()
+
+const emit = defineEmits(['action'])
+
+function emitAction(node: MenuNode) {
+  if (node.actionKey) {
+    const handler = actionHub.getAction(node.actionKey)
+    handler?.()
+  } else {
+    emit('action', node)
+  }
 }
 
-// 主题图标
-const ThemeIcon = computed(() => (appStore.isDark ? Sunny : Moon))
-const BookIcon = Reading
+function goRoute(node: MenuNode) {
+  if (node.path) router.push(node.path)
+}
 
-const activeKey = ref('1')
+function emitListItem(parent: MenuNode, item: MenuNode) {
+  if (parent.onItemClickKey) {
+    const handler = actionHub.getAction(parent.onItemClickKey)
+    handler?.(item)
+  }
+}
 
-// 使用共享的背景选项
-const backgroundOptions = BACKGROUND_OPTIONS
+function getSelectedLabel(node: MenuNode) {
+  if (node.getSelectedLabelKey) {
+    return actionHub.getString(node.getSelectedLabelKey) || node.name
+  }
+  return node.name
+}
 
-// 获取当前背景的标签
-const currentBackgroundLabel = computed(() => {
-  const option = backgroundOptions.find(opt => opt.value === appStore.backgroundType)
-  return option?.label || '选择背景'
-})
+function getIcon(node: MenuNode) {
+  // 优先使用动态图标
+  if (node.getIconKey) {
+    const icon = actionHub.getString(node.getIconKey)
+    if (icon) return icon
+  }
+  // 其次使用静态图标
+  return node.icon || 'CircleClose'
+}
 </script>
 
-<style scoped>
-/* Element Plus 菜单透明背景 */
-.transparent-menu {
-  background-color: transparent !important;
-  border-bottom: none !important;
-}
-
-.transparent-menu :deep(.el-menu-item),
-.transparent-menu :deep(.el-sub-menu__title) {
-  background-color: transparent !important;
+<style scoped lang="scss">
+.nav-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  background: transparent;
   color: inherit;
-}
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s;
 
-.transparent-menu :deep(.el-menu-item:hover),
-.transparent-menu :deep(.el-sub-menu__title:hover) {
-  background-color: rgba(128, 128, 128, 0.1) !important;
-  backdrop-filter: blur(10px);
-}
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
 
-.transparent-menu :deep(.el-menu-item.is-active) {
-  background-color: rgba(128, 128, 128, 0.15) !important;
-  backdrop-filter: blur(10px);
-}
-
-/* 下拉菜单透明背景 */
-.transparent-menu :deep(.el-menu--popup) {
-  background-color: rgba(255, 255, 255, 0.7) !important;
-  backdrop-filter: blur(12px);
-}
-
-.dark .transparent-menu :deep(.el-menu--popup) {
-  background-color: rgba(30, 41, 59, 0.8) !important;
+  .dark &:hover {
+    background: rgba(255, 255, 255, 0.05);
+  }
 }
 </style>

@@ -21,9 +21,9 @@ import {
 export function renderMenu() {
   const routes = getMenuRoutes()
   console.log('菜单路由:', routes)
-  
+
   // 渲染菜单...
-  return routes.map(route => ({
+  return routes.map((route: any) => ({
     name: route.name,
     path: route.path,
     title: route.meta?.title,
@@ -37,7 +37,7 @@ export function renderMenu() {
 export function renderMultiLevelMenu() {
   const tree = getRouteTree()
   console.log('路由树:', tree)
-  
+
   // 递归渲染菜单树...
   return tree
 }
@@ -79,13 +79,13 @@ export async function loadBackendRoutes() {
         },
       },
     ]
-    
+
     routeManager.setBackendRoutes(backendRoutes)
-    
+
     // 方式2：从 API 获取（待实现）
     // const routes = await routeManager.fetchBackendRoutes()
     // routeManager.setBackendRoutes(routes)
-    
+
     console.log('✓ 后端路由加载成功')
   } catch (error) {
     console.error('✗ 后端路由加载失败:', error)
@@ -118,7 +118,7 @@ export function getRouteInfo(name: string) {
     console.warn(`路由 "${name}" 不存在`)
     return null
   }
-  
+
   return {
     name: route.name,
     path: route.path,
@@ -142,8 +142,14 @@ export function debugRoutes() {
  */
 export function inspectRouteManager() {
   console.group('🔍 路由管理器状态')
-  console.log('前端路由数:', routeManager.getMergedRoutes().filter(r => r.meta?.source === 'frontend').length)
-  console.log('后端路由数:', routeManager.getMergedRoutes().filter(r => r.meta?.source === 'backend').length)
+  console.log(
+    '前端路由数:',
+    routeManager.getMergedRoutes().filter((r: any) => r.meta?.source === 'frontend').length
+  )
+  console.log(
+    '后端路由数:',
+    routeManager.getMergedRoutes().filter((r: any) => r.meta?.source === 'backend').length
+  )
   console.log('总路由数:', routeManager.getMergedRoutes().length)
   console.groupEnd()
 }
@@ -155,13 +161,13 @@ export function inspectRouteManager() {
  */
 export async function initAppRoutes() {
   // 1. 前端静态路由已经自动加载
-  
+
   // 2. 如果有 token，加载后端路由
   const token = localStorage.getItem('token')
   if (token) {
     await loadBackendRoutes()
   }
-  
+
   // 3. 打印路由信息（开发环境）
   if (import.meta.env.DEV) {
     debugRoutes()
@@ -174,13 +180,13 @@ export async function initAppRoutes() {
 export function useInComponent() {
   // 获取菜单路由
   const menuRoutes = getMenuRoutes()
-  
+
   // 检查某个路由是否存在
   const hasDashboard = hasRoute('Dashboard')
-  
+
   // 查找特定路由
   const homeRoute = findRouteByName('Home')
-  
+
   return {
     menuRoutes,
     hasDashboard,

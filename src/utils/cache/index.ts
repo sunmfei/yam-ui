@@ -24,10 +24,7 @@ export function clearAllCache(): void {
 /**
  * 清理指定的缓存（支持多个 key）
  */
-export function clearCacheKeys(
-  localKeys: string[] = [],
-  systemKeys: string[] = []
-): void {
+export function clearCacheKeys(localKeys: string[] = [], systemKeys: string[] = []): void {
   if (localKeys.length > 0) {
     localCache.clearKeys(...localKeys)
   }
@@ -49,10 +46,7 @@ export function clearExpiredCache(): void {
 /**
  * 根据前缀清理缓存
  */
-export function clearCacheByPrefix(
-  localPrefix?: string,
-  systemPrefix?: string
-): void {
+export function clearCacheByPrefix(localPrefix?: string, systemPrefix?: string): void {
   if (localPrefix) {
     localCache.clearByPrefix(localPrefix)
   }
@@ -64,10 +58,7 @@ export function clearCacheByPrefix(
 /**
  * 根据模式清理缓存
  */
-export function clearCacheByPattern(
-  localPattern?: string,
-  systemPattern?: string
-): void {
+export function clearCacheByPattern(localPattern?: string, systemPattern?: string): void {
   if (localPattern) {
     localCache.clearByPattern(localPattern)
   }

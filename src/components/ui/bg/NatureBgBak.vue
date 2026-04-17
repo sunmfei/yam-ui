@@ -13,11 +13,6 @@ withDefaults(defineProps<Props>(), {
 
 const appStore = useAppStore()
 
-// 根据主题调整颜色
-const _skyColor = computed(() => {
-  return appStore.isDark ? '#1a1a2e' : '#87CEEB'
-})
-
 const cloudColor = computed(() => {
   return appStore.isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255, 255, 255, 0.9)'
 })

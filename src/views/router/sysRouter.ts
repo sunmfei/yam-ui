@@ -75,12 +75,4 @@ export const errorRoutes: FrontendRoute[] = [
 /**
  * 所有系统路由（按顺序合并）
  */
-export const systemRoutes: FrontendRoute[] = [
-  ...baseRoutes,
-  ...authRoutes,
-  ...errorRoutes,
-]
-
-
-
-
+export const systemRoutes: FrontendRoute[] = [...baseRoutes, ...authRoutes, ...errorRoutes]

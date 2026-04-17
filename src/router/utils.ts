@@ -33,8 +33,7 @@ export function findRouteByPath(path: string): AppRoute | undefined {
  * 检查路由是否存在
  */
 export function hasRoute(nameOrPath: string): boolean {
-  return !!routeManager.findRouteByName(nameOrPath) || 
-         !!routeManager.findRouteByPath(nameOrPath)
+  return !!routeManager.findRouteByName(nameOrPath) || !!routeManager.findRouteByPath(nameOrPath)
 }
 
 /**
@@ -58,9 +57,9 @@ export function formatRoutes(routes: AppRoute[]): void {
 export function logRoutes(): void {
   const routes = routeManager.getMergedRoutes()
   formatRoutes(routes)
-  
+
   console.log('\n📊 路由统计:')
-  console.log('  前端路由:', routes.filter(r => r.meta?.source === 'frontend').length)
-  console.log('  后端路由:', routes.filter(r => r.meta?.source === 'backend').length)
+  console.log('  前端路由:', routes.filter((r) => r.meta?.source === 'frontend').length)
+  console.log('  后端路由:', routes.filter((r) => r.meta?.source === 'backend').length)
   console.log('  总计:', routes.length)
 }

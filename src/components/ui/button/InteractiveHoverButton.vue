@@ -1,17 +1,14 @@
 <!-- eslint-disable no-undef -->
 <script lang="ts" setup>
-import { cn } from "@inspira-ui/plugins";
-import { ref } from "vue";
+import { cn } from '@inspira-ui/plugins'
 
 interface Props {
-  text?: string;
-  class?: string;
+  text?: string
+  class?: string
 }
 const props = withDefaults(defineProps<Props>(), {
-  text: "Button",
-});
-
-const buttonRef = ref<HTMLButtonElement>();
+  text: 'Button',
+})
 </script>
 
 <template>
@@ -20,7 +17,7 @@ const buttonRef = ref<HTMLButtonElement>();
     :class="
       cn(
         `group bg-background relative w-auto cursor-pointer overflow-hidden rounded-full border p-2 px-6 text-center font-semibold`,
-        props.class,
+        props.class
       )
     "
   >
@@ -59,4 +56,3 @@ const buttonRef = ref<HTMLButtonElement>();
 </template>
 
 <style></style>
-

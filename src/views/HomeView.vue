@@ -1,14 +1,6 @@
 <script setup lang="ts">
 import { useAppStore } from '@/stores/app'
-import {
-  ElButton,
-  ElCard,
-  ElTag,
-  ElSwitch,
-  ElSelect,
-  ElOption,
-  ElSpace,
-} from 'element-plus'
+import { ElButton, ElCard, ElTag, ElSwitch, ElSelect, ElOption, ElSpace } from 'element-plus'
 import { BACKGROUND_OPTIONS } from '@/types/background'
 
 import Search from '@/views/search/index.vue'
@@ -20,13 +12,11 @@ const backgroundOptions = BACKGROUND_OPTIONS
 </script>
 
 <template>
-
-  <div class="min-h-screen bg-transparent  overflow-hidden">
-    <Search  />
-
+  <div class="min-h-screen bg-transparent overflow-hidden">
+    <Search />
 
     <!-- Features Section -->
-    <div class="container mx-auto px-4 py-16">
+    <div class="container mx-auto px-4 py-16 hidden">
       <h2 class="mb-8 text-center text-3xl font-bold">Features</h2>
       <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
         <ElCard title="🚀 Fast" shadow="hover">
@@ -92,11 +82,7 @@ const backgroundOptions = BACKGROUND_OPTIONS
             </div>
             <div class="flex items-center justify-between">
               <span>Background Type:</span>
-              <ElSelect
-                v-model="appStore.backgroundType"
-                placeholder="Select"
-                style="width: 150px"
-              >
+              <ElSelect v-model="appStore.backgroundType" placeholder="Select" style="width: 150px">
                 <ElOption
                   v-for="item in backgroundOptions"
                   :key="item.value"

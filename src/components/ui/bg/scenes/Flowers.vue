@@ -27,9 +27,9 @@ const props = withDefaults(defineProps<Props>(), {
 const flowers: Flower[] = Array.from({ length: props.count }, (_, i) => ({
   id: i + 1,
   x: `${10 + (i * 75) / props.count}%`,
-  color: props.colors[i % props.colors.length],
+  color: props.colors[i % props.colors.length] || '#ef4444',
   size: 5 + Math.floor(Math.random() * 3),
-  type: (['tulip', 'daisy', 'rose'] as const)[i % 3],
+  type: (['tulip', 'daisy', 'rose'] as const)[i % 3] as Flower['type'],
 }))
 </script>
 

@@ -4,6 +4,7 @@
  */
 import { systemRoutes } from './sysRouter'
 import { searchRoutes } from '@/views/search/router'
+import { menuRoutes } from '@/views/menu/router'
 
 // 在这里添加新模块的路由
 // import { dashboardRoutes } from '@/views/dashboard/router'
@@ -16,6 +17,7 @@ import { searchRoutes } from '@/views/search/router'
 export const localRoutes = [
   ...systemRoutes,
   ...searchRoutes,
+  ...menuRoutes,
   // ...dashboardRoutes,
   // ...userRoutes,
 ]

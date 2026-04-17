@@ -24,7 +24,7 @@ const bees: Bee[] = Array.from({ length: props.count }, (_, i) => ({
   id: i + 1,
   startX: `${20 + i * 20}%`,
   startY: `${70 + (i % 2) * 5}%`,
-  path: (['right-up', 'left-down', 'circle'] as const)[i % 3],
+  path: (['right-up', 'left-down', 'circle'] as const)[i % 3] as Bee['path'],
   speed: 12 + i * 3,
 }))
 </script>

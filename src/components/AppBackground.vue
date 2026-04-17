@@ -12,11 +12,6 @@ const appStore = useAppStore()
 const particleColor = computed(() => {
   return appStore.isDark ? '#FFF' : '#000'
 })
-
-// 根据 backgroundType 显示对应的背景组件
-const _showBackground = computed(() => {
-  return appStore.backgroundType !== 'none'
-})
 </script>
 
 <template>

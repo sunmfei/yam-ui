@@ -10,9 +10,7 @@
     :animate="{ opacity: 1, y: 0, scale: 1 }"
     :transition="{ duration: 0.5 }"
   >
-    <div
-      class="relative w-full max-w-2xl mx-auto"
-    >
+    <div class="relative w-full max-w-2xl mx-auto">
       <!-- 外层光晕 -->
       <div
         class="absolute -inset-1 rounded-2xl blur-xl transition-all duration-300"
@@ -21,41 +19,32 @@
 
       <!-- 主体搜索框 -->
       <div
-        class="relative flex items-center gap-3 px-5 py-4 rounded-2xl
-               bg-white/10 backdrop-blur-xl border border-white/20
-               transition-all duration-300"
+        class="relative flex items-center gap-3 px-5 py-4 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 transition-all duration-300"
         :class="focus ? 'scale-[1.02] border-purple-400/40 shadow-lg shadow-purple-500/20' : ''"
       >
         <!-- 搜索图标 -->
-        <div class="text-white/60">
-          🔍
-        </div>
+        <div class="text-white/60">🔍</div>
 
         <!-- 输入框 -->
         <input
           v-model="value"
-          @focus="focus = true"
-          @blur="focus = false"
-          @keyup.enter="handleSearch"
           type="text"
           placeholder="搜索你想要的内容..."
           class="flex-1 bg-transparent outline-none text-white text-lg placeholder-white/40"
+          @focus="focus = true"
+          @blur="focus = false"
+          @keyup.enter="handleSearch"
         />
 
         <!-- 清除按钮 -->
-        <button
-          v-if="value"
-          @click="clear"
-          class="text-white/60 hover:text-white transition"
-        >
+        <button v-if="value" class="text-white/60 hover:text-white transition" @click="clear">
           ✕
         </button>
 
         <!-- 搜索按钮 -->
         <button
+          class="px-5 py-2 rounded-xl bg-gradient-to-r from-purple-500 to-blue-500 hover:opacity-90 active:scale-95 transition"
           @click="handleSearch"
-          class="px-5 py-2 rounded-xl bg-gradient-to-r from-purple-500 to-blue-500
-                 hover:opacity-90 active:scale-95 transition"
         >
           搜索
         </button>
