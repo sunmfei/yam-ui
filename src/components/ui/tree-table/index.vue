@@ -1,153 +1,200 @@
 <template>
-  <div class="space-y-4">
+  <div class="flex h-full flex-col space-y-4">
     <div
       v-if="mergedToolbarConfig.enabled"
-      class="flex flex-col gap-4 rounded-2xl border border-border/60 bg-card p-4 md:flex-row md:items-center md:justify-between"
+      class="flex shrink-0 flex-col gap-4 rounded-2xl border border-border/60 bg-card p-4 md:flex-row md:items-center md:justify-between"
     >
-      <div class="space-y-1">
-        <div v-if="mergedToolbarConfig.title" class="text-sm font-semibold text-foreground">
-          {{ mergedToolbarConfig.title }}
+      <!-- 左侧插槽 -->
+      <slot name="toolbar-left">
+        <div class="space-y-1">
+          <div v-if="mergedToolbarConfig.title" class="text-sm font-semibold text-foreground">
+            {{ mergedToolbarConfig.title }}
+          </div>
+          <div v-if="mergedToolbarConfig.description" class="text-sm text-muted-foreground">
+            {{ mergedToolbarConfig.description }}
+          </div>
         </div>
-        <div v-if="mergedToolbarConfig.description" class="text-sm text-muted-foreground">
-          {{ mergedToolbarConfig.description }}
+      </slot>
+
+      <!-- 右侧插槽 -->
+      <slot name="toolbar-right">
+        <div class="flex flex-wrap items-center gap-2">
+          <div
+            v-if="mergedSelectionConfig.enabled && mergedToolbarConfig.showSelectionSummary"
+            class="inline-flex items-center gap-2 rounded-lg border border-border/60 bg-muted/40 px-3 py-2 text-sm text-muted-foreground"
+          >
+            <SquareCheckBig class="h-4 w-4" />
+            Selected {{ selectedRowCount }}
+          </div>
+
+          <Separator
+            v-if="mergedTreeConfig.enabled && mergedToolbarConfig.showExpandActions"
+            orientation="vertical"
+            class="hidden h-6 md:block"
+          />
+
+          <template v-if="mergedTreeConfig.enabled && mergedToolbarConfig.showExpandActions">
+            <Button size="sm" variant="outline" @click="expandAll">Expand all</Button>
+            <Button size="sm" variant="outline" @click="collapseAll">Collapse all</Button>
+          </template>
+
+          <Button
+            v-if="mergedToolbarConfig.showConfigToggle"
+            size="sm"
+            variant="outline"
+            class="gap-1.5"
+            @click="emit('configToggle')"
+          >
+            <PanelLeftClose class="h-4 w-4" />
+            隐藏配置
+          </Button>
         </div>
-      </div>
-
-      <div class="flex flex-wrap items-center gap-2">
-        <div
-          v-if="mergedSelectionConfig.enabled && mergedToolbarConfig.showSelectionSummary"
-          class="inline-flex items-center gap-2 rounded-lg border border-border/60 bg-muted/40 px-3 py-2 text-sm text-muted-foreground"
-        >
-          <SquareCheckBig class="h-4 w-4" />
-          Selected {{ selectedRowCount }}
-        </div>
-
-        <Separator
-          v-if="mergedTreeConfig.enabled && mergedToolbarConfig.showExpandActions"
-          orientation="vertical"
-          class="hidden h-6 md:block"
-        />
-
-        <template v-if="mergedTreeConfig.enabled && mergedToolbarConfig.showExpandActions">
-          <Button size="sm" variant="outline" @click="expandAll">Expand all</Button>
-          <Button size="sm" variant="outline" @click="collapseAll">Collapse all</Button>
-        </template>
-      </div>
+      </slot>
     </div>
 
-    <Table class="rounded-2xl border border-border/60 bg-card">
-      <TableHeader>
-        <TableRow class="hover:bg-transparent">
-          <TableHead v-if="mergedSelectionConfig.enabled" class="w-14 text-center">
-            <input
-              type="checkbox"
-              class="h-4 w-4 rounded border-input accent-primary"
-              :checked="allVisibleSelected"
-              @change="handleHeaderCheckboxChange"
-            />
-          </TableHead>
+    <div
+      class="flex min-h-0 flex-1 flex-col overflow-hidden rounded-2xl border border-border/60 bg-card"
+    >
+      <div class="shrink-0 overflow-x-auto">
+        <Table>
+          <TableHeader>
+            <TableRow class="hover:bg-transparent">
+              <TableHead v-if="mergedSelectionConfig.enabled" class="w-14 text-center">
+                <input
+                  type="checkbox"
+                  class="h-4 w-4 rounded border-input accent-primary"
+                  :checked="allVisibleSelected"
+                  @change="handleHeaderCheckboxChange"
+                />
+              </TableHead>
 
-          <TableHead
-            v-for="(column, index) in columns"
-            :key="column.key"
-            :style="{ width: column.width }"
-            :class="[
-              'h-12 bg-muted/40 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground',
-              getAlignClass(column.align),
-              column.headerClass,
-              index === 0 ? 'pl-4' : '',
-            ]"
-          >
-            {{ column.title }}
-          </TableHead>
-        </TableRow>
-      </TableHeader>
-
-      <TableBody>
-        <template v-if="loading">
-          <TableRow class="hover:bg-transparent">
-            <TableCell
-              :colspan="columns.length + (mergedSelectionConfig.enabled ? 1 : 0)"
-              class="h-48"
-            >
-              <div class="flex items-center justify-center gap-3 text-muted-foreground">
-                <Loader2 class="h-4 w-4 animate-spin" />
-                <span>Loading...</span>
-              </div>
-            </TableCell>
-          </TableRow>
-        </template>
-
-        <template v-else-if="flatRows.length === 0">
-          <TableRow class="hover:bg-transparent">
-            <TableCell
-              :colspan="columns.length + (mergedSelectionConfig.enabled ? 1 : 0)"
-              class="h-48"
-            >
-              <div class="flex flex-col items-center justify-center gap-3 text-muted-foreground">
-                <div
-                  class="flex h-12 w-12 items-center justify-center rounded-2xl border border-dashed"
-                >
-                  <Minus class="h-5 w-5" />
-                </div>
-                <span>{{ emptyText }}</span>
-              </div>
-            </TableCell>
-          </TableRow>
-        </template>
-
-        <template v-else>
-          <TableRow
-            v-for="row in pagedRows"
-            :key="getRowKey(row.node)"
-            :class="row.node.disabled ? 'opacity-60' : ''"
-            @click="handleRowClick(row.node)"
-          >
-            <TableCell v-if="mergedSelectionConfig.enabled" class="w-14 text-center">
-              <input
-                :ref="(element) => bindRowCheckbox(element, row.node)"
-                type="checkbox"
-                class="h-4 w-4 rounded border-input accent-primary"
-                :checked="getNodeSelectionState(row.node) === 'checked'"
-                @click.stop
-                @change="handleRowCheckboxChange(row.node, $event)"
-              />
-            </TableCell>
-
-            <TableCell
-              v-for="(column, index) in columns"
-              :key="column.key"
-              :class="[
-                'h-12 align-middle',
-                getAlignClass(column.align),
-                column.cellClass,
-                index === 0 ? 'pl-4' : '',
-              ]"
-            >
-              <div
-                v-if="index === 0"
-                class="flex min-w-0 items-center gap-2"
-                :style="{ paddingLeft: `${row.level * mergedTreeConfig.indent}px` }"
+              <TableHead
+                v-for="(column, index) in columns"
+                :key="column.key"
+                :style="{ width: column.width }"
+                :class="[
+                  'h-12 bg-muted/40 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground',
+                  getAlignClass(column.align),
+                  column.headerClass,
+                  index === 0 ? 'pl-4' : '',
+                ]"
               >
-                <button
-                  v-if="mergedTreeConfig.enabled && hasChildren(row.node)"
-                  type="button"
-                  class="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-md border border-transparent text-muted-foreground transition hover:border-border hover:bg-muted hover:text-foreground disabled:cursor-not-allowed disabled:opacity-50"
-                  :disabled="isLoading(row.node)"
-                  @click.stop="toggleRow(row.node)"
+                {{ column.title }}
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+        </Table>
+      </div>
+
+      <div class="min-h-0 flex-1 overflow-auto">
+        <Table>
+          <TableBody>
+            <template v-if="loading">
+              <TableRow class="hover:bg-transparent">
+                <TableCell
+                  :colspan="columns.length + (mergedSelectionConfig.enabled ? 1 : 0)"
+                  class="h-48"
                 >
-                  <Loader2 v-if="isLoading(row.node)" class="h-4 w-4 animate-spin" />
-                  <ChevronRight
-                    v-else
-                    class="h-4 w-4 transition-transform"
-                    :class="isExpanded(row.node) ? 'rotate-90' : ''"
+                  <div class="flex items-center justify-center gap-3 text-muted-foreground">
+                    <Loader2 class="h-4 w-4 animate-spin" />
+                    <span>Loading...</span>
+                  </div>
+                </TableCell>
+              </TableRow>
+            </template>
+
+            <template v-else-if="flatRows.length === 0">
+              <TableRow class="hover:bg-transparent">
+                <TableCell
+                  :colspan="columns.length + (mergedSelectionConfig.enabled ? 1 : 0)"
+                  class="h-48"
+                >
+                  <div
+                    class="flex flex-col items-center justify-center gap-3 text-muted-foreground"
+                  >
+                    <div
+                      class="flex h-12 w-12 items-center justify-center rounded-2xl border border-dashed"
+                    >
+                      <Minus class="h-5 w-5" />
+                    </div>
+                    <span>{{ emptyText }}</span>
+                  </div>
+                </TableCell>
+              </TableRow>
+            </template>
+
+            <template v-else>
+              <TableRow
+                v-for="row in pagedRows"
+                :key="getRowKey(row.node)"
+                :class="row.node.disabled ? 'opacity-60' : ''"
+                @click="handleRowClick(row.node)"
+              >
+                <TableCell v-if="mergedSelectionConfig.enabled" class="w-14 text-center">
+                  <input
+                    :ref="(element) => bindRowCheckbox(element, row.node)"
+                    type="checkbox"
+                    class="h-4 w-4 rounded border-input accent-primary"
+                    :checked="getNodeSelectionState(row.node) === 'checked'"
+                    @click.stop
+                    @change="handleRowCheckboxChange(row.node, $event)"
                   />
-                </button>
+                </TableCell>
 
-                <span v-else-if="mergedTreeConfig.enabled" class="inline-block h-7 w-7 shrink-0" />
+                <TableCell
+                  v-for="(column, index) in columns"
+                  :key="column.key"
+                  :class="[
+                    'h-12 align-middle',
+                    getAlignClass(column.align),
+                    column.cellClass,
+                    index === 0 ? 'pl-4' : '',
+                  ]"
+                >
+                  <div
+                    v-if="index === 0"
+                    class="flex min-w-0 items-center gap-2"
+                    :style="{ paddingLeft: `${row.level * mergedTreeConfig.indent}px` }"
+                  >
+                    <button
+                      v-if="mergedTreeConfig.enabled && hasChildren(row.node)"
+                      type="button"
+                      class="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-md border border-transparent text-muted-foreground transition hover:border-border hover:bg-muted hover:text-foreground disabled:cursor-not-allowed disabled:opacity-50"
+                      :disabled="isLoading(row.node)"
+                      @click.stop="toggleRow(row.node)"
+                    >
+                      <Loader2 v-if="isLoading(row.node)" class="h-4 w-4 animate-spin" />
+                      <ChevronRight
+                        v-else
+                        class="h-4 w-4 transition-transform"
+                        :class="isExpanded(row.node) ? 'rotate-90' : ''"
+                      />
+                    </button>
 
-                <div class="min-w-0 flex-1">
+                    <span
+                      v-else-if="mergedTreeConfig.enabled"
+                      class="inline-block h-7 w-7 shrink-0"
+                    />
+
+                    <div class="min-w-0 flex-1">
+                      <slot
+                        :name="column.slot ?? `cell-${column.key}`"
+                        :row="row.node"
+                        :column="column"
+                        :value="getCellValue(row.node, column)"
+                        :level="row.level"
+                        :expanded="isExpanded(row.node)"
+                        :selected="isSelected(row.node)"
+                      >
+                        <div class="truncate font-medium text-foreground">
+                          {{ getCellValue(row.node, column) ?? '-' }}
+                        </div>
+                      </slot>
+                    </div>
+                  </div>
+
                   <slot
+                    v-else
                     :name="column.slot ?? `cell-${column.key}`"
                     :row="row.node"
                     :column="column"
@@ -156,36 +203,21 @@
                     :expanded="isExpanded(row.node)"
                     :selected="isSelected(row.node)"
                   >
-                    <div class="truncate font-medium text-foreground">
+                    <div class="truncate text-muted-foreground">
                       {{ getCellValue(row.node, column) ?? '-' }}
                     </div>
                   </slot>
-                </div>
-              </div>
-
-              <slot
-                v-else
-                :name="column.slot ?? `cell-${column.key}`"
-                :row="row.node"
-                :column="column"
-                :value="getCellValue(row.node, column)"
-                :level="row.level"
-                :expanded="isExpanded(row.node)"
-                :selected="isSelected(row.node)"
-              >
-                <div class="truncate text-muted-foreground">
-                  {{ getCellValue(row.node, column) ?? '-' }}
-                </div>
-              </slot>
-            </TableCell>
-          </TableRow>
-        </template>
-      </TableBody>
-    </Table>
+                </TableCell>
+              </TableRow>
+            </template>
+          </TableBody>
+        </Table>
+      </div>
+    </div>
 
     <div
       v-if="mergedPaginationConfig.enabled && totalRows > 0"
-      class="flex flex-col gap-3 rounded-2xl border border-border/60 bg-card p-4 md:flex-row md:items-center md:justify-between"
+      class="shrink-0 flex flex-col gap-3 rounded-2xl border border-border/60 bg-card p-4 md:flex-row md:items-center md:justify-between"
     >
       <div class="text-sm text-muted-foreground">
         Showing
@@ -246,7 +278,7 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import { ChevronRight, Loader2, Minus, SquareCheckBig } from 'lucide-vue-next'
+import { ChevronRight, Loader2, Minus, PanelLeftClose, SquareCheckBig } from 'lucide-vue-next'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import {
@@ -391,6 +423,10 @@ const emit = defineEmits<{
    * @param payload - 包含新页码和每页行数的对象
    */
   pageChange: [payload: { page: number; pageSize: number }]
+  /**
+   * 配置面板切换按钮点击时触发
+   */
+  configToggle: []
 }>()
 
 /**
@@ -436,6 +472,7 @@ const mergedToolbarConfig = computed<Required<TreeTableToolbarConfig>>(() => ({
   description: props.toolbarConfig?.description ?? '',
   showExpandActions: props.toolbarConfig?.showExpandActions ?? true,
   showSelectionSummary: props.toolbarConfig?.showSelectionSummary ?? true,
+  showConfigToggle: props.toolbarConfig?.showConfigToggle ?? false,
 }))
 
 /**

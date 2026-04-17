@@ -77,6 +77,8 @@ export interface TreeTableToolbarConfig {
   showExpandActions?: boolean
   /** 显示已选择行数摘要 */
   showSelectionSummary?: boolean
+  /** 显示配置面板切换按钮 */
+  showConfigToggle?: boolean
 }
 
 /**

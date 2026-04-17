@@ -265,7 +265,7 @@ onBeforeUnmount(() => {
           :key="currentPlaceholder"
           class="w-[calc(100%-2rem)] truncate pl-4 text-left text-sm font-normal text-neutral-500 sm:pl-10 sm:text-base dark:text-zinc-500"
         >
-          {{ placeholders[currentPlaceholder] }}
+          {{ placeholders?.[currentPlaceholder] }}
         </p>
       </Transition>
     </div>
