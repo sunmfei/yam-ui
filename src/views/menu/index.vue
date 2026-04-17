@@ -13,6 +13,13 @@
     @selection-change="handleSelectionChange"
     @row-click="handleRowClick"
   >
+    <!-- 面包屑导航 -->
+    <template #toolbar-left>
+      <Breadcrumb
+        :items="[{ title: '首页', path: '/' }, { title: '系统管理' }, { title: '菜单管理' }]"
+      />
+    </template>
+
     <template #name="{ row }">
       <div class="flex min-w-0 items-center gap-3 transition-all hover:gap-4">
         <div
@@ -107,6 +114,7 @@ import { computed, ref } from 'vue'
 import { Plus } from 'lucide-vue-next'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { Breadcrumb } from '@/components/ui/breadcrumb'
 import { BaseTable } from '@/components/table'
 import type { TreeTableColumn, TreeTableNode } from '@/components/ui/tree-table/types'
 import type { MenuNode } from '@/types/menu'
