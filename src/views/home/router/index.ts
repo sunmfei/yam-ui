@@ -12,7 +12,7 @@ export const baseRoutes: FrontendRoute[] = [
   {
     name: 'Home',
     path: '/',
-    component: () => import('@/views/HomeView.vue'),
+    component: () => import('@/views/home/HomeView.vue'),
     source: RouteSource.FRONTEND,
     meta: {
       title: '首页',
@@ -25,7 +25,7 @@ export const baseRoutes: FrontendRoute[] = [
   {
     name: 'About',
     path: '/about',
-    component: () => import('@/views/AboutView.vue'),
+    component: () => import('@/views/home/AboutView.vue'),
     source: RouteSource.FRONTEND,
     meta: {
       title: '关于',
@@ -62,7 +62,7 @@ export const errorRoutes: FrontendRoute[] = [
   {
     name: 'NotFound',
     path: '/:pathMatch(.*)*',
-    component: () => import('@/views/NotFoundView.vue'),
+    component: () => import('@/views/home/NotFoundView.vue'),
     source: RouteSource.FRONTEND,
     meta: {
       title: '页面未找到',
