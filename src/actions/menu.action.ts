@@ -3,6 +3,7 @@ import menuConfig from '@/utils/menu/MenuUtils.ts'
 import { MenuActionKey } from '@/types/menu.ts'
 import { BACKGROUND_OPTIONS } from '@/types/background.ts'
 import actionHub from '@/types/ActionHub.ts'
+import { ICON_POOL } from '@/config/types/icon.pool.ts'
 
 /**
  * 初始化菜单动作注册
@@ -33,10 +34,11 @@ export default function initMenuActions() {
   )
 
   /**
+   *
    * 获取主题图标（动态）
    */
   actionHub.registerGetter(MenuActionKey.MENU_GET_ICON, () => {
     console.log('MenuActionKey.MENU_GET_ICON')
-    return appStore.isDark ? 'Moon' : 'Sunny'
+    return appStore.isDark ? ICON_POOL.Moon : ICON_POOL.Sun
   })
 }

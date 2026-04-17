@@ -11,7 +11,7 @@ src/
         ├── baseCache.ts      # 缓存基类
         ├── localCache.ts     # 本地缓存（用户行为）
         ├── systemCache.ts    # 系统缓存（服务器数据）
-        ├── index.ts          # 统一出口
+        ├── icon.data.utils.ts          # 统一出口
         └── example.ts        # 使用示例
 ```
 

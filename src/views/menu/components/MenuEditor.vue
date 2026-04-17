@@ -1,105 +1,163 @@
 <template>
   <div class="menu-editor-container">
     <!-- 操作栏 -->
-    <div class="toolbar mb-4 flex justify-between items-center">
+    <div class="toolbar mb-4 flex items-center justify-between">
       <div class="flex gap-2">
-        <el-button type="primary" @click="showAddDialog(null)">
-          <el-icon><Plus /></el-icon>
+        <button
+          class="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+          @click="showAddDialog(null)"
+        >
+          <Plus class="h-4 w-4" />
           添加根菜单
-        </el-button>
-        <el-button @click="handleReset">
-          <el-icon><RefreshLeft /></el-icon>
+        </button>
+        <button
+          class="inline-flex items-center gap-2 rounded-lg border px-4 py-2 text-sm font-medium transition-colors hover:bg-muted"
+          @click="handleReset"
+        >
+          <RotateCcw class="h-4 w-4" />
           重置默认
-        </el-button>
+        </button>
       </div>
       <div class="flex gap-2">
-        <el-button type="success" @click="handleSaveLocal">
-          <el-icon><Download /></el-icon>
+        <button
+          class="inline-flex items-center gap-2 rounded-lg bg-green-500 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-green-600"
+          @click="handleSaveLocal"
+        >
+          <Download class="h-4 w-4" />
           保存到本地
-        </el-button>
-        <el-button type="warning" :loading="saving" @click="handleSaveServer">
-          <el-icon><Upload /></el-icon>
-          保存到服务器
-        </el-button>
+        </button>
+        <button
+          class="inline-flex items-center gap-2 rounded-lg bg-yellow-500 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-yellow-600 disabled:opacity-50"
+          :disabled="saving"
+          @click="handleSaveServer"
+        >
+          <Upload class="h-4 w-4" />
+          {{ saving ? '保存中...' : '保存到服务器' }}
+        </button>
       </div>
     </div>
 
     <!-- 表格 -->
-    <el-table
-      :data="menuData"
-      row-key="name"
-      border
-      stripe
-      default-expand-all
-      :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
-      style="width: 100%"
-    >
-      <el-table-column prop="name" label="名称" min-width="150" />
-      <el-table-column prop="icon" label="图标" width="120" />
-      <el-table-column prop="type" label="类型" width="120">
-        <template #default="{ row }">
-          <el-tag size="small">{{ getTypeLabel(row.type) }}</el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column label="路径/动作" min-width="200">
-        <template #default="{ row }">
-          <span v-if="hasPath(row)" class="text-sm">{{ (row as any).path }}</span>
-          <el-tag v-else-if="hasAction(row)" type="warning" size="small">函数</el-tag>
-          <span v-else class="text-sm text-gray-400">未配置</span>
-        </template>
-      </el-table-column>
-      <el-table-column prop="order" label="排序" width="80" />
-      <el-table-column label="操作" width="200" fixed="right">
-        <template #default="{ row }">
-          <el-button size="small" text type="primary" @click="showAddDialog(row)">
-            添加子项
-          </el-button>
-          <el-button size="small" text type="primary" @click="showEditDialog(row)">编辑</el-button>
-          <el-button size="small" text type="danger" @click="handleDelete(row)">删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
+    <div class="rounded-xl border bg-card">
+      <div class="min-h-[400px]">
+        <MenuTreeItem
+          v-for="item in menuData"
+          :key="item.id || item.name"
+          :item="item"
+          :level="0"
+          @add="showAddDialog"
+          @edit="showEditDialog"
+          @delete="handleDelete"
+        />
+        <div
+          v-if="menuData.length === 0"
+          class="flex items-center justify-center py-12 text-muted-foreground"
+        >
+          暂无菜单数据
+        </div>
+      </div>
+    </div>
 
     <!-- 添加/编辑对话框 -->
-    <el-dialog v-model="dialogVisible" :title="isEdit ? '编辑菜单' : '添加菜单'" width="600px">
-      <el-form :model="formData" label-width="100px">
-        <el-form-item label="名称" required>
-          <el-input v-model="formData.name" placeholder="请输入菜单名称" />
-        </el-form-item>
-        <el-form-item label="图标">
-          <el-input v-model="formData.icon" placeholder="图标名称，如：Menu" />
-        </el-form-item>
-        <el-form-item label="渲染类型" required>
-          <el-select v-model="formData.type" placeholder="选择类型">
-            <el-option label="按钮 (button)" value="button" />
-            <el-option label="路由 (route)" value="route" />
-            <el-option label="下拉菜单 (dropdown)" value="dropdown" />
-            <el-option label="列表菜单 (list)" value="list" />
-          </el-select>
-        </el-form-item>
-        <el-form-item v-if="formData.type === 'route'" label="路由路径">
-          <el-input v-model="formData.path" placeholder="/path/to/page" />
-        </el-form-item>
-        <el-form-item v-if="formData.type === 'button'" label="动作 Key">
-          <el-input v-model="formData.actionKey" placeholder="action-key-name" />
-        </el-form-item>
-        <el-form-item label="排序">
-          <el-input-number v-model="formData.order" :min="0" />
-        </el-form-item>
-      </el-form>
-      <template #footer>
-        <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="handleSubmit">确定</el-button>
-      </template>
-    </el-dialog>
+    <div
+      v-if="dialogVisible"
+      class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
+      @click.self="dialogVisible = false"
+    >
+      <div
+        class="w-full max-w-[600px] rounded-xl bg-background p-6 shadow-xl animate-in zoom-in-95"
+      >
+        <h2 class="mb-4 text-xl font-semibold">{{ isEdit ? '编辑菜单' : '添加菜单' }}</h2>
+        <div class="space-y-4">
+          <div>
+            <label class="mb-2 block text-sm font-medium">
+              名称
+              <span class="text-destructive">*</span>
+            </label>
+            <input
+              v-model="formData.name"
+              type="text"
+              placeholder="请输入菜单名称"
+              class="w-full rounded-lg border px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+            />
+          </div>
+          <div>
+            <label class="mb-2 block text-sm font-medium">图标</label>
+            <input
+              v-model="formData.icon"
+              type="text"
+              placeholder="图标名称，如：Menu"
+              class="w-full rounded-lg border px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+            />
+          </div>
+          <div>
+            <label class="mb-2 block text-sm font-medium">
+              渲染类型
+              <span class="text-destructive">*</span>
+            </label>
+            <select
+              v-model="formData.type"
+              class="w-full rounded-lg border px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+            >
+              <option value="button">按钮 (button)</option>
+              <option value="route">路由 (route)</option>
+              <option value="dropdown">下拉菜单 (dropdown)</option>
+              <option value="list">列表菜单 (list)</option>
+            </select>
+          </div>
+          <div v-if="formData.type === 'route'">
+            <label class="mb-2 block text-sm font-medium">路由路径</label>
+            <input
+              v-model="formData.path"
+              type="text"
+              placeholder="/path/to/page"
+              class="w-full rounded-lg border px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+            />
+          </div>
+          <div v-if="formData.type === 'button'">
+            <label class="mb-2 block text-sm font-medium">动作 Key</label>
+            <input
+              v-model="formData.actionKey"
+              type="text"
+              placeholder="action-key-name"
+              class="w-full rounded-lg border px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+            />
+          </div>
+          <div>
+            <label class="mb-2 block text-sm font-medium">排序</label>
+            <input
+              v-model.number="formData.order"
+              type="number"
+              :min="0"
+              class="w-full rounded-lg border px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+            />
+          </div>
+        </div>
+        <div class="mt-6 flex justify-end gap-3">
+          <button
+            class="rounded-lg border px-4 py-2 text-sm font-medium transition-colors hover:bg-muted"
+            @click="dialogVisible = false"
+          >
+            取消
+          </button>
+          <button
+            class="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            @click="handleSubmit"
+          >
+            确定
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import { ElMessage, ElMessageBox } from 'element-plus'
-import { Plus, RefreshLeft, Download, Upload } from '@element-plus/icons-vue'
+import { Plus, RotateCcw, Download, Upload } from 'lucide-vue-next'
 import type { MenuNode } from '@/types/menu'
+import { ElMessage, ElMessageBox } from '@/utils/message'
+import MenuTreeItem from './MenuTreeItem.vue'
 
 // Props
 interface Props {
@@ -155,15 +213,15 @@ const formData = ref<Partial<MenuNode>>({
 })
 
 // 类型守卫
-function hasPath(menu: MenuNode): boolean {
+function _hasPath(menu: MenuNode): boolean {
   return menu.type === 'route' || (!!menu.path && typeof menu.path === 'string')
 }
 
-function hasAction(menu: MenuNode): boolean {
+function _hasAction(menu: MenuNode): boolean {
   return !!menu.actionKey && typeof menu.actionKey === 'string'
 }
 
-function getTypeLabel(type?: string): string {
+function _getTypeLabel(type?: string): string {
   const labels: Record<string, string> = {
     button: '按钮',
     dropdown: '下拉',
@@ -230,7 +288,7 @@ function handleSubmit() {
     id: `menu-${Date.now()}`,
     name: formData.value.name!,
     icon: formData.value.icon || undefined,
-    type: formData.value.type as any,
+    type: formData.value.type as MenuNode['type'],
     path: formData.value.path || undefined,
     actionKey: formData.value.actionKey || undefined,
     order: formData.value.order || 0,

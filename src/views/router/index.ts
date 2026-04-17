@@ -2,7 +2,7 @@
  * 本地路由汇总
  * 收集所有模块的路由配置
  */
-import { systemRoutes } from './sysRouter'
+import { systemRoutes } from '@/views/home/router'
 import { searchRoutes } from '@/views/search/router'
 import { menuRoutes } from '@/views/menu/router'
 

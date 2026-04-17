@@ -6,105 +6,175 @@
     </div>
 
     <div class="config-content">
-      <el-card class="menu-list-card">
-        <template #header>
-          <div class="card-header">
-            <span>当前菜单项</span>
-            <el-button type="primary" @click="addMenuItem">
-              <el-icon><Plus /></el-icon>
-              添加菜单项
-            </el-button>
-          </div>
-        </template>
+      <div class="menu-list-card rounded-xl border bg-card p-6 shadow-sm">
+        <div class="card-header mb-4 flex items-center justify-between">
+          <span class="text-lg font-semibold">当前菜单项</span>
+          <button
+            class="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            @click="addMenuItem"
+          >
+            <Plus class="h-4 w-4" />
+            添加菜单项
+          </button>
+        </div>
 
-        <el-empty v-if="menuItems.length === 0" description="暂无菜单项" />
+        <div
+          v-if="menuItems.length === 0"
+          class="flex flex-col items-center justify-center py-12 text-muted-foreground"
+        >
+          暂无菜单项
+        </div>
 
-        <div v-else class="menu-items-list">
-          <div v-for="(item, index) in menuItems" :key="index" class="menu-item-card">
-            <div class="item-header">
-              <el-icon size="20">
-                <component :is="getIconComponent(resolvedIcons[item.name] || 'CircleClose')" />
-              </el-icon>
-              <span class="item-name">{{ item.name }}</span>
-              <div class="item-actions">
-                <el-button size="small" @click="editMenuItem(index)">
-                  <el-icon><Edit /></el-icon>
+        <div v-else class="menu-items-list space-y-3">
+          <div
+            v-for="(item, index) in menuItems"
+            :key="index"
+            class="menu-item-card rounded-lg border p-4"
+          >
+            <div class="item-header mb-2 flex items-center gap-3">
+              <span class="text-xl">{{ resolvedIcons[item.name] || '📋' }}</span>
+              <span class="item-name font-medium">{{ item.name }}</span>
+              <div class="item-actions ml-auto flex gap-2">
+                <button
+                  class="inline-flex items-center gap-1 rounded-md border px-3 py-1.5 text-xs font-medium transition-colors hover:bg-muted"
+                  @click="editMenuItem(index)"
+                >
+                  <Edit class="h-3 w-3" />
                   编辑
-                </el-button>
-                <el-button size="small" type="danger" @click="deleteMenuItem(index)">
-                  <el-icon><Delete /></el-icon>
+                </button>
+                <button
+                  class="inline-flex items-center gap-1 rounded-md border border-destructive px-3 py-1.5 text-xs font-medium text-destructive transition-colors hover:bg-destructive/10"
+                  @click="deleteMenuItem(index)"
+                >
+                  <Trash2 class="h-3 w-3" />
                   删除
-                </el-button>
+                </button>
               </div>
             </div>
-            <div class="item-info">
-              <el-tag size="small" type="info">{{ item.type || 'button' }}</el-tag>
-              <span v-if="hasPath(item)" class="info-text">路径: {{ item.path }}</span>
-              <span v-if="item.order !== undefined" class="info-text">排序: {{ item.order }}</span>
+            <div class="item-info flex items-center gap-2">
+              <span class="rounded bg-muted px-2 py-0.5 text-xs">{{ item.type || 'button' }}</span>
+              <span v-if="hasPath(item)" class="info-text text-xs text-muted-foreground">
+                路径: {{ item.path }}
+              </span>
+              <span v-if="item.order !== undefined" class="info-text text-xs text-muted-foreground">
+                排序: {{ item.order }}
+              </span>
             </div>
           </div>
         </div>
-      </el-card>
+      </div>
 
-      <el-card class="actions-card">
-        <template #header>
-          <span>操作</span>
-        </template>
-        <div class="action-buttons">
-          <el-button @click="resetToDefault">
-            <el-icon><RefreshLeft /></el-icon>
+      <div class="actions-card rounded-xl border bg-card p-6 shadow-sm">
+        <div class="mb-4 text-lg font-semibold">操作</div>
+        <div class="action-buttons flex gap-3">
+          <button
+            class="inline-flex items-center gap-2 rounded-lg border px-4 py-2 text-sm font-medium transition-colors hover:bg-muted"
+            @click="resetToDefault"
+          >
+            <RotateCcw class="h-4 w-4" />
             重置为默认
-          </el-button>
-          <el-button type="success" @click="saveConfig">
-            <el-icon><Check /></el-icon>
+          </button>
+          <button
+            class="inline-flex items-center gap-2 rounded-lg bg-green-500 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-green-600"
+            @click="saveConfig"
+          >
+            <Check class="h-4 w-4" />
             保存配置
-          </el-button>
+          </button>
         </div>
-      </el-card>
+      </div>
     </div>
 
     <!-- 编辑对话框 -->
-    <el-dialog
-      v-model="dialogVisible"
-      :title="editingIndex >= 0 ? '编辑菜单项' : '添加菜单项'"
-      width="600px"
+    <div
+      v-if="dialogVisible"
+      class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
+      @click.self="dialogVisible = false"
     >
-      <el-form :model="currentItem" label-width="100px">
-        <el-form-item label="名称" required>
-          <el-input v-model="currentItem.name" placeholder="请输入菜单名称" />
-        </el-form-item>
-        <el-form-item label="图标">
-          <el-input v-model="currentItem.icon" placeholder="Element Plus 图标名称" />
-        </el-form-item>
-        <el-form-item label="类型">
-          <el-select v-model="currentItem.type" placeholder="选择类型">
-            <el-option label="按钮 (button)" value="button" />
-            <el-option label="下拉菜单 (dropdown)" value="dropdown" />
-            <el-option label="列表菜单 (list)" value="list" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="路径">
-          <el-input v-model="(currentItem as any).path" placeholder="/path/to/page" />
-        </el-form-item>
-        <el-form-item label="排序">
-          <el-input-number v-model="currentItem.order" :min="0" />
-        </el-form-item>
-      </el-form>
-      <template #footer>
-        <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="saveMenuItem">确定</el-button>
-      </template>
-    </el-dialog>
+      <div
+        class="w-full max-w-[600px] rounded-xl bg-background p-6 shadow-xl animate-in zoom-in-95"
+      >
+        <h2 class="mb-4 text-xl font-semibold">
+          {{ editingIndex >= 0 ? '编辑菜单项' : '添加菜单项' }}
+        </h2>
+        <div class="space-y-4">
+          <div>
+            <label class="mb-2 block text-sm font-medium">
+              名称
+              <span class="text-destructive">*</span>
+            </label>
+            <input
+              v-model="currentItem.name"
+              type="text"
+              placeholder="请输入菜单名称"
+              class="w-full rounded-lg border px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+            />
+          </div>
+          <div>
+            <label class="mb-2 block text-sm font-medium">图标</label>
+            <input
+              v-model="currentItem.icon"
+              type="text"
+              placeholder="图标名称"
+              class="w-full rounded-lg border px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+            />
+          </div>
+          <div>
+            <label class="mb-2 block text-sm font-medium">类型</label>
+            <select
+              v-model="currentItem.type"
+              class="w-full rounded-lg border px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+            >
+              <option value="button">按钮 (button)</option>
+              <option value="dropdown">下拉菜单 (dropdown)</option>
+              <option value="list">列表菜单 (list)</option>
+            </select>
+          </div>
+          <div>
+            <label class="mb-2 block text-sm font-medium">路径</label>
+            <input
+              v-model="(currentItem as any).path"
+              type="text"
+              placeholder="/path/to/page"
+              class="w-full rounded-lg border px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+            />
+          </div>
+          <div>
+            <label class="mb-2 block text-sm font-medium">排序</label>
+            <input
+              v-model.number="currentItem.order"
+              type="number"
+              :min="0"
+              class="w-full rounded-lg border px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+            />
+          </div>
+        </div>
+        <div class="mt-6 flex justify-end gap-3">
+          <button
+            class="rounded-lg border px-4 py-2 text-sm font-medium transition-colors hover:bg-muted"
+            @click="dialogVisible = false"
+          >
+            取消
+          </button>
+          <button
+            class="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            @click="saveMenuItem"
+          >
+            确定
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { ElMessage, ElMessageBox } from 'element-plus'
-import { Plus, Edit, Delete, Check, RefreshLeft } from '@element-plus/icons-vue'
-import * as ElementPlusIconsVue from '@element-plus/icons-vue'
+import { Plus, Edit, Trash2, Check, RotateCcw } from 'lucide-vue-next'
 import type { MenuNode } from '@/types/menu'
 import { menuConfig } from '@/utils/menu/MenuUtils'
+import { ElMessage, ElMessageBox } from '@/utils/message'
+
 const menuItems = ref<MenuNode[]>([])
 const dialogVisible = ref(false)
 const editingIndex = ref(-1)
@@ -115,12 +185,6 @@ const currentItem = ref<Partial<MenuNode>>({
   type: 'button',
   order: 0,
 })
-
-// 获取图标组件
-function getIconComponent(iconName: string) {
-  // @ts-expect-error - ElementPlusIconsVue is a dynamic object
-  return ElementPlusIconsVue[iconName] || ElementPlusIconsVue['CircleClose']
-}
 
 // 解析图标值（处理可能是函数的情况）
 async function resolveIconValue(
