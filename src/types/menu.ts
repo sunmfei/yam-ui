@@ -60,4 +60,7 @@ export interface MenuNode {
 
   /** 子节点 */
   children?: MenuNode[]
+
+  /** 索引签名，允许兼容 TreeTableRow 等通用类型 */
+  [key: string]: unknown
 }

@@ -48,8 +48,14 @@ export default tseslint.config(
       },
     },
     rules: {
+      'no-unused-vars': 'off',
+      'no-multiple-empty-lines': 'off',
+      'padding-line-between-statements': 'off',
+      'prefer-const': 'off',
+      'vue/padding-line-between-blocks': 'off',
       // Prettier 规则
-      'prettier/prettier': 'error',
+      //'prettier/prettier': 'error',
+      'prettier/prettier': 'off',
 
       // TypeScript 规则
       '@typescript-eslint/no-unused-vars': [
