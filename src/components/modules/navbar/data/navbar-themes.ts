@@ -15,7 +15,7 @@ export interface NavbarThemeConfig {
 /**
  * 预设主题配置
  */
-export const NAVBAR_THEMES: Record<string, NavbarThemeConfig> = {
+export const NAVBAR_THEMES = {
   // 透明主题 - 完全透明无边框
   transparent: {
     light: 'transparent',
@@ -65,6 +65,6 @@ export const NAVBAR_THEMES: Record<string, NavbarThemeConfig> = {
     darkBorderColor: 'rgba(255, 255, 255, 0.05)',
     padding: '0.75rem 1.5rem',
   },
-} as const
+} as const satisfies Record<string, NavbarThemeConfig>
 
 export type NavbarTheme = keyof typeof NAVBAR_THEMES

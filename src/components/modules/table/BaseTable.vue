@@ -625,7 +625,7 @@ const isFullscreen = ref(props.fullscreen)
 
 // 树形配置
 const localTreeEnabled = ref(props.treeConfig.enabled ?? true)
-const localDefaultExpandAll = ref(props.treeConfig.defaultExpandAll ?? true)
+const localDefaultExpandAll = ref(props.treeConfig.defaultExpandAll ?? false)
 const localExpandOnRowClick = ref(props.treeConfig.expandOnRowClick ?? false)
 
 // 多选配置

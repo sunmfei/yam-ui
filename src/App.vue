@@ -31,7 +31,9 @@ watch(
       <main class="w-full">
         <router-view v-slot="{ Component }">
           <transition name="fade" mode="out-in">
-            <component :is="Component" />
+            <div :key="$route.fullPath" class="h-full">
+              <component :is="Component" />
+            </div>
           </transition>
         </router-view>
       </main>

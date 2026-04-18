@@ -23,7 +23,15 @@ defineOptions({
   name: 'SunIconPicker',
 })
 
-const props = defineProps<{ modelValue?: string }>()
+const props = withDefaults(
+  defineProps<{
+    modelValue?: string
+    isBlock?: boolean
+  }>(),
+  {
+    isBlock: false,
+  }
+)
 const emit = defineEmits<{ (e: 'update:modelValue', v: string): void }>()
 
 const open = ref(false)
@@ -102,9 +110,14 @@ function openDialog() {
 </script>
 
 <template>
-  <div>
+  <div :class="isBlock ? 'w-full' : 'inline-flex'">
     <!-- trigger -->
-    <BaseButton variant="outline" class="gap-2" @click="openDialog">
+    <BaseButton
+      variant="outline"
+      class="gap-2 w-full"
+      :class="{ 'justify-start': isBlock }"
+      @click="openDialog"
+    >
       <component
         :is="iconList.find((i) => i.name === modelValue)?.icon"
         v-if="modelValue"

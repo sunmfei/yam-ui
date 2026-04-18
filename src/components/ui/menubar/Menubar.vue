@@ -1,37 +1,27 @@
 <script setup lang="ts">
-import { MenubarRoot } from 'reka-ui'
+import type { MenubarRootEmits, MenubarRootProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
+import { reactiveOmit } from '@vueuse/core'
+import { MenubarRoot, useForwardPropsEmits } from 'reka-ui'
 import { cn } from '@/lib/utils'
 
-const props = withDefaults(
-  defineProps<{
-    class?: HTMLAttributes['class']
-    modelValue?: string
-    defaultValue?: string
-  }>(),
-  {
-    modelValue: undefined,
-    defaultValue: undefined,
-  }
-)
+const props = defineProps<MenubarRootProps & { class?: HTMLAttributes['class'] }>()
+const emits = defineEmits<MenubarRootEmits>()
 
-const emit = defineEmits<{
-  'update:modelValue': [value: string]
-}>()
+const delegatedProps = reactiveOmit(props, 'class')
+
+const forwarded = useForwardPropsEmits(delegatedProps, emits)
 </script>
 
 <template>
   <MenubarRoot
-    :model-value="modelValue"
-    :default-value="defaultValue"
+    v-slot="slotProps"
+    data-slot="menubar"
+    v-bind="forwarded"
     :class="
-      cn(
-        'flex h-9 items-center space-x-1 rounded-md border bg-background p-1 shadow-sm',
-        props.class
-      )
+      cn('bg-background flex h-9 items-center gap-1 rounded-md border p-1 shadow-xs', props.class)
     "
-    @update:model-value="emit('update:modelValue', $event)"
   >
-    <slot />
+    <slot v-bind="slotProps" />
   </MenubarRoot>
 </template>

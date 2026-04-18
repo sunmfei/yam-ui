@@ -33,7 +33,7 @@ const props = withDefaults(defineProps<AppNavbarProps>(), {
 
 // 合并配置：自定义配置优先，否则使用主题配置
 const finalConfig = computed<NavbarThemeConfig>(() => {
-  const themeConfig = NAVBAR_THEMES[props.theme] || NAVBAR_THEMES.glass
+  const themeConfig = NAVBAR_THEMES[props.theme] ?? NAVBAR_THEMES.glass
   if (props.navbarConfig) {
     return {
       ...themeConfig,

@@ -48,7 +48,7 @@ function createMessageComponent(options: MessageOptions) {
 }
 
 // 消息提示
-export const ElMessage = {
+export const SunMessage = {
   success(message: string, duration?: number) {
     createMessageComponent({ message, type: 'success', duration })
   },
@@ -64,7 +64,7 @@ export const ElMessage = {
 }
 
 // 确认对话框
-export const ElMessageBox = {
+export const SunMessageBox = {
   confirm(
     message: string,
     title?: string,

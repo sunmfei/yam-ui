@@ -1,19 +1,20 @@
 <script setup lang="ts">
-import { MenubarSub } from 'reka-ui'
-import type { HTMLAttributes } from 'vue'
+import type { MenubarSubEmits } from 'reka-ui'
+import { MenubarSub, useForwardPropsEmits } from 'reka-ui'
 
-// Sub
-defineProps<{
-  class?: HTMLAttributes['class']
-}>()
+interface MenubarSubRootProps {
+  defaultOpen?: boolean
+  open?: boolean
+}
 
-defineEmits<{
-  'update:open': [value: boolean]
-}>()
+const props = defineProps<MenubarSubRootProps>()
+const emits = defineEmits<MenubarSubEmits>()
+
+const forwarded = useForwardPropsEmits(props, emits)
 </script>
 
 <template>
-  <MenubarSub>
-    <slot />
+  <MenubarSub v-slot="slotProps" data-slot="menubar-sub" v-bind="forwarded">
+    <slot v-bind="slotProps" />
   </MenubarSub>
 </template>

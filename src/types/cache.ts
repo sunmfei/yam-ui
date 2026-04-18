@@ -12,7 +12,7 @@ export const LocalCacheKey = {
   BACKGROUND_TYPE: 'local_backgroundType', // 背景类型
   SEARCH_HISTORY: 'local_searchHistory', // 搜索历史
   USER_PREFERENCES: 'local_userPreferences', // 用户偏好
-  MENU_CONFIG: 'local_menuConfig', // 用户自定义菜单配置
+  MENU_CONFIG: 'local_menu_data', // 用户自定义菜单配置
 } as const
 
 export type LocalCacheKey = (typeof LocalCacheKey)[keyof typeof LocalCacheKey]

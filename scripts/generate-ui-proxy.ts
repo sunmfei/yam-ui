@@ -122,17 +122,25 @@ function scanDirectory(dir: string, relativePath: string = ''): ComponentInfo[] 
             const exports = exportsStr.split(',').map((s) => s.trim())
 
             for (const exp of exports) {
-              // 解析: "default as Xxx" 或 "Xxx"
+              // 解析: "default as Xxx" 或 "Xxx as Yyy" 或 "Xxx"
               let exportName: string
+              let aliasName: string | undefined
 
               if (exp.startsWith('default as ')) {
                 // export { default as Avatar } → 这是命名导出 Avatar
-                exportName = exp.replace('default as ', '').trim()
+                aliasName = exp.replace('default as ', '').trim()
+                exportName = 'default'
+              } else if (exp.includes(' as ')) {
+                // export { Field as FormField } → 原始名 Field, 别名 FormField
+                const parts = exp.split(' as ').map((s) => s.trim())
+                exportName = parts[0]
+                aliasName = parts[1]
               } else {
                 exportName = exp.trim()
+                aliasName = undefined
               }
 
-              const componentName = toPascalCase(exportName)
+              const componentName = aliasName ? toPascalCase(aliasName) : toPascalCase(exportName)
 
               // 检查是否已存在
               if (existingBaseComponents.has(item.name.toLowerCase())) {
@@ -146,7 +154,7 @@ function scanDirectory(dir: string, relativePath: string = ''): ComponentInfo[] 
                 basePath: relPath,
                 importPath: `@/components/ui/${relPath}`,
                 isDefault: false, // index.ts 中的导出都是命名导出
-                hasNamedExports: [exportName],
+                hasNamedExports: [aliasName || exportName],
               })
             }
           }
@@ -294,7 +302,8 @@ function generateProxyFile(components: ComponentInfo[]): string {
       } else {
         // 命名导出：export { Xxx as BaseXxx } from '...'
         for (const named of comp.hasNamedExports) {
-          lines.push(`export { ${named} as Base${named} } from '${comp.importPath}'`)
+          const baseName = `Base${named}`
+          lines.push(`export { ${named} as ${baseName} } from '${comp.importPath}'`)
         }
       }
     }

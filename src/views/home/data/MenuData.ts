@@ -17,7 +17,7 @@ export const DEFAULT_MENU: MenuNode[] = [
     name: 'MFei',
     type: 'route',
     icon: ICON_POOL.Moon, // 默认图标（fallback）
-    path: '/', // 跳转到首页
+    path: '/tree-table-demo', // 跳转到首页
     order: 0,
   },
   {

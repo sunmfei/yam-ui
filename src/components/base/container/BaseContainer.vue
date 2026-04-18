@@ -33,8 +33,8 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   size: 'medium',
-  customWidth: '85%',
-  customHeight: 'auto',
+  customWidth: undefined,
+  customHeight: undefined,
   fullscreen: false,
 })
 
@@ -59,15 +59,15 @@ const containerStyle = computed(() => {
       break
     case 'medium':
       width = '85%'
-      height = '90vh'
+      height = 'auto'
       break
     case 'large':
       width = '100%'
       height = '92vh' // 留出底部空间
       break
     case 'custom':
-      width = props.customWidth
-      height = props.customHeight
+      width = props.customWidth || '85%'
+      height = props.customHeight || '90vh'
       break
     default:
       width = '85%'

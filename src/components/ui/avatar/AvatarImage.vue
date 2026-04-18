@@ -1,14 +1,12 @@
 <script setup lang="ts">
-import type { HTMLAttributes } from 'vue'
-import { cn } from '@/lib/utils'
+import type { AvatarImageProps } from 'reka-ui'
+import { AvatarImage } from 'reka-ui'
 
-const props = defineProps<{
-  src?: string
-  alt?: string
-  class?: HTMLAttributes['class']
-}>()
+const props = defineProps<AvatarImageProps>()
 </script>
 
 <template>
-  <img :src="src" :alt="alt" :class="cn('aspect-square h-full w-full', props.class)" />
+  <AvatarImage data-slot="avatar-image" v-bind="props" class="aspect-square size-full">
+    <slot />
+  </AvatarImage>
 </template>

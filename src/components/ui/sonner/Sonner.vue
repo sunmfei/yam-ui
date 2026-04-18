@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import type { ToasterProps } from 'vue-sonner'
-
 import {
   CircleCheckIcon,
   InfoIcon,
@@ -23,11 +22,6 @@ const props = defineProps<ToasterProps>()
       '--normal-text': 'var(--popover-foreground)',
       '--normal-border': 'var(--border)',
       '--border-radius': 'var(--radius)',
-    }"
-    :toast-options="{
-      classes: {
-        toast: 'rounded-2xl',
-      },
     }"
     v-bind="props"
   >

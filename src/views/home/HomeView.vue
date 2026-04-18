@@ -1,30 +1,36 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useAppStore } from '@/stores/app'
 import BaseButton from '@/components/base/button/BaseButton.vue'
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card'
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import BaseSwitch from '@/components/base/switch/BaseSwitch.vue'
 import {
   Select,
-  SelectTrigger,
-  SelectValue,
   SelectContent,
   SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from '@/components/ui/select'
 import { BACKGROUND_OPTIONS } from '@/types/background'
 
 import Search from '@/views/search/index.vue'
 import AppNavbar from '@/components/modules/navbar/index.vue'
-import { onMounted } from 'vue'
 import type { MenuNode } from '@/types/menu'
-import { DEFAULT_MENU } from './data/MenuData'
+//import { DEFAULT_MENU } from './data/MenuData'
+import LocalCache from '@/utils/cache/localCache.ts'
+import { LocalCacheKey } from '@/types/cache.ts'
 
 const menuNodes = ref<MenuNode[]>([])
 
 onMounted(() => {
-  menuNodes.value = DEFAULT_MENU
+  menuNodes.value = getMenuData()
 })
+
+const getMenuData = () => {
+  let localMenuData = LocalCache.get<MenuNode[]>(LocalCacheKey.MENU_CONFIG) || []
+  return [...localMenuData]
+}
 
 const appStore = useAppStore()
 
