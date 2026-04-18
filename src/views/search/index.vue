@@ -7,7 +7,7 @@
 </template>
 
 <script setup lang="ts">
-import SearchEngineBox from '@/components/search/SearchEngineBox.vue'
+import SearchEngineBox from '@/components/modules/search/SearchEngineBox.vue'
 
 /**
  * 接收搜索事件

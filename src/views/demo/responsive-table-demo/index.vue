@@ -21,10 +21,10 @@
       <!-- 自定义工具栏左侧插槽 -->
       <template #toolbar-left>
         <div class="flex items-center gap-3">
-          <Button variant="outline" size="sm" @click="handleAdd">
+          <BaseButton variant="outline" size="sm" @click="handleAdd">
             <Plus class="mr-2 h-4 w-4" />
             新增
-          </Button>
+          </BaseButton>
         </div>
       </template>
 
@@ -38,8 +38,10 @@
       <!-- 自定义操作列 -->
       <template #cell-actions="{ row }">
         <div class="flex gap-2">
-          <Button size="sm" variant="outline" @click.stop="handleEdit(row)">编辑</Button>
-          <Button size="sm" variant="destructive" @click.stop="handleDelete(row)">删除</Button>
+          <BaseButton size="sm" variant="outline" @click.stop="handleEdit(row)">编辑</BaseButton>
+          <BaseButton size="sm" variant="destructive" @click.stop="handleDelete(row)">
+            删除
+          </BaseButton>
         </div>
       </template>
     </BaseTable>
@@ -49,8 +51,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { Plus } from 'lucide-vue-next'
-import BaseTable from '@/components/table/BaseTable.vue'
-import { Button } from '@/components/ui/button'
+import BaseTable from '@/components/modules/table/BaseTable.vue'
+import BaseButton from '@/components/base/button/BaseButton.vue'
 import { Badge } from '@/components/ui/badge'
 import type { TreeTableNode, TreeTableColumn } from '@/components/ui/tree-table/types'
 

@@ -79,7 +79,7 @@
 
     <template #actions="{ row }">
       <div class="flex items-center justify-end gap-2">
-        <Button
+        <BaseButton
           size="sm"
           variant="outline"
           class="gap-1.5 transition-all hover:scale-105 hover:shadow-sm"
@@ -87,23 +87,23 @@
         >
           <Plus class="h-3.5 w-3.5" />
           添加子节点
-        </Button>
-        <Button
+        </BaseButton>
+        <BaseButton
           size="sm"
           variant="outline"
           class="transition-all hover:scale-105 hover:shadow-sm"
           @click.stop="handleEdit(row)"
         >
           编辑
-        </Button>
-        <Button
+        </BaseButton>
+        <BaseButton
           size="sm"
           variant="destructive"
           class="transition-all hover:scale-105 hover:shadow-sm"
           @click.stop="handleDelete(row)"
         >
           删除
-        </Button>
+        </BaseButton>
       </div>
     </template>
   </BaseTable>
@@ -113,9 +113,9 @@
 import { computed, ref } from 'vue'
 import { Plus } from 'lucide-vue-next'
 import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
+import BaseButton from '@/components/base/button/BaseButton.vue'
 import { Breadcrumb } from '@/components/ui/breadcrumb'
-import { BaseTable } from '@/components/table'
+import { BaseTable } from '@/components/modules/table'
 import type { TreeTableColumn, TreeTableNode } from '@/components/ui/tree-table/types'
 import type { MenuNode } from '@/types/menu'
 import { DEFAULT_MENU } from '@/views/home/data/MenuData'

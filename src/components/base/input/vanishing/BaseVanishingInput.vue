@@ -3,6 +3,19 @@
 import { cn } from '@inspira-ui/plugins'
 import { onBeforeUnmount, onMounted, ref, useTemplateRef, watch } from 'vue'
 
+/**
+ * BaseVanishingInput - 基础消失动画输入框组件
+ *
+ * 特性：
+ * - 输入文字后提交时产生粒子消失动画
+ * - 支持占位符轮播
+ * - Canvas 渲染动画效果
+ */
+
+defineOptions({
+  name: 'BaseVanishingInput',
+})
+
 // Define interfaces for props and data structures
 interface Props {
   placeholders?: string[]

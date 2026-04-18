@@ -1,10 +1,16 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useAppStore } from '@/stores/app'
-import ParticlesBg from './ParticlesBg.vue'
-import GradientBg from './GradientBg.vue'
-import GridBg from './GridBg.vue'
-import WaveBg from './WaveBg.vue'
+import { BaseParticlesBg, BaseGradientBg, BaseGridBg, BaseWaveBg } from '@/components/base/ui-proxy'
+
+/**
+ * BaseBackground - 基础背景组件
+ *
+ * 提供多种背景效果：粒子、渐变、网格、波浪
+ */
+defineOptions({
+  name: 'BaseBackground',
+})
 
 const appStore = useAppStore()
 
@@ -17,7 +23,7 @@ const particleColor = computed(() => {
 <template>
   <div class="fixed inset-0 -z-50 overflow-hidden">
     <!-- 粒子背景 -->
-    <ParticlesBg
+    <BaseParticlesBg
       v-if="appStore.backgroundType === 'particles'"
       :key="appStore.isDark.toString()"
       class="absolute inset-0"
@@ -29,13 +35,13 @@ const particleColor = computed(() => {
     />
 
     <!-- 渐变背景 -->
-    <GradientBg v-else-if="appStore.backgroundType === 'gradient'" />
+    <BaseGradientBg v-else-if="appStore.backgroundType === 'gradient'" />
 
     <!-- 网格背景 -->
-    <GridBg v-else-if="appStore.backgroundType === 'grid'" :size="40" :opacity="0.1" />
+    <BaseGridBg v-else-if="appStore.backgroundType === 'grid'" :size="40" :opacity="0.1" />
 
     <!-- 波浪背景 -->
-    <WaveBg v-else-if="appStore.backgroundType === 'wave'" />
+    <BaseWaveBg v-else-if="appStore.backgroundType === 'wave'" />
 
     <!-- 默认背景（当选择 none 时显示基础背景色） -->
     <div v-else class="absolute inset-0 bg-white dark:bg-gray-900"></div>

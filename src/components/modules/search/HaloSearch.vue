@@ -1,6 +1,19 @@
 <script lang="ts" setup>
 import type { HTMLAttributes } from 'vue'
 
+/**
+ * HaloSearch - 光环搜索组件
+ *
+ * 特性：
+ * - 炫酷的光环动画效果
+ * - Aurora 极光背景
+ * - 聚焦/悬停交互动画
+ */
+
+defineOptions({
+  name: 'HaloSearch',
+})
+
 interface Props {
   class?: HTMLAttributes['class']
 }

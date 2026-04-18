@@ -1,0 +1,6 @@
+export { default as GradientBg } from './GradientBg.vue'
+export { default as GridBg } from './GridBg.vue'
+export { default as NatureBg } from './NatureBg.vue'
+export { default as NatureBgBak } from './NatureBgBak.vue'
+export { default as ParticlesBg } from './ParticlesBg.vue'
+export { default as WaveBg } from './WaveBg.vue'

@@ -4,16 +4,49 @@ import tailwindcss from '@tailwindcss/vite'
 import path from 'path'
 import viteCompression from 'vite-plugin-compression'
 import { visualizer } from 'rollup-plugin-visualizer'
+import Components from 'unplugin-vue-components/vite'
+import { spawn } from 'child_process'
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
   // 加载环境变量（仅 VITE_ 前缀）
   const env = loadEnv(mode, process.cwd(), 'VITE_')
 
+  // 开发模式下自动生成 UI 代理
+  if (mode === 'development') {
+    console.log('🔄 生成 UI 组件代理...')
+    spawn('pnpm', ['run', 'generate:ui-proxy'], {
+      stdio: 'inherit',
+      shell: true,
+    }).on('close', (code) => {
+      if (code === 0) {
+        console.log('✅ UI 代理生成完成')
+      } else {
+        console.error('❌ UI 代理生成失败')
+      }
+    })
+  }
+
   return {
     plugins: [
       tailwindcss(),
       vue(),
+      // 组件自动导入配置
+      Components({
+        // 自动导入的目录（排除ui目录）
+        dirs: [
+          'src/components/base', // 基础组件层
+          'src/components/business', // 业务组件层
+          'src/components/modules', // 模块组件层
+        ],
+        // 排除ui目录，不自动注册第三方组件
+        exclude: [/node_modules/, /src\/components\/ui/],
+        extensions: ['vue'],
+        // 生成类型声明文件
+        dts: 'src/components.d.ts',
+        // 自定义组件名称解析器
+        resolvers: [],
+      }),
       // Gzip 压缩
       viteCompression({
         verbose: true,

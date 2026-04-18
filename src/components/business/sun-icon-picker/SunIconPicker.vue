@@ -1,18 +1,27 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
 import { iconList, iconCategories, type IconCategory } from '@/config/types/icon.data'
-import { Button } from '@/components/ui/button'
+import BaseButton from '@/components/base/button/BaseButton.vue'
+import BaseInput from '@/components/base/input/BaseInput.vue'
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-} from '@/components/ui/dialog'
-import { Input } from '@/components/ui/input'
-import { Badge } from '@/components/ui/badge'
+  BaseDialog,
+  BaseDialogContent,
+  BaseDialogHeader,
+  BaseDialogTitle,
+  BaseDialogFooter,
+  BaseBadge,
+} from '@/components/base/ui-proxy'
 import { Star } from 'lucide-vue-next'
 import { localCache } from '@/utils/cache/localCache'
+
+/**
+ * SunIconPicker - 图标选择器组件
+ *
+ * 业务级图标选择器，支持搜索、分类、收藏、最近使用
+ */
+defineOptions({
+  name: 'SunIconPicker',
+})
 
 const props = defineProps<{ modelValue?: string }>()
 const emit = defineEmits<{ (e: 'update:modelValue', v: string): void }>()
@@ -95,27 +104,27 @@ function openDialog() {
 <template>
   <div>
     <!-- trigger -->
-    <Button variant="outline" class="gap-2" @click="openDialog">
+    <BaseButton variant="outline" class="gap-2" @click="openDialog">
       <component
         :is="iconList.find((i) => i.name === modelValue)?.icon"
         v-if="modelValue"
         class="h-4 w-4"
       />
       {{ modelValue || '选择图标' }}
-    </Button>
+    </BaseButton>
 
-    <Dialog v-model:open="open">
-      <DialogContent class="sm:max-w-175 flex flex-col max-h-[80vh]">
-        <DialogHeader>
-          <DialogTitle>选择图标</DialogTitle>
-        </DialogHeader>
+    <BaseDialog v-model:open="open">
+      <BaseDialogContent class="sm:max-w-175 flex flex-col max-h-[80vh]">
+        <BaseDialogHeader>
+          <BaseDialogTitle>选择图标</BaseDialogTitle>
+        </BaseDialogHeader>
 
         <!-- search -->
-        <Input v-model="keyword" placeholder="搜索图标..." class="mb-3" />
+        <BaseInput v-model="keyword" placeholder="搜索图标..." class="mb-3" />
 
         <!-- category -->
         <div class="flex flex-wrap gap-2 mb-3">
-          <Badge
+          <BaseBadge
             v-for="(label, key) in iconCategories"
             :key="key"
             :variant="category === key ? 'default' : 'outline'"
@@ -123,12 +132,14 @@ function openDialog() {
             @click="category = key"
           >
             {{ label }}
-          </Badge>
+          </BaseBadge>
 
-          <Badge variant="outline" class="cursor-pointer" @click="category = 'recent'">最近</Badge>
-          <Badge variant="outline" class="cursor-pointer" @click="category = 'favorite'">
+          <BaseBadge variant="outline" class="cursor-pointer" @click="category = 'recent'">
+            最近
+          </BaseBadge>
+          <BaseBadge variant="outline" class="cursor-pointer" @click="category = 'favorite'">
             收藏
-          </Badge>
+          </BaseBadge>
         </div>
 
         <!-- list -->
@@ -154,11 +165,11 @@ function openDialog() {
         </div>
 
         <!-- footer -->
-        <DialogFooter>
-          <Button variant="outline" @click="open = false">取消</Button>
-          <Button @click="confirm">确认</Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+        <BaseDialogFooter>
+          <BaseButton variant="outline" @click="open = false">取消</BaseButton>
+          <BaseButton @click="confirm">确认</BaseButton>
+        </BaseDialogFooter>
+      </BaseDialogContent>
+    </BaseDialog>
   </div>
 </template>

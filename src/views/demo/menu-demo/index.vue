@@ -307,7 +307,7 @@
                 <div class="text-sm font-semibold">🌳 启用树形模式</div>
                 <div class="mt-1 text-xs text-muted-foreground">关闭后显示为扁平表格</div>
               </div>
-              <Switch v-model="treeEnabled" class="data-[state=checked]:bg-primary" />
+              <BaseSwitch v-model="treeEnabled" class="data-[state=checked]:bg-primary" />
             </div>
 
             <!-- 默认展开全部开关 -->
@@ -318,7 +318,7 @@
                 <div class="text-sm font-semibold">📂 默认展开全部</div>
                 <div class="mt-1 text-xs text-muted-foreground">页面加载时展开所有节点</div>
               </div>
-              <Switch v-model="defaultExpandAll" class="data-[state=checked]:bg-primary" />
+              <BaseSwitch v-model="defaultExpandAll" class="data-[state=checked]:bg-primary" />
             </div>
 
             <!-- 点击行展开开关 -->
@@ -329,7 +329,7 @@
                 <div class="text-sm font-semibold">👆 点击行展开</div>
                 <div class="mt-1 text-xs text-muted-foreground">点击整行触发展开/收起</div>
               </div>
-              <Switch v-model="expandOnRowClick" class="data-[state=checked]:bg-primary" />
+              <BaseSwitch v-model="expandOnRowClick" class="data-[state=checked]:bg-primary" />
             </div>
 
             <!-- 多选开关 -->
@@ -340,7 +340,7 @@
                 <div class="text-sm font-semibold">☑️ 启用多选</div>
                 <div class="mt-1 text-xs text-muted-foreground">显示复选框列</div>
               </div>
-              <Switch v-model="selectionEnabled" class="data-[state=checked]:bg-primary" />
+              <BaseSwitch v-model="selectionEnabled" class="data-[state=checked]:bg-primary" />
             </div>
 
             <!-- 严格选择开关 -->
@@ -351,7 +351,7 @@
                 <div class="text-sm font-semibold">🔒 严格选择模式</div>
                 <div class="mt-1 text-xs text-muted-foreground">父子节点不联动选择</div>
               </div>
-              <Switch v-model="checkStrictly" class="data-[state=checked]:bg-primary" />
+              <BaseSwitch v-model="checkStrictly" class="data-[state=checked]:bg-primary" />
             </div>
 
             <!-- 分页开关 -->
@@ -362,7 +362,7 @@
                 <div class="text-sm font-semibold">📄 启用分页</div>
                 <div class="mt-1 text-xs text-muted-foreground">使用内置分页器</div>
               </div>
-              <Switch v-model="paginationEnabled" class="data-[state=checked]:bg-primary" />
+              <BaseSwitch v-model="paginationEnabled" class="data-[state=checked]:bg-primary" />
             </div>
 
             <!-- 页大小选择 -->
@@ -423,9 +423,7 @@
 import { computed, ref } from 'vue'
 import { Download, FolderTree, Plus, RefreshCw, Search, Settings } from 'lucide-vue-next'
 import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Switch } from '@/components/ui/switch'
+import BaseSwitch from '@/components/base/switch/BaseSwitch.vue'
 import { TreeTable } from '@/components/ui/tree-table'
 import type {
   TreeTableColumn,

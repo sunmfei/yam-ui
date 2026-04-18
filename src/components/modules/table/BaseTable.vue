@@ -2,7 +2,7 @@
   <!-- 背景容器 - 始终全屏固定 -->
   <div class="h-screen w-full overflow-hidden p-6">
     <!-- 响应式内容容器 -->
-    <Container
+    <BaseContainer
       :size="localContainerSize"
       :custom-width="localCustomWidth || '85%'"
       :custom-height="localCustomHeight || 'auto'"
@@ -35,7 +35,7 @@
 
           <div v-if="hasActions" class="flex flex-wrap gap-2">
             <slot name="actions">
-              <Button
+              <BaseButton
                 v-for="(action, index) in actions"
                 :key="index"
                 variant="outline"
@@ -44,7 +44,7 @@
                 @click="action.onClick"
               >
                 {{ action.label }}
-              </Button>
+              </BaseButton>
             </slot>
           </div>
         </div>
@@ -64,7 +64,7 @@
               class="flex-1 overflow-auto rounded-3xl p-4 transition-all duration-300 hover:shadow-lg"
               :class="getGlassCardClass(isDark)"
             >
-              <TreeTable
+              <BaseTreeTable
                 :data="tableData"
                 :columns="tableColumns"
                 :tree-config="resolvedTreeConfig"
@@ -87,14 +87,14 @@
                         <Search
                           class="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
                         />
-                        <Input
+                        <BaseInput
                           v-model="searchKeyword"
                           class="pl-9 transition-all focus-visible:ring-2"
                           :placeholder="searchPlaceholder"
                         />
                       </div>
 
-                      <Button
+                      <BaseButton
                         v-if="searchable"
                         size="sm"
                         variant="outline"
@@ -103,7 +103,7 @@
                       >
                         <Search class="h-4 w-4" />
                         搜索
-                      </Button>
+                      </BaseButton>
 
                       <select
                         v-if="filters && filters.length > 0"
@@ -124,16 +124,16 @@
                 <template #toolbar-right>
                   <slot name="toolbar-right">
                     <div class="flex flex-wrap items-center gap-2">
-                      <Button
+                      <BaseButton
                         v-if="configurable"
                         size="sm"
                         variant="outline"
                         class="gap-1.5"
                         @click="showConfigPanel = !showConfigPanel"
                       >
-                        <Icon :name="ICON_POOL.LayoutPanelLeft" />
+                        <BaseIcon :name="ICON_POOL.LayoutPanelLeft" />
                         {{ showConfigPanel ? '隐藏配置' : '显示配置' }}
-                      </Button>
+                      </BaseButton>
                     </div>
                   </slot>
                 </template>
@@ -142,7 +142,7 @@
                 <template v-for="(_, name) in $slots" :key="name" #[name]="slotData">
                   <slot :name="name" v-bind="slotData || {}"></slot>
                 </template>
-              </TreeTable>
+              </BaseTreeTable>
             </div>
           </div>
 
@@ -185,7 +185,7 @@
                     关闭后显示为扁平表格
                   </div>
                 </div>
-                <Switch v-model="localTreeEnabled" />
+                <BaseSwitch v-model="localTreeEnabled" />
               </div>
 
               <div
@@ -210,7 +210,7 @@
                     页面加载时展开所有节点
                   </div>
                 </div>
-                <Switch v-model="localDefaultExpandAll" />
+                <BaseSwitch v-model="localDefaultExpandAll" />
               </div>
 
               <div
@@ -235,7 +235,7 @@
                     点击整行触发展开/收起
                   </div>
                 </div>
-                <Switch v-model="localExpandOnRowClick" />
+                <BaseSwitch v-model="localExpandOnRowClick" />
               </div>
 
               <div
@@ -260,7 +260,7 @@
                     显示复选框列
                   </div>
                 </div>
-                <Switch v-model="localSelectionEnabled" />
+                <BaseSwitch v-model="localSelectionEnabled" />
               </div>
 
               <div
@@ -285,7 +285,7 @@
                     父子节点不联动选择
                   </div>
                 </div>
-                <Switch v-model="localCheckStrictly" />
+                <BaseSwitch v-model="localCheckStrictly" />
               </div>
 
               <div
@@ -310,7 +310,7 @@
                     使用内置分页器
                   </div>
                 </div>
-                <Switch v-model="localPaginationEnabled" />
+                <BaseSwitch v-model="localPaginationEnabled" />
               </div>
 
               <!-- 容器尺寸配置 -->
@@ -337,7 +337,7 @@
 
                 <!-- 预设尺寸按钮组 -->
                 <div class="mb-4 grid grid-cols-2 gap-2">
-                  <Button
+                  <BaseButton
                     variant="outline"
                     size="sm"
                     :class="[
@@ -348,8 +348,8 @@
                   >
                     <Minimize2 class="mr-2 h-4 w-4" />
                     小 (70%)
-                  </Button>
-                  <Button
+                  </BaseButton>
+                  <BaseButton
                     variant="outline"
                     size="sm"
                     :class="[
@@ -359,8 +359,8 @@
                     @click="setContainerSize('medium')"
                   >
                     中 (85%)
-                  </Button>
-                  <Button
+                  </BaseButton>
+                  <BaseButton
                     variant="outline"
                     size="sm"
                     :class="[
@@ -371,7 +371,7 @@
                   >
                     <Maximize2 class="mr-2 h-4 w-4" />
                     大 (100%)
-                  </Button>
+                  </BaseButton>
                 </div>
 
                 <!-- 自定义尺寸滑块 -->
@@ -476,21 +476,21 @@
           </aside>
         </div>
       </section>
-    </Container>
+    </BaseContainer>
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { Maximize2, Minimize2, Search, Settings } from 'lucide-vue-next'
-import { useAppStore } from '@/stores/app'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Switch } from '@/components/ui/switch'
-import { TreeTable } from '@/components/ui/tree-table'
-import Container from '@/components/ui/Container.vue'
-import type { ContainerSize } from '@/components/ui/Container.vue'
-import { getGlassCardClass } from '@/lib/glass-theme'
+import { useAppStore } from '@/stores/app.ts'
+import BaseButton from '../../base/button/BaseButton.vue'
+import BaseInput from '../../base/input/BaseInput.vue'
+import BaseSwitch from '../../base/switch/BaseSwitch.vue'
+import { BaseTreeTable, BaseIcon } from '@/components/base/ui-proxy.ts'
+import BaseContainer from '../../base/container/BaseContainer.vue'
+import type { ContainerSize } from '../../base/container/BaseContainer.vue'
+import { getGlassCardClass } from '@/lib/glass-theme.ts'
 import type {
   TreeTableColumn,
   TreeTableConfig,
@@ -498,9 +498,9 @@ import type {
   TreeTablePaginationConfig,
   TreeTableSelectionConfig,
   TreeTableToolbarConfig,
-} from '@/components/ui/tree-table/types'
-import { Icon } from '@/components/ui/icon'
+} from '@/components/ui/tree-table/types.ts'
 import { ICON_POOL } from '@/config/types/icon.pool.ts'
+
 /**
  * BaseTable - 基础表格组件
  *
@@ -510,6 +510,9 @@ import { ICON_POOL } from '@/config/types/icon.pool.ts'
  * - 支持 TreeTable 所有功能
  * - 可配置的树形、多选、分页
  */
+defineOptions({
+  name: 'BaseTable',
+})
 
 interface Action {
   label: string

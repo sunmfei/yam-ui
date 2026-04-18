@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useAppStore } from '@/stores/app'
-import { Button } from '@/components/ui/button'
+import BaseButton from '@/components/base/button/BaseButton.vue'
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Switch } from '@/components/ui/switch'
+import BaseSwitch from '@/components/base/switch/BaseSwitch.vue'
 import {
   Select,
   SelectTrigger,
@@ -12,11 +12,10 @@ import {
   SelectContent,
   SelectItem,
 } from '@/components/ui/select'
-import IconPicker from '@/components/iconPicker/IconPicker.vue'
 import { BACKGROUND_OPTIONS } from '@/types/background'
 
 import Search from '@/views/search/index.vue'
-import AppNavbar from '@/components/layout/index.vue'
+import AppNavbar from '@/components/modules/navbar/index.vue'
 import { onMounted } from 'vue'
 import type { MenuNode } from '@/types/menu'
 import { DEFAULT_MENU } from './data/MenuData'
@@ -115,7 +114,7 @@ const selectedIcon = ref('Home')
               </div>
               <div class="flex items-center justify-between">
                 <span>Toggle Theme:</span>
-                <Switch v-model="appStore.isDark" />
+                <BaseSwitch v-model="appStore.isDark" />
               </div>
               <div class="flex items-center justify-between">
                 <span>Background Type:</span>
@@ -135,15 +134,15 @@ const selectedIcon = ref('Home')
                 </Select>
               </div>
               <div class="flex gap-2">
-                <Button variant="default">Primary Button</Button>
-                <Button variant="destructive">Error Button</Button>
+                <BaseButton variant="default">Primary Button</BaseButton>
+                <BaseButton variant="destructive">Error Button</BaseButton>
               </div>
 
               <!-- 图标选择器测试 -->
               <div class="pt-4 border-t">
                 <h3 class="mb-3 text-lg font-semibold">Icon Picker Test</h3>
                 <div class="flex items-center gap-3">
-                  <IconPicker v-model="selectedIcon" />
+                  <SunIconPicker v-model="selectedIcon" />
                   <Badge variant="outline">{{ selectedIcon }}</Badge>
                 </div>
               </div>

@@ -4,13 +4,17 @@ import { computed } from 'vue'
 import { cn } from '@/lib/utils'
 
 /**
- * Container - 响应式容器组件
+ * BaseContainer - 基础响应式容器组件
  *
  * 特性：
  * - 支持三种预设尺寸：small(70%), medium(85%), large(100%)
  * - 支持自定义宽高
  * - 响应式设计，自动适配屏幕
  */
+
+defineOptions({
+  name: 'BaseContainer',
+})
 
 export type ContainerSize = 'small' | 'medium' | 'large' | 'custom'
 

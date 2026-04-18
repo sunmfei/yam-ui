@@ -2,7 +2,7 @@
 import { watch } from 'vue'
 import { useAppStore } from '@/stores/app'
 import { useElementTheme } from '@/config/element-theme'
-import AppBackground from '@/components/ui/AppBackground.vue'
+import BaseBackground from '@/components/base/background/BaseBackground.vue'
 
 const appStore = useAppStore()
 const { customProperties } = useElementTheme()
@@ -24,7 +24,7 @@ watch(
 <template>
   <div class="relative min-h-screen w-full" :style="customProperties">
     <!-- 全局背景 -->
-    <AppBackground />
+    <BaseBackground />
     <!-- 内容区域 -->
     <div class="relative z-50">
       <!--        <AppNavbar />-->

@@ -86,8 +86,12 @@
           <!-- 自定义操作列 -->
           <template #cell-actions="{ row }">
             <div class="flex gap-2">
-              <Button size="sm" variant="outline" @click.stop="handleEdit(row)">编辑</Button>
-              <Button size="sm" variant="destructive" @click.stop="handleDelete(row)">删除</Button>
+              <BaseButton size="sm" variant="outline" @click.stop="handleEdit(row)">
+                编辑
+              </BaseButton>
+              <BaseButton size="sm" variant="destructive" @click.stop="handleDelete(row)">
+                删除
+              </BaseButton>
             </div>
           </template>
         </TreeTable>
@@ -140,7 +144,7 @@ import { ref } from 'vue'
 import { toast } from 'vue-sonner'
 import TreeTable from '@/components/ui/tree-table/index.vue'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
+import BaseButton from '@/components/base/button/BaseButton.vue'
 import { Badge } from '@/components/ui/badge'
 import type { TreeTableNode, TreeTableColumn } from '@/components/ui/tree-table/types.ts'
 
