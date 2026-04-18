@@ -1,8 +1,14 @@
 <template>
-  <!-- 背景容器 - 始终全屏 -->
+  <!-- 背景容器 - 始终全屏固定 -->
   <div class="h-screen w-full overflow-hidden p-6">
-    <!-- 内容容器 - 可配置宽高 -->
-    <div class="mx-auto flex h-full flex-col space-y-6 overflow-hidden" :class="props.width">
+    <!-- 响应式内容容器 -->
+    <Container
+      :size="localContainerSize"
+      :custom-width="localCustomWidth || '85%'"
+      :custom-height="localCustomHeight || 'auto'"
+      :fullscreen="isFullscreen"
+      class="h-full space-y-6 overflow-hidden"
+    >
       <!-- 头部区域 -->
       <section
         v-if="showHeader"
@@ -125,7 +131,7 @@
                         class="gap-1.5"
                         @click="showConfigPanel = !showConfigPanel"
                       >
-                        <PanelLeftClose class="h-4 w-4" />
+                        <Icon :name="ICON_POOL.LayoutPanelLeft" />
                         {{ showConfigPanel ? '隐藏配置' : '显示配置' }}
                       </Button>
                     </div>
@@ -307,6 +313,134 @@
                 <Switch v-model="localPaginationEnabled" />
               </div>
 
+              <!-- 容器尺寸配置 -->
+              <div
+                class="rounded-2xl px-4 py-4 transition-all duration-300"
+                :class="
+                  isDark
+                    ? 'border border-slate-700/20 bg-slate-800/10'
+                    : 'border border-gray-200/40 bg-white/40'
+                "
+              >
+                <div
+                  class="mb-3 text-sm font-semibold"
+                  :class="isDark ? 'text-slate-100' : 'text-foreground'"
+                >
+                  容器尺寸
+                </div>
+                <div
+                  class="mb-3 text-xs"
+                  :class="isDark ? 'text-slate-400' : 'text-muted-foreground'"
+                >
+                  选择预设尺寸或自定义宽高
+                </div>
+
+                <!-- 预设尺寸按钮组 -->
+                <div class="mb-4 grid grid-cols-2 gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    :class="[
+                      localContainerSize === 'small' ? 'border-primary bg-primary/10' : '',
+                      'transition-all',
+                    ]"
+                    @click="setContainerSize('small')"
+                  >
+                    <Minimize2 class="mr-2 h-4 w-4" />
+                    小 (70%)
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    :class="[
+                      localContainerSize === 'medium' ? 'border-primary bg-primary/10' : '',
+                      'transition-all',
+                    ]"
+                    @click="setContainerSize('medium')"
+                  >
+                    中 (85%)
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    :class="[
+                      localContainerSize === 'large' ? 'border-primary bg-primary/10' : '',
+                      'transition-all',
+                    ]"
+                    @click="setContainerSize('large')"
+                  >
+                    <Maximize2 class="mr-2 h-4 w-4" />
+                    大 (100%)
+                  </Button>
+                </div>
+
+                <!-- 自定义尺寸滑块 -->
+                <div v-if="localContainerSize === 'custom'" class="space-y-4">
+                  <!-- 宽度滑块 -->
+                  <div>
+                    <div class="mb-2 flex items-center justify-between">
+                      <label
+                        class="text-xs font-medium"
+                        :class="isDark ? 'text-slate-300' : 'text-foreground'"
+                      >
+                        宽度
+                      </label>
+                      <span
+                        class="text-xs font-mono"
+                        :class="isDark ? 'text-slate-400' : 'text-muted-foreground'"
+                      >
+                        {{ widthPercentage }}%
+                      </span>
+                    </div>
+                    <input
+                      v-model="widthPercentage"
+                      type="range"
+                      min="50"
+                      max="100"
+                      step="1"
+                      class="h-2 w-full cursor-pointer appearance-none rounded-lg bg-muted transition-all hover:bg-muted/80 accent-primary"
+                      @input="updateWidthFromSlider"
+                    />
+                    <div class="mt-1 flex justify-between text-xs text-muted-foreground">
+                      <span>50%</span>
+                      <span>100%</span>
+                    </div>
+                  </div>
+
+                  <!-- 高度滑块 -->
+                  <div>
+                    <div class="mb-2 flex items-center justify-between">
+                      <label
+                        class="text-xs font-medium"
+                        :class="isDark ? 'text-slate-300' : 'text-foreground'"
+                      >
+                        高度
+                      </label>
+                      <span
+                        class="text-xs font-mono"
+                        :class="isDark ? 'text-slate-400' : 'text-muted-foreground'"
+                      >
+                        {{ heightPercentage }}vh
+                      </span>
+                    </div>
+                    <input
+                      v-model="heightPercentage"
+                      type="range"
+                      min="50"
+                      max="100"
+                      step="1"
+                      class="h-2 w-full cursor-pointer appearance-none rounded-lg bg-muted transition-all hover:bg-muted/80 accent-primary"
+                      @input="updateHeightFromSlider"
+                    />
+                    <div class="mt-1 flex justify-between text-xs text-muted-foreground">
+                      <span>50vh</span>
+                      <span>100vh</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 每页条数配置 -->
               <div
                 class="rounded-2xl px-4 py-4 transition-all duration-300"
                 :class="
@@ -342,18 +476,20 @@
           </aside>
         </div>
       </section>
-    </div>
+    </Container>
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { PanelLeftClose, Search, Settings } from 'lucide-vue-next'
+import { Maximize2, Minimize2, Search, Settings } from 'lucide-vue-next'
 import { useAppStore } from '@/stores/app'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Switch } from '@/components/ui/switch'
 import { TreeTable } from '@/components/ui/tree-table'
+import Container from '@/components/ui/Container.vue'
+import type { ContainerSize } from '@/components/ui/Container.vue'
 import { getGlassCardClass } from '@/lib/glass-theme'
 import type {
   TreeTableColumn,
@@ -363,7 +499,8 @@ import type {
   TreeTableSelectionConfig,
   TreeTableToolbarConfig,
 } from '@/components/ui/tree-table/types'
-
+import { Icon } from '@/components/ui/icon'
+import { ICON_POOL } from '@/config/types/icon.pool.ts'
 /**
  * BaseTable - 基础表格组件
  *
@@ -408,8 +545,16 @@ interface Props {
   filters?: Filter[]
   /** 是否启用配置面板 */
   configurable?: boolean
-  /** 容器宽度 */
+  /** 容器宽度（已废弃，使用 containerSize） */
   width?: string
+  /** 容器预设尺寸 */
+  containerSize?: ContainerSize
+  /** 自定义宽度 */
+  customWidth?: string
+  /** 自定义高度 */
+  customHeight?: string
+  /** 是否全屏 */
+  fullscreen?: boolean
   /** 工具栏配置 */
   toolbarConfig?: TreeTableToolbarConfig
   /** 树形配置 */
@@ -433,6 +578,10 @@ const props = withDefaults(defineProps<Props>(), {
   filters: () => [],
   configurable: false,
   width: 'w-[80%]',
+  containerSize: 'medium',
+  customWidth: '85%',
+  customHeight: 'auto',
+  fullscreen: false,
   toolbarConfig: () => ({
     enabled: true,
     showExpandActions: true,
@@ -464,6 +613,12 @@ const isDark = computed(() => appStore.isDark)
 const searchKeyword = ref('')
 const activeFilter = ref('')
 const showConfigPanel = ref(false)
+
+// 容器尺寸配置
+const localContainerSize = ref<ContainerSize>(props.containerSize)
+const localCustomWidth = ref(props.customWidth ?? '85%')
+const localCustomHeight = ref(props.customHeight ?? 'auto')
+const isFullscreen = ref(props.fullscreen)
 
 // 树形配置
 const localTreeEnabled = ref(props.treeConfig.enabled ?? true)
@@ -513,6 +668,56 @@ const resolvedPaginationConfig = computed<TreeTablePaginationConfig>(() => ({
   pageSize: localPageSize.value,
   pageSizeOptions: [5, 10, 20, 50],
 }))
+
+// =============================================
+// 容器尺寸控制 - 滑块相关
+// =============================================
+
+// 解析宽度百分比
+const widthPercentage = computed({
+  get: () => {
+    const match = localCustomWidth.value?.match(/(\d+)%/)
+    if (match && match[1]) {
+      return parseInt(match[1])
+    }
+    return 85
+  },
+  set: (value: number) => {
+    localCustomWidth.value = `${value}%`
+  },
+})
+
+// 解析高度百分比
+const heightPercentage = computed({
+  get: () => {
+    const match = localCustomHeight.value?.match(/(\d+)vh/)
+    if (match && match[1]) {
+      return parseInt(match[1])
+    }
+    return 90
+  },
+  set: (value: number) => {
+    localCustomHeight.value = `${value}vh`
+  },
+})
+
+// 更新宽度
+function updateWidthFromSlider() {
+  // 计算属性会自动更新
+}
+
+// 更新高度
+function updateHeightFromSlider() {
+  // 计算属性会自动更新
+}
+
+// =============================================
+// 容器尺寸控制方法
+// =============================================
+function setContainerSize(size: ContainerSize) {
+  localContainerSize.value = size
+  isFullscreen.value = false
+}
 
 // =============================================
 // 事件处理

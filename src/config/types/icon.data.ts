@@ -5,7 +5,7 @@
  */
 
 import * as LucideIcons from 'lucide-vue-next'
-import { ICON_POOL } from './icon.pool'
+import { hasIcon, ICON_POOL } from './icon.pool'
 
 // 图标分类定义 (基于 Lucide 官方分类)
 export const iconCategories = {
@@ -1319,6 +1319,13 @@ function getCategoryByName(name: string): IconCategory | 'other' {
     }
   }
   return 'other'
+}
+
+export const getIconByName = (name: string) => {
+  if (hasIcon(name)) {
+    return (LucideIcons as Record<string, unknown>)[name]
+  }
+  return null
 }
 
 // 导出分类数据

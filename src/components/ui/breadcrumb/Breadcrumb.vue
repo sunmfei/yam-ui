@@ -1,44 +1,37 @@
-<template>
-  <nav class="flex items-center space-x-2 text-sm" aria-label="Breadcrumb">
-    <template v-for="(item, index) in items" :key="index">
-      <!-- 分隔符 -->
-      <ChevronRight v-if="index > 0" class="h-4 w-4 text-muted-foreground" />
-
-      <!-- 面包屑项 -->
-      <component
-        :is="item.path ? 'router-link' : 'span'"
-        v-bind="
-          item.path
-            ? {
-                to: item.path,
-                class: 'text-muted-foreground hover:text-foreground transition-colors',
-              }
-            : { class: 'text-foreground font-medium' }
-        "
-        @click="item.onClick"
-      >
-        {{ item.title }}
-      </component>
-    </template>
-  </nav>
-</template>
-
-<script setup lang="ts">
-import { ChevronRight } from 'lucide-vue-next'
+<script lang="ts" setup>
+import type { HTMLAttributes } from 'vue'
+import { cn } from '@/lib/utils'
 
 export interface BreadcrumbItem {
-  /** 显示文本 */
   title: string
-  /** 路由路径（可选） */
   path?: string
-  /** 点击回调（可选） */
-  onClick?: () => void
 }
 
-interface Props {
-  /** 面包屑项列表 */
-  items: BreadcrumbItem[]
-}
-
-defineProps<Props>()
+const props = defineProps<{
+  class?: HTMLAttributes['class']
+  items?: BreadcrumbItem[]
+}>()
 </script>
+
+<template>
+  <nav
+    aria-label="breadcrumb"
+    data-slot="breadcrumb"
+    :class="cn('flex items-center gap-2 text-sm text-muted-foreground', props.class)"
+  >
+    <template v-if="items && items.length > 0">
+      <template v-for="(item, index) in items" :key="index">
+        <template v-if="item.path && index < items.length - 1">
+          <a :href="item.path" class="transition-colors hover:text-foreground">
+            {{ item.title }}
+          </a>
+          <span class="text-muted-foreground">/</span>
+        </template>
+        <span v-else class="text-foreground font-medium">
+          {{ item.title }}
+        </span>
+      </template>
+    </template>
+    <slot v-else />
+  </nav>
+</template>

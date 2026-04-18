@@ -160,3 +160,37 @@ html.light {
 .el-dropdown-menu {
   backdrop-filter: blur(12px);
 }
+
+/* 自定义滑块样式 */
+input[type='range'] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+input[type='range']::-webkit-slider-track {
+  @apply h-2 rounded-lg bg-muted transition-all;
+}
+
+input[type='range']::-moz-range-track {
+  @apply h-2 rounded-lg bg-muted transition-all;
+}
+
+input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  @apply mt-[-3px] h-5 w-5 rounded-full bg-primary shadow-lg transition-all hover:scale-110 hover:shadow-xl;
+}
+
+input[type='range']::-moz-range-thumb {
+  @apply h-5 w-5 rounded-full border-0 bg-primary shadow-lg transition-all hover:scale-110 hover:shadow-xl;
+}
+
+input[type='range']:focus::-webkit-slider-thumb {
+  @apply ring-2 ring-primary/20;
+}
+
+input[type='range']:focus::-moz-range-thumb {
+  @apply ring-2 ring-primary/20;
+}
