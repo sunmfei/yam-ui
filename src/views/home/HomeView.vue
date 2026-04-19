@@ -8,7 +8,7 @@ import AppMenubar from '@/components/modules/menu/index.vue'
 import SearchBox from '@/views/searchBox/index.vue'
 import { Globe, Search } from 'lucide-vue-next'
 import { Dock } from '@/components/inspira'
-import { SunNavigationCarousel } from '@/components/business'
+import { SunNavigationCards } from '@/components/business'
 
 const menuNodes = ref<MenuNode[]>([])
 const navigationItems = ref<NavigationItem[]>([])
@@ -66,19 +66,17 @@ const dockItems = computed(() => [
       <!-- 第二页：导航 -->
       <Transition name="page-slide" mode="out-in">
         <div v-if="currentPage === 1" key="navigation" class="absolute inset-0 overflow-y-auto p-6">
-          <div class="mx-auto max-w-6xl">
-            <!-- 页面标题 -->
-            <div class="mb-8 text-center">
-              <div class="flex items-center justify-center gap-3">
-                <Globe class="h-8 w-8 text-primary" />
-                <h1 class="text-3xl font-bold tracking-tight">网址导航</h1>
-              </div>
-              <p class="mt-2 text-muted-foreground">快速访问常用网站</p>
+          <!-- 页面标题 -->
+          <div class="mb-8 text-center">
+            <div class="flex items-center justify-center gap-3">
+              <Globe class="h-8 w-8 text-primary" />
+              <h1 class="text-3xl font-bold tracking-tight">网址导航</h1>
             </div>
-
-            <!-- Sun Navigation Carousel with Expandable Gallery -->
-            <SunNavigationCarousel :items="navigationItems" />
+            <p class="mt-2 text-muted-foreground">快速访问常用网站</p>
           </div>
+
+          <!-- Sun Navigation Cards with Expandable Gallery -->
+          <SunNavigationCards :items="navigationItems" />
         </div>
       </Transition>
     </div>
@@ -104,5 +102,15 @@ const dockItems = computed(() => [
 .page-slide-leave-to {
   opacity: 0;
   transform: translateX(-30px) scale(0.98);
+}
+
+/* 隐藏滚动条 */
+.overflow-y-auto {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.overflow-y-auto::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
 }
 </style>

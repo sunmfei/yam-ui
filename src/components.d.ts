@@ -42,6 +42,7 @@ declare module 'vue' {
     SunForm: typeof import('./components/business/sun-form/SunForm.vue')['default']
     SunIconPicker: typeof import('./components/business/sun-icon-picker/SunIconPicker.vue')['default']
     SunNavigation: typeof import('./components/business/sun-navigation/SunNavigation.vue')['default']
+    SunNavigationCards: typeof import('./components/business/sun-navigation/SunNavigationCards.vue')['default']
     SunNavigationCarousel: typeof import('./components/business/sun-navigation/SunNavigationCarousel.vue')['default']
     SunSearch: typeof import('./components/business/sun-search/SunSearch.vue')['default']
     SunTable: typeof import('./components/business/sun-table/SunTable.vue')['default']
