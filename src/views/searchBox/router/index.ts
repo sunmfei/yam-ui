@@ -7,8 +7,8 @@ import { RouteSource } from '@/types'
 export const searchRoutes: FrontendRoute[] = [
   {
     name: 'Search',
-    path: '/search',
-    component: () => import('@/views/search/index.vue'),
+    path: '/searchBox',
+    component: () => import('@/views/searchBox/index.vue'),
     source: RouteSource.FRONTEND,
     meta: {
       title: '搜索',

@@ -2,7 +2,7 @@ import type { DesignSystemConfig } from '@/registry/config'
 import { decodePreset, isPresetCode } from 'shadcn-vue/preset'
 import { designSystemConfigSchema } from '@/registry/config'
 
-// Parses design system config from URL search params (either a `preset` code
+// Parses design system config from URL searchBox params (either a `preset` code
 // or an explicit param set).
 export function parseDesignSystemConfig(searchParams: Record<string, string | undefined>) {
   let configInput: Record<string, unknown>

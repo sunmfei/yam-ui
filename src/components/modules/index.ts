@@ -6,4 +6,4 @@
 
 // export { default as MenuTree } from './menu/MenuTree.vue'
 // export { default as NavbarMain } from './navbar/NavbarMain.vue'
-// export { default as SearchModule } from './search/SearchModule.vue'
+// export { default as SearchModule } from './searchBox/SearchModule.vue'

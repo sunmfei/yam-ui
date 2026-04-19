@@ -88,7 +88,7 @@ clearExpiredCache()
 ### 3. 清理指定类型的缓存
 
 ```typescript
-// 清理本地缓存中匹配 "search" 的项
+// 清理本地缓存中匹配 "searchBox" 的项
 localCache.clearByPattern('search')
 
 // 清理系统缓存中匹配 "api" 的项

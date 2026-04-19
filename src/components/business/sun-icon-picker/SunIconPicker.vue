@@ -132,7 +132,7 @@ function openDialog() {
           <BaseDialogTitle>选择图标</BaseDialogTitle>
         </BaseDialogHeader>
 
-        <!-- search -->
+        <!-- searchBox -->
         <BaseInput v-model="keyword" placeholder="搜索图标..." class="mb-3" />
 
         <!-- category -->

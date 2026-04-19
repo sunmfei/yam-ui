@@ -25,6 +25,7 @@ declare module 'vue' {
     Menu: typeof import('./components/modules/menu/index.vue')['default']
     MenuRender: typeof import('./components/modules/menu/components/MenuRender.vue')['default']
     MenuRoot: typeof import('./components/modules/menu/components/MenuRoot.vue')['default']
+    ModernSearch: typeof import('./components/modules/search/ModernSearch.vue')['default']
     Navbar: typeof import('./components/modules/navbar/Navbar.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

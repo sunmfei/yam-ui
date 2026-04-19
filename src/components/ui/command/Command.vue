@@ -26,7 +26,7 @@ const filterState = reactive({
   filtered: {
     /** The count of all visible items. */
     count: 0,
-    /** Map from visible item id to its search score. */
+    /** Map from visible item id to its searchBox score. */
     items: new Map() as Map<string, number>,
     /** Set of groups with at least one visible item. */
     groups: new Set() as Set<string>,
@@ -36,7 +36,7 @@ const filterState = reactive({
 function filterItems() {
   if (!filterState.search) {
     filterState.filtered.count = allItems.value.size
-    // Do nothing, each item will know to show itself because search is empty
+    // Do nothing, each item will know to show itself because searchBox is empty
     return
   }
 

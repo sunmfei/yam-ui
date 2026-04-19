@@ -3,34 +3,41 @@
  * Menu 模块主组件
  *
  * 动态菜单系统的统一入口
- * 支持多种菜单类型：ACTION、ROUTE、MENU、SELECT
+ * 支持多种菜单类型:ACTION、ROUTE、MENU、SELECT
  *
- * 设计参考：navbar/index.vue
+ * 设计参考:navbar/index.vue
  */
 
 import { computed } from 'vue'
 import { localCache, LocalCacheKey } from '@/utils/cache'
 import type { MenuNode } from '@/types'
 import MenuRoot from './components/MenuRoot.vue'
+import type { MenuTheme, MenuThemeConfig } from './data/menu-themes'
 
 /**
  * Props 定义
  */
 interface MenuProps {
-  /** 自定义菜单数据（可选，默认使用 DEFAULT_MENU） */
+  /** 自定义菜单数据(可选,默认使用 DEFAULT_MENU) */
   menus?: MenuNode[]
+  /** 主题类型 */
+  theme?: MenuTheme
+  /** 自定义主题配置 */
+  menuConfig?: Partial<MenuThemeConfig>
 }
 
 const props = withDefaults(defineProps<MenuProps>(), {
   menus: undefined,
+  theme: 'transparent',
+  menuConfig: undefined,
 })
 
 /**
  * 获取菜单数据
- * 优先级：props.menus > localStorage > DEFAULT_MENU
+ * 优先级:props.menus > localStorage > DEFAULT_MENU
  */
 const menuData = computed<MenuNode[]>(() => {
-  // 1. 如果传入了自定义菜单，直接使用
+  // 1. 如果传入了自定义菜单,直接使用
   if (props.menus) {
     return props.menus
   }
@@ -70,5 +77,5 @@ defineExpose({
 
 <template>
   <!-- 菜单根组件 -->
-  <MenuRoot :menus="menuData" />
+  <MenuRoot :menus="menuData" :theme="theme" :menu-config="menuConfig" />
 </template>

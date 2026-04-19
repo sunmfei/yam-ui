@@ -8,8 +8,8 @@ export const DEFAULT_MENU: MenuNode[] = [
     id: 'MFei',
     name: 'MFei',
     type: MenuType.ROUTE,
-    icon: ICON_POOL.Moon,
-    path: '/tree-table-demo',
+    icon: ICON_POOL.Home,
+    path: '/',
     order: 0,
   },
 

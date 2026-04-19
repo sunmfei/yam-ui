@@ -70,7 +70,7 @@
  * 2. focus：控制动效状态
  * 3. handleSearch：触发搜索事件
  * 4. clear：清空输入
- * 5. emit：向父组件抛出 search 事件
+ * 5. emit：向父组件抛出 searchBox 事件
  */
 
 import { ref } from 'vue'

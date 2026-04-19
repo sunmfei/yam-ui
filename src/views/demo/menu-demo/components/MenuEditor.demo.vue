@@ -44,7 +44,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import MenuEditor from './MenuEditor.vue'
-import { menuConfig } from '@/views/search/data/MenuData'
+import { menuConfig } from '@/views/searchBox/data/MenuData'
 import type { MenuItem } from '@/types'
 import { ElMessage } from '@/utils/message'
 

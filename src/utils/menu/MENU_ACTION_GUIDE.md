@@ -78,7 +78,7 @@ menuActionRegistry.registerGetSelectedLabel('background-current', () => {
 
 ```typescript
 import { convertDatabaseMenuToAppMenu } from '@/utils/menu/menuConverter'
-import { DEFAULT_MENU } from '@/views/search/data/MenuData'
+import { DEFAULT_MENU } from '@/views/searchBox/data/MenuData'
 
 // 从 API 获取数据库菜单
 const dbMenus = await fetchMenuFromAPI()
