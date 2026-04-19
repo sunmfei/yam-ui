@@ -5,11 +5,13 @@
  */
 
 import type { FrontendRoute } from '@/types'
-import { settingsRoutes } from '@/views/panel/settings/router'
+import { adminRoutes } from '@/views/panel/admin/router'
+import { menuRoutes } from '@/views/panel/components/MenuManagement/router'
 
 // 导出所有面板模块的路由
 export const panelRoutes: FrontendRoute[] = [
-  ...settingsRoutes,
+  ...adminRoutes,
+  ...menuRoutes,
   // 未来可以添加其他面板模块的路由
   // ...otherPanelRoutes,
 ]

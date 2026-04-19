@@ -4,7 +4,6 @@
  */
 import { systemRoutes } from '@/views/home/router'
 import { searchRoutes } from '@/views/searchBox/router'
-import { menuRoutes } from '@/views/menu/router'
 import { demoRouter } from '@/views/demo/router'
 import { panelRoutes } from '@/views/panel/router'
 
@@ -19,9 +18,8 @@ import { panelRoutes } from '@/views/panel/router'
 export const localRoutes = [
   ...systemRoutes,
   ...searchRoutes,
-  ...menuRoutes,
-  ...panelRoutes,
   ...demoRouter,
+  ...panelRoutes,
   // ...dashboardRoutes,
   // ...userRoutes,
 ]
