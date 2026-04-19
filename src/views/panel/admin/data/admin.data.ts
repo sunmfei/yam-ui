@@ -31,6 +31,13 @@ export const adminSections: PanelSection[] = [
         componentPath: 'components/MenuManagement/index',
         order: 3,
       },
+      {
+        id: 'navigation',
+        label: '导航管理',
+        icon: 'Compass',
+        componentPath: 'components/NavigationManagement/index',
+        order: 4,
+      },
     ],
   },
   {

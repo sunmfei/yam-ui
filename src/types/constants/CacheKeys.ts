@@ -8,6 +8,7 @@ export const LocalCacheKey = {
   SEARCH_HISTORY: 'local_searchHistory',
   USER_PREFERENCES: 'local_userPreferences',
   MENU_CONFIG: 'local_menu_data',
+  NAVIGATION_CONFIG: 'local_navigation_data',
 } as const
 
 export type LocalCacheKeyType = (typeof LocalCacheKey)[keyof typeof LocalCacheKey]
