@@ -11,6 +11,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    AppleCardCarousel: typeof import('./components/business/sun-navigation/AppleCardCarousel.vue')['default']
     BaseBackground: typeof import('./components/base/background/BaseBackground.vue')['default']
     BaseButton: typeof import('./components/base/button/BaseButton.vue')['default']
     BaseContainer: typeof import('./components/base/container/BaseContainer.vue')['default']
@@ -40,6 +41,8 @@ declare module 'vue' {
     SunConfirmDialog: typeof import('./components/business/sun-confirm-dialog/SunConfirmDialog.vue')['default']
     SunForm: typeof import('./components/business/sun-form/SunForm.vue')['default']
     SunIconPicker: typeof import('./components/business/sun-icon-picker/SunIconPicker.vue')['default']
+    SunNavigation: typeof import('./components/business/sun-navigation/SunNavigation.vue')['default']
+    SunNavigationCarousel: typeof import('./components/business/sun-navigation/SunNavigationCarousel.vue')['default']
     SunSearch: typeof import('./components/business/sun-search/SunSearch.vue')['default']
     SunTable: typeof import('./components/business/sun-table/SunTable.vue')['default']
   }
