@@ -53,7 +53,11 @@ const formSchema = toTypedSchema(
 )
 
 // 初始化表单
-const { values, setFieldValue, handleSubmit, errors } = useForm({
+const {
+  values,
+  setFieldValue,
+  validate: validateForm,
+} = useForm({
   validationSchema: formSchema,
   initialValues: {
     name: props.formData.name ?? '',
@@ -74,21 +78,20 @@ function shouldShowField(field: { showWhen?: (formData: Record<string, unknown>)
   return true
 }
 
-// 表单提交处理
-const onSubmit = handleSubmit((validValues) => {
-  emit('submit', validValues as Omit<MenuNode, 'id' | 'children'>)
-})
-
 // 暴露验证和提交方法给父组件
 defineExpose({
-  validate: () => {
-    return new Promise((resolve) => {
-      onSubmit()
-      resolve(Object.keys(errors.value).length === 0)
-    })
+  validate: async () => {
+    const { valid } = await validateForm()
+    return valid
   },
   getValues: () => values,
-  submit: onSubmit,
+  submit: async () => {
+    // 先验证，验证通过后再提交
+    const { valid } = await validateForm()
+    if (valid) {
+      emit('submit', { ...values } as Omit<MenuNode, 'id' | 'children'>)
+    }
+  },
 })
 </script>
 

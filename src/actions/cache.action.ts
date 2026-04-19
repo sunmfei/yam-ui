@@ -1,5 +1,5 @@
 import actionHub from '@/types'
-import LocalCache from '@/utils/cache/localCache.ts'
+import { localCache } from '@/utils/cache/localCache.ts'
 import { systemCache } from '@/utils/cache'
 import { SunMessage } from '@/utils/message.ts'
 
@@ -17,7 +17,7 @@ export type CacheActionKey = (typeof CacheActionKey)[keyof typeof CacheActionKey
 export default function initCacheActions() {
   console.log('initCacheActions')
   actionHub.registerAction(CacheActionKey.CLEAR_LOCAL, async () => {
-    LocalCache.clearAll()
+    localCache.clearAll()
     SunMessage.success('本地缓存已清空')
   })
 
@@ -26,7 +26,7 @@ export default function initCacheActions() {
     SunMessage.success('系统缓存已清空')
   })
   actionHub.registerAction(CacheActionKey.CLEAR_ALL, async () => {
-    LocalCache.clearAll()
+    localCache.clearAll()
     systemCache.clearAll()
     SunMessage.success('所有缓存已清空')
   })

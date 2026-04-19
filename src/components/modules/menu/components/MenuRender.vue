@@ -60,6 +60,7 @@ function getIconComponent(iconName: string) {
  */
 function runAction() {
   if (props.node.actionKey) {
+    console.log('props.node.actionKey::::', props.node.actionKey)
     actionHub.executeAction(props.node.actionKey)
   }
 }
@@ -70,6 +71,17 @@ function runAction() {
 function runSelect(item: MenuNode) {
   if (props.node.onChangeKey) {
     actionHub.executeAction(props.node.onChangeKey, item)
+  }
+}
+
+/**
+ * 处理子项点击（优先执行子项 actionKey，其次执行父级 onChangeKey）
+ */
+function handleItemClick(item: MenuNode) {
+  if (item.actionKey) {
+    actionHub.executeAction(item.actionKey)
+  } else if (props.node.onChangeKey) {
+    runSelect(item)
   }
 }
 
@@ -131,7 +143,7 @@ function goRoute() {
         {{ getLabel() }}
       </MenubarSubTrigger>
       <MenubarSubContent>
-        <MenubarItem v-for="item in node.children" :key="item.id" @click="runSelect(item)">
+        <MenubarItem v-for="item in node.children" :key="item.id" @click="handleItemClick(item)">
           {{ item.name }}
         </MenubarItem>
       </MenubarSubContent>
@@ -181,7 +193,7 @@ function goRoute() {
       </MenubarTrigger>
 
       <MenubarContent>
-        <MenubarItem v-for="item in node.children" :key="item.id" @click="runSelect(item)">
+        <MenubarItem v-for="item in node.children" :key="item.id" @click="handleItemClick(item)">
           {{ item.name }}
         </MenubarItem>
       </MenubarContent>

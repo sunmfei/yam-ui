@@ -1,5 +1,5 @@
 import { ICON_POOL } from '@/config/types/icon.pool.ts'
-import { type MenuNode, MenuType } from '@/types'
+import { MenuActionKey, type MenuNode, MenuType } from '@/types'
 import { BACKGROUND_OPTIONS } from '@/types'
 import { CacheActionKey } from '@/actions/cache.action.ts'
 
@@ -65,7 +65,7 @@ export const DEFAULT_MENU: MenuNode[] = [
         name: '重置菜单',
         type: MenuType.ACTION,
         icon: ICON_POOL.RefreshCw,
-        actionKey: 'menu-reset-menu',
+        actionKey: MenuActionKey.RESET_MENU,
         meta: { divided: true },
       },
     ],

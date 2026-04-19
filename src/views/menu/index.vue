@@ -182,10 +182,9 @@ const selectedType = ref('all')
 const showEditDialog = ref(false)
 const isEditMode = ref(false)
 const editingNode = ref<MenuNode | null>(null)
-const editForm = ref({
-  id: '',
+const editForm = ref<Omit<MenuNode, 'id' | 'children'>>({
   name: '',
-  type: 'route' as MenuNode['type'],
+  type: 'route',
   icon: '',
   path: '',
   actionKey: '',
@@ -288,7 +287,6 @@ function openAddDialog(parentNode: TreeTableNode | null) {
     : null
 
   editForm.value = {
-    id: `menu-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
     name: '',
     type: 'route',
     icon: '',
@@ -344,8 +342,9 @@ function handleFormSubmit(formData: Omit<MenuNode, 'id' | 'children'>) {
     }
     crud.updateNode(editingNode.value, formData)
   } else {
+    // 新增模式下，生成新的 ID
     const newNode: MenuNode = {
-      id: editForm.value.id,
+      id: `menu-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
       ...formData,
     }
     crud.addNode(newNode, editingNode.value)

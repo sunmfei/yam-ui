@@ -77,12 +77,12 @@ export function useMenuCRUD(menus: Ref<MenuNode[]>, saveMenuData: () => void) {
    */
   function addNode(newNode: MenuNode, parentNode?: MenuNode | null) {
     if (parentNode) {
-      const children = parentNode.children || []
-      children.push(newNode)
-      parentNode.children = children
+      // 使用展开运算符创建新数组，确保触发 Vue 响应式更新
+      parentNode.children = [...(parentNode.children || []), newNode]
       SunMessage.success(`子节点已添加到 ${parentNode.name}`)
     } else {
-      menus.value.push(newNode)
+      // 使用展开运算符创建新数组，确保触发 Vue 响应式更新
+      menus.value = [...menus.value, newNode]
       SunMessage.success('根节点已添加')
     }
     saveMenuData()

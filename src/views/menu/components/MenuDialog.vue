@@ -52,6 +52,12 @@ function handleCancel() {
   isOpen.value = false
 }
 
+function handleFormSubmit(data: Omit<MenuNode, 'id' | 'children'>) {
+  // 转发提交事件给父组件
+  emit('submit', data)
+  isOpen.value = false
+}
+
 async function handleConfirm() {
   // 调用表单的 submit 方法，触发表单验证和提交
   formRef.value?.submit()
@@ -79,6 +85,11 @@ async function handleConfirm() {
       },
     ]"
   >
-    <MenuForm ref="formRef" :is-edit-mode="isEditMode" :form-data="formData" />
+    <MenuForm
+      ref="formRef"
+      :is-edit-mode="isEditMode"
+      :form-data="formData"
+      @submit="handleFormSubmit"
+    />
   </BaseDialog>
 </template>
