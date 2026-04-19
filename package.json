@@ -14,6 +14,7 @@
     "format": "prettier --write \"src/**/*.{vue,js,ts,json,css,scss,md}\"",
     "format:check": "prettier --check \"src/**/*.{vue,js,ts,json,css,scss,md}\"",
     "generate:ui-proxy": "tsx scripts/generate-ui-proxy.ts",
+    "generate:types": "tsx scripts/generate-types-index.ts",
     "test": "vitest",
     "test:run": "vitest run",
     "test:ui": "vitest --ui",

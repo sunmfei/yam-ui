@@ -190,6 +190,7 @@ function scanDirectory(dir: string, relativePath: string = ''): ComponentInfo[] 
 /**
  * 扫描目录下的所有 .vue 文件（无 index 时）
  */
+
 function _scanVueFilesInDir(dir: string, relativePath: string): ComponentInfo[] {
   const components: ComponentInfo[] = []
 
@@ -226,6 +227,7 @@ function _scanVueFilesInDir(dir: string, relativePath: string): ComponentInfo[] 
 /**
  * 读取 Vue 文件，分析导出
  */
+
 function _analyzeVueFile(filePath: string): { hasDefault: boolean; namedExports: string[] } {
   try {
     const content = fs.readFileSync(filePath, 'utf-8')

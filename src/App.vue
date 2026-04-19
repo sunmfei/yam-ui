@@ -23,10 +23,8 @@ const { customProperties } = useElementTheme()
         </router-view>
       </main>
     </div>
-    <!-- Toast 通知 - 最高层级 -->
-    <div class="fixed inset-0 pointer-events-none z-[99999]">
-      <Toaster position="top-center" :duration="3000" />
-    </div>
+    <!-- Toast 通知 -->
+    <Toaster position="top-center" :duration="3000" rich-colors />
   </div>
 </template>
 

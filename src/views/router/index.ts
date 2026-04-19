@@ -6,6 +6,7 @@ import { systemRoutes } from '@/views/home/router'
 import { searchRoutes } from '@/views/searchBox/router'
 import { menuRoutes } from '@/views/menu/router'
 import { demoRouter } from '@/views/demo/router'
+import { panelRoutes } from '@/views/panel/router'
 
 // 在这里添加新模块的路由
 // import { dashboardRoutes } from '@/views/dashboard/router'
@@ -19,6 +20,7 @@ export const localRoutes = [
   ...systemRoutes,
   ...searchRoutes,
   ...menuRoutes,
+  ...panelRoutes,
   ...demoRouter,
   // ...dashboardRoutes,
   // ...userRoutes,

@@ -5,26 +5,26 @@ import path from 'path'
 import viteCompression from 'vite-plugin-compression'
 import { visualizer } from 'rollup-plugin-visualizer'
 import Components from 'unplugin-vue-components/vite'
-import { spawn } from 'child_process'
+import { runScriptsParallel } from './scripts/utils/run-script'
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
   // 加载环境变量（仅 VITE_ 前缀）
   const env = loadEnv(mode, process.cwd(), 'VITE_')
 
-  // 开发模式下自动生成 UI 代理
+  // 开发模式下自动生成代码
   if (mode === 'development') {
-    console.log('🔄 生成 UI 组件代理...')
-    spawn('pnpm', ['run', 'generate:ui-proxy'], {
-      stdio: 'inherit',
-      shell: true,
-    }).on('close', (code) => {
-      if (code === 0) {
-        console.log('✅ UI 代理生成完成')
-      } else {
-        console.error('❌ UI 代理生成失败')
+    // 只生成 UI 代理（types 需要手动维护）
+    runScriptsParallel(
+      [
+        'generate:ui-proxy',
+        // 'generate:types', // types/index.ts 需要手动维护，因为脚本无法正确识别 type 导出
+      ],
+      {
+        verbose: true,
+        throwOnError: false,
       }
-    })
+    )
   }
 
   return {
