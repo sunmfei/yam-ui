@@ -8,7 +8,7 @@ export const DEFAULT_MENU: MenuNode[] = [
     name: 'MFei',
     type: MenuType.ROUTE,
     icon: ICON_POOL.Home,
-    path: '/',
+    path: '/demoRouter',
     order: 0,
   },
 
@@ -24,10 +24,10 @@ export const DEFAULT_MENU: MenuNode[] = [
 
   {
     id: 'settings',
-    name: '设置',
+    name: '管理',
     type: MenuType.ROUTE,
     icon: ICON_POOL.Settings,
-    path: '/settings',
+    path: '/admin',
     order: 2,
   },
 

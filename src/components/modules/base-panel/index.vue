@@ -63,6 +63,9 @@ const emit = defineEmits<{
     :content-bg-class="contentBgClass"
     @update:active="emit('update:active', $event)"
   >
-    <slot />
+    <!-- 透传所有插槽 -->
+    <template v-for="(_, name) in $slots" #[name]="slotData">
+      <slot :name="name" v-bind="slotData || {}" />
+    </template>
   </BasePanelRoot>
 </template>

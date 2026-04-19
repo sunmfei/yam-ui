@@ -14,16 +14,20 @@
  * 将菜单、行为、内容统一入口
  */
 
-import { computed, defineAsyncComponent } from 'vue'
+import { computed, defineAsyncComponent, watch } from 'vue'
 import {
   SidebarProvider,
   Sidebar,
+  SidebarHeader,
+  SidebarContent,
+  SidebarFooter,
   SidebarGroup,
-  SidebarGroupLabel,
   SidebarGroupContent,
   SidebarInset,
   SidebarTrigger,
+  SidebarRail,
 } from '@/components/ui/sidebar'
+import { Separator } from '@/components/ui/separator'
 
 import PanelMenuRecursive from './PanelMenuRecursive.vue'
 import type { PanelSection } from '@/types'
@@ -72,15 +76,111 @@ const findNode = (list: PanelSection[], id?: string): PanelSection | null => {
 }
 
 /**
+ * 查找第一个可点击的节点（有 componentPath）
+ */
+const findFirstClickableNode = (list: PanelSection[]): string | null => {
+  for (const item of list) {
+    if (item.componentPath && !item.disabled) {
+      return item.id
+    }
+    if (item.children) {
+      const res = findFirstClickableNode(item.children)
+      if (res) return res
+    }
+  }
+  return null
+}
+
+/**
+ * 初始化 active：如果为空，自动选中第一个可点击节点
+ */
+const initActive = () => {
+  if (!props.active || props.active === '') {
+    const firstId = findFirstClickableNode(props.sections)
+    if (firstId) {
+      emit('update:active', firstId)
+    }
+  }
+}
+
+// 监听 sections 变化，自动初始化
+watch(
+  () => props.sections,
+  () => {
+    initActive()
+  },
+  { immediate: true }
+)
+
+/**
  * 当前组件
  */
 const activeComponent = computed(() => {
   const node = findNode(props.sections, props.active)
+
+  if (!node) {
+    console.warn('⚠️ 未找到 active 节点:', props.active)
+    return null
+  }
+
   const loader = loadPanelComponent(node?.componentPath)
 
+  if (!loader) {
+    console.warn('⚠️ 组件加载器为空:', node.componentPath)
+    return null
+  }
+
+  return defineAsyncComponent(loader as () => Promise<unknown>)
+})
+
+/**
+ * 侧边栏 Header 组件
+ */
+const sidebarHeaderComponent = computed(() => {
+  // 查找第一个有 sidebarHeaderPath 的节点
+  const findHeader = (list: PanelSection[]): string | null => {
+    for (const item of list) {
+      if (item.sidebarHeaderPath) return item.sidebarHeaderPath
+      if (item.children) {
+        const res = findHeader(item.children)
+        if (res) return res
+      }
+    }
+    return null
+  }
+
+  const headerPath = findHeader(props.sections)
+  if (!headerPath) return null
+
+  const loader = loadPanelComponent(headerPath)
   if (!loader) return null
 
-  return defineAsyncComponent(loader as () => Promise<any>)
+  return defineAsyncComponent(loader as () => Promise<unknown>)
+})
+
+/**
+ * 侧边栏 Footer 组件
+ */
+const sidebarFooterComponent = computed(() => {
+  // 查找第一个有 sidebarFooterPath 的节点
+  const findFooter = (list: PanelSection[]): string | null => {
+    for (const item of list) {
+      if (item.sidebarFooterPath) return item.sidebarFooterPath
+      if (item.children) {
+        const res = findFooter(item.children)
+        if (res) return res
+      }
+    }
+    return null
+  }
+
+  const footerPath = findFooter(props.sections)
+  if (!footerPath) return null
+
+  const loader = loadPanelComponent(footerPath)
+  if (!loader) return null
+
+  return defineAsyncComponent(loader as () => Promise<unknown>)
 })
 
 /**
@@ -101,21 +201,44 @@ const handleSelect = (id: string) => {
 <template>
   <SidebarProvider>
     <div class="flex h-screen w-full" :style="sidebarStyle">
-      <!-- 侧边栏 - 左侧 -->
+      <!-- 侧边栏 -->
       <Sidebar
         :side="side"
         :collapsible="collapsible ? 'icon' : 'none'"
-        class="border-r !bg-transparent [&_[data-sidebar=sidebar]]:bg-transparent"
+        variant="sidebar"
+        :class="[
+          'border-r !bg-transparent [&_[data-sidebar=sidebar]]:bg-transparent',
+          sidebarBgClass,
+        ]"
       >
-        <div class="flex h-full w-full flex-col" :class="sidebarBgClass">
-          <SidebarGroup>
-            <SidebarGroupLabel>{{ headerTitle }}</SidebarGroupLabel>
+        <!-- Header -->
+        <SidebarHeader>
+          <slot name="sidebar-header">
+            <component :is="sidebarHeaderComponent" v-if="sidebarHeaderComponent" />
+            <div v-else-if="headerTitle" class="flex h-14 items-center gap-2 px-4">
+              <span class="text-lg font-semibold">{{ headerTitle }}</span>
+            </div>
+          </slot>
+        </SidebarHeader>
 
+        <!-- Content -->
+        <SidebarContent>
+          <SidebarGroup>
             <SidebarGroupContent>
               <PanelMenuRecursive :items="sections" :active="active" @select="handleSelect" />
             </SidebarGroupContent>
           </SidebarGroup>
-        </div>
+        </SidebarContent>
+
+        <!-- Footer -->
+        <SidebarFooter>
+          <slot name="sidebar-footer">
+            <component :is="sidebarFooterComponent" v-if="sidebarFooterComponent" />
+          </slot>
+        </SidebarFooter>
+
+        <!-- Rail -->
+        <SidebarRail />
       </Sidebar>
 
       <!-- 主内容区 -->
@@ -124,19 +247,24 @@ const handleSelect = (id: string) => {
           <!-- 顶部工具栏 -->
           <header
             v-if="showHeader"
-            class="flex h-14 shrink-0 items-center gap-2 border-b px-4 transition-[width,height] ease-linear"
+            class="flex h-16 shrink-0 items-center gap-2 border-b px-4 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12"
           >
-            <SidebarTrigger :class="side === 'left' ? '-ml-1' : '-mr-1'" />
-            <div class="flex-1 text-lg font-semibold">
-              <slot name="header" />
+            <div class="flex items-center gap-2 px-4">
+              <SidebarTrigger :class="side === 'left' ? '-ml-1' : '-mr-1'" />
+              <Separator orientation="vertical" class="mr-2 data-[orientation=vertical]:h-4" />
+              <div class="flex-1 text-lg font-semibold">
+                <slot name="header" />
+              </div>
+              <slot name="header-actions" />
             </div>
-            <slot name="header-actions" />
           </header>
 
           <!-- 内容区 -->
-          <main class="flex-1 overflow-auto p-6">
-            <component :is="activeComponent" v-if="activeComponent" />
-            <slot v-else />
+          <main class="flex-1 overflow-auto">
+            <div class="p-4 pt-0">
+              <component :is="activeComponent" v-if="activeComponent" />
+              <slot v-else />
+            </div>
           </main>
         </div>
       </SidebarInset>

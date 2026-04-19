@@ -14,6 +14,8 @@ export default tseslint.config(
       'coverage/**',
       'playwright-report/**',
       '.husky/**',
+      // Blocks are third-party code from shadcn-vue
+      'src/components/blocks/**',
     ],
   },
   js.configs.recommended,

@@ -36,4 +36,9 @@ export interface PanelSection {
   meta?: Record<string, any>
 
   children?: PanelSection[]
+
+  /** 侧边栏头部组件路径 */
+  sidebarHeaderPath?: string
+  /** 侧边栏底部组件路径 */
+  sidebarFooterPath?: string
 }
