@@ -40,8 +40,17 @@ function prev() {
 
 <template>
   <div class="relative w-full">
+    <!-- 背景装饰 -->
+    <div class="pointer-events-none absolute inset-0 overflow-hidden">
+      <div class="absolute -left-32 -top-32 h-64 w-64 rounded-full bg-primary/5 blur-3xl" />
+      <div class="absolute -bottom-32 -right-32 h-64 w-64 rounded-full bg-primary/10 blur-3xl" />
+      <div
+        class="absolute left-1/2 top-1/2 h-96 w-96 -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-r from-primary/5 to-muted/10 blur-3xl"
+      />
+    </div>
+
     <!-- 卡片容器 -->
-    <div class="relative h-[500px] overflow-hidden">
+    <div class="relative z-10 h-[500px] overflow-hidden">
       <TransitionGroup name="carousel" tag="div" class="h-full">
         <div
           v-for="(item, index) in visibleItems"
@@ -51,8 +60,12 @@ function prev() {
         >
           <!-- 卡片背景渐变 -->
           <div
-            class="absolute inset-0 rounded-3xl bg-gradient-to-br from-primary/10 via-background to-muted/30 transition-all duration-500"
+            class="absolute inset-0 rounded-3xl border bg-gradient-to-br from-background/80 via-background to-muted/20 shadow-xl backdrop-blur-sm transition-all duration-500"
           />
+
+          <!-- 装饰性光晕 -->
+          <div class="absolute -left-20 -top-20 h-40 w-40 rounded-full bg-primary/10 blur-2xl" />
+          <div class="absolute -bottom-20 -right-20 h-40 w-40 rounded-full bg-primary/5 blur-2xl" />
 
           <!-- 卡片内容 -->
           <div class="relative z-10 flex h-full flex-col p-8">
