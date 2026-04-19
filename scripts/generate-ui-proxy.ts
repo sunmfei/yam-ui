@@ -23,9 +23,9 @@ const OUTPUT_FILE = path.resolve(BASE_DIR, 'ui-proxy.ts')
 
 // 需要排除的文件/目录
 const EXCLUDE_PATTERNS = [
-  /^index\./, // index.ts/index.vue
+  /^index\./, // index.vue/index.vue
   /\.d\.ts$/, // 类型声明文件
-  /types/, // types 目录
+  /types/, // data 目录
 ]
 
 // 已有的 base 组件（需要排除，避免覆盖）
@@ -153,7 +153,7 @@ function scanDirectory(dir: string, relativePath: string = ''): ComponentInfo[] 
                 pascalName: componentName,
                 basePath: relPath,
                 importPath: `@/components/ui/${relPath}`,
-                isDefault: false, // index.ts 中的导出都是命名导出
+                isDefault: false, // index.vue 中的导出都是命名导出
                 hasNamedExports: [aliasName || exportName],
               })
             }

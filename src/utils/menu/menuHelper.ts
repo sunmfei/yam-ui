@@ -1,6 +1,6 @@
-import type { MenuNode } from '@/types/menu'
+import type { MenuNode } from '@/types'
 import { useRouter } from 'vue-router'
-import actionHub from '@/types/ActionHub.ts'
+import actionHub from '@/types'
 
 /**
  * 判断是否路由菜单

@@ -11,7 +11,7 @@ export type {
   RouteTreeNode,
   AppRouteMeta,
   RouteSource,
-} from '@/types/route'
+} from '@/types'
 
 // 路由管理器
 export { routeManager } from './manager'

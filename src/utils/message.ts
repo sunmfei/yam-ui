@@ -8,58 +8,42 @@ interface MessageOptions {
   duration?: number
 }
 
-// 创建消息组件
-function createMessageComponent(options: MessageOptions) {
+// 使用 vue-sonner 显示消息
+function showToast(options: MessageOptions) {
   const { message, type = 'info', duration = 3000 } = options
 
-  const container = document.createElement('div')
-  container.className = `fixed top-4 left-1/2 -translate-x-1/2 z-[9999] animate-in fade-in slide-in-from-top-4`
-
-  const colors = {
-    success: 'bg-green-500 text-white',
-    warning: 'bg-yellow-500 text-white',
-    error: 'bg-red-500 text-white',
-    info: 'bg-blue-500 text-white',
-  }
-
-  const icons = {
-    success: '✓',
-    warning: '⚠',
-    error: '✕',
-    info: 'ℹ',
-  }
-
-  container.innerHTML = `
-    <div class="${colors[type]} px-6 py-3 rounded-lg shadow-lg flex items-center gap-2 min-w-[200px] justify-center">
-      <span class="font-bold">${icons[type]}</span>
-      <span>${message}</span>
-    </div>
-  `
-
-  document.body.appendChild(container)
-
-  // 自动移除
-  setTimeout(() => {
-    container.classList.add('animate-out', 'fade-out', 'slide-out-to-top-4')
-    setTimeout(() => {
-      document.body.removeChild(container)
-    }, 300)
-  }, duration)
+  // 动态导入 toast（避免 SSR 问题）
+  import('vue-sonner').then(({ toast }) => {
+    switch (type) {
+      case 'success':
+        toast.success(message, { duration })
+        break
+      case 'warning':
+        toast.warning(message, { duration })
+        break
+      case 'error':
+        toast.error(message, { duration })
+        break
+      case 'info':
+        toast.info(message, { duration })
+        break
+    }
+  })
 }
 
 // 消息提示
 export const SunMessage = {
   success(message: string, duration?: number) {
-    createMessageComponent({ message, type: 'success', duration })
+    showToast({ message, type: 'success', duration })
   },
   warning(message: string, duration?: number) {
-    createMessageComponent({ message, type: 'warning', duration })
+    showToast({ message, type: 'warning', duration })
   },
   error(message: string, duration?: number) {
-    createMessageComponent({ message, type: 'error', duration })
+    showToast({ message, type: 'error', duration })
   },
   info(message: string, duration?: number) {
-    createMessageComponent({ message, type: 'info', duration })
+    showToast({ message, type: 'info', duration })
   },
 }
 

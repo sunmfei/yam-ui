@@ -1,4 +1,4 @@
-import type { MenuNode } from '@/types/menu'
+import type { MenuNode } from '@/types'
 
 /**
  * 数据库存储菜单节点

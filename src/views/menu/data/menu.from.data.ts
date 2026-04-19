@@ -1,4 +1,4 @@
-import type { MenuNode } from '@/types/menu'
+import type { MenuNode } from '@/types'
 
 /**
  * 表单初始值
@@ -25,17 +25,16 @@ export const formFields = [
     placeholder: '请输入节点名称',
     required: true,
   },
-  //'button' | 'route' | 'dropdown' | 'list' | 'list-item'
   {
     key: 'type',
     label: '节点类型',
     type: 'select',
     options: [
       { value: 'route', label: '路由' },
-      { value: 'button', label: '按钮' },
-      { value: 'dropdown', label: '下拉菜单' },
-      { value: 'list', label: '列表' },
-      { value: 'list-item', label: '列表项' },
+      { value: 'action', label: '动作' },
+      { value: 'menu', label: '菜单' },
+      { value: 'select', label: '选择器' },
+      { value: 'option', label: '选项' },
     ],
   },
   {
@@ -56,7 +55,7 @@ export const formFields = [
     label: '动作Key',
     type: 'text',
     placeholder: '例: menu-toggle-theme',
-    showWhen: (formData: Record<string, unknown>) => formData.type === 'button',
+    showWhen: (formData: Record<string, unknown>) => formData.type === 'action',
   },
   {
     key: 'order',

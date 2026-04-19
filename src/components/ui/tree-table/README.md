@@ -24,7 +24,7 @@ TreeTable 是一个功能强大的树形表格组件，支持以下特性：
 <script setup lang="ts">
 import { ref } from 'vue'
 import TreeTable from '@/components/ui/tree-table/index.vue'
-import type { TreeTableNode } from '@/components/ui/tree-table/types'
+import type { TreeTableNode } from '@/components/ui/tree-table/data'
 
 const columns = [
   { key: 'name', title: '名称', width: '300px' },

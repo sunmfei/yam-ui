@@ -1,4 +1,4 @@
-import type { CacheItem, CacheOptions } from '@/types/cache'
+import type { CacheItem, CacheOptions } from '@/types'
 
 /**
  * 缓存类型枚举

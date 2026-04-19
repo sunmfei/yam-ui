@@ -11,16 +11,16 @@ src/components/
 │   ├── modal/              # BaseModal
 │   ├── switch/             # BaseSwitch
 │   ├── table/              # BaseTable
-│   └── index.ts            # 统一导出
+│   └── index.vue            # 统一导出
 ├── business/               # 业务组件（Sun前缀，开箱即用）
 │   ├── sun-table/          # SunTable
 │   ├── sun-form/           # SunForm
 │   ├── sun-search/         # SunSearch
-│   └── index.ts            # 统一导出
+│   └── index.vue            # 统一导出
 ├── modules/                # 复杂模块组件（语义化命名）
 │   ├── menu/               # 菜单模块
 │   ├── navbar/             # 导航栏模块
-│   └── index.ts            # 统一导出
+│   └── index.vue            # 统一导出
 └── ui/                     # 第三方UI组件（禁止直接引用）
     ├── button/
     ├── input/
@@ -207,7 +207,7 @@ defineOptions({
 
 ### 3. 导出文件规范
 ```typescript
-// src/components/base/index.ts
+// src/components/base/index.vue
 /**
  * Base 层组件统一导出
  * 
@@ -277,7 +277,7 @@ A: 检查以下几点：
 A: 
 1. 在 `src/components/base/xxx/` 创建组件
 2. 添加 `defineOptions({ name: 'BaseXxx' })`
-3. 在 `src/components/base/index.ts` 中导出
+3. 在 `src/components/base/index.vue` 中导出
 4. 重启开发服务器
 
 ---

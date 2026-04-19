@@ -5,8 +5,8 @@
 export { localCache } from './localCache'
 export { systemCache } from './systemCache'
 export { CacheType } from './baseCache'
-export type { CacheOptions } from '@/types/cache'
-export { LocalCacheKey, SystemCacheKey } from '@/types/cache'
+export type { CacheOptions } from '@/types'
+export { LocalCacheKey, SystemCacheKey } from '@/types'
 
 // 便捷清理函数
 import { localCache } from './localCache'

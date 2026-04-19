@@ -23,7 +23,7 @@ export const ui: Registry['items'] = [
         type: 'registry:ui',
       },
       {
-        path: 'ui/accordion/index.ts',
+        path: 'ui/accordion/index.vue',
         type: 'registry:ui',
       },
     ],
@@ -45,7 +45,7 @@ export const ui: Registry['items'] = [
         type: 'registry:ui',
       },
       {
-        path: 'ui/alert/index.ts',
+        path: 'ui/alert/index.vue',
         type: 'registry:ui',
       },
     ],
@@ -93,7 +93,7 @@ export const ui: Registry['items'] = [
         type: 'registry:ui',
       },
       {
-        path: 'ui/alert-dialog/index.ts',
+        path: 'ui/alert-dialog/index.vue',
         type: 'registry:ui',
       },
     ],
@@ -108,7 +108,7 @@ export const ui: Registry['items'] = [
         type: 'registry:ui',
       },
       {
-        path: 'ui/aspect-ratio/index.ts',
+        path: 'ui/aspect-ratio/index.vue',
         type: 'registry:ui',
       },
     ],
@@ -131,7 +131,7 @@ export const ui: Registry['items'] = [
         type: 'registry:ui',
       },
       {
-        path: 'ui/avatar/index.ts',
+        path: 'ui/avatar/index.vue',
         type: 'registry:ui',
       },
     ],
@@ -146,7 +146,7 @@ export const ui: Registry['items'] = [
         type: 'registry:ui',
       },
       {
-        path: 'ui/badge/index.ts',
+        path: 'ui/badge/index.vue',
         type: 'registry:ui',
       },
     ],
@@ -185,7 +185,7 @@ export const ui: Registry['items'] = [
         type: 'registry:ui',
       },
       {
-        path: 'ui/breadcrumb/index.ts',
+        path: 'ui/breadcrumb/index.vue',
         type: 'registry:ui',
       },
     ],
@@ -200,7 +200,7 @@ export const ui: Registry['items'] = [
         type: 'registry:ui',
       },
       {
-        path: 'ui/button/index.ts',
+        path: 'ui/button/index.vue',
         type: 'registry:ui',
       },
     ],
@@ -224,7 +224,7 @@ export const ui: Registry['items'] = [
         type: 'registry:ui',
       },
       {
-        path: 'ui/button-group/index.ts',
+        path: 'ui/button-group/index.vue',
         type: 'registry:ui',
       },
     ],
@@ -284,7 +284,7 @@ export const ui: Registry['items'] = [
         type: 'registry:ui',
       },
       {
-        path: 'ui/calendar/index.ts',
+        path: 'ui/calendar/index.vue',
         type: 'registry:ui',
       },
     ],
@@ -322,7 +322,7 @@ export const ui: Registry['items'] = [
         type: 'registry:ui',
       },
       {
-        path: 'ui/card/index.ts',
+        path: 'ui/card/index.vue',
         type: 'registry:ui',
       },
     ],
@@ -354,7 +354,7 @@ export const ui: Registry['items'] = [
         type: 'registry:ui',
       },
       {
-        path: 'ui/carousel/index.ts',
+        path: 'ui/carousel/index.vue',
         type: 'registry:ui',
       },
       {
@@ -389,7 +389,7 @@ export const ui: Registry['items'] = [
         type: 'registry:ui',
       },
       {
-        path: 'ui/chart/index.ts',
+        path: 'ui/chart/index.vue',
         type: 'registry:ui',
       },
       {
@@ -408,7 +408,7 @@ export const ui: Registry['items'] = [
         type: 'registry:ui',
       },
       {
-        path: 'ui/checkbox/index.ts',
+        path: 'ui/checkbox/index.vue',
         type: 'registry:ui',
       },
     ],
@@ -431,7 +431,7 @@ export const ui: Registry['items'] = [
         type: 'registry:ui',
       },
       {
-        path: 'ui/collapsible/index.ts',
+        path: 'ui/collapsible/index.vue',
         type: 'registry:ui',
       },
     ],
@@ -486,7 +486,7 @@ export const ui: Registry['items'] = [
         type: 'registry:ui',
       },
       {
-        path: 'ui/combobox/index.ts',
+        path: 'ui/combobox/index.vue',
         type: 'registry:ui',
       },
     ],
@@ -534,7 +534,7 @@ export const ui: Registry['items'] = [
         type: 'registry:ui',
       },
       {
-        path: 'ui/command/index.ts',
+        path: 'ui/command/index.vue',
         type: 'registry:ui',
       },
     ],
@@ -605,7 +605,7 @@ export const ui: Registry['items'] = [
         type: 'registry:ui',
       },
       {
-        path: 'ui/context-menu/index.ts',
+        path: 'ui/context-menu/index.vue',
         type: 'registry:ui',
       },
     ],
@@ -657,7 +657,7 @@ export const ui: Registry['items'] = [
         type: 'registry:ui',
       },
       {
-        path: 'ui/dialog/index.ts',
+        path: 'ui/dialog/index.vue',
         type: 'registry:ui',
       },
     ],
@@ -704,7 +704,7 @@ export const ui: Registry['items'] = [
         type: 'registry:ui',
       },
       {
-        path: 'ui/drawer/index.ts',
+        path: 'ui/drawer/index.vue',
         type: 'registry:ui',
       },
     ],
@@ -771,7 +771,7 @@ export const ui: Registry['items'] = [
         type: 'registry:ui',
       },
       {
-        path: 'ui/dropdown-menu/index.ts',
+        path: 'ui/dropdown-menu/index.vue',
         type: 'registry:ui',
       },
     ],
@@ -805,7 +805,7 @@ export const ui: Registry['items'] = [
         type: 'registry:ui',
       },
       {
-        path: 'ui/empty/index.ts',
+        path: 'ui/empty/index.vue',
         type: 'registry:ui',
       },
     ],
@@ -856,7 +856,7 @@ export const ui: Registry['items'] = [
         type: 'registry:ui',
       },
       {
-        path: 'ui/field/index.ts',
+        path: 'ui/field/index.vue',
         type: 'registry:ui',
       },
     ],
@@ -888,7 +888,7 @@ export const ui: Registry['items'] = [
         type: 'registry:ui',
       },
       {
-        path: 'ui/form/index.ts',
+        path: 'ui/form/index.vue',
         type: 'registry:ui',
       },
       {
@@ -919,7 +919,7 @@ export const ui: Registry['items'] = [
         type: 'registry:ui',
       },
       {
-        path: 'ui/hover-card/index.ts',
+        path: 'ui/hover-card/index.vue',
         type: 'registry:ui',
       },
     ],
@@ -934,7 +934,7 @@ export const ui: Registry['items'] = [
         type: 'registry:ui',
       },
       {
-        path: 'ui/input/index.ts',
+        path: 'ui/input/index.vue',
         type: 'registry:ui',
       },
     ],
@@ -969,7 +969,7 @@ export const ui: Registry['items'] = [
         type: 'registry:ui',
       },
       {
-        path: 'ui/input-group/index.ts',
+        path: 'ui/input-group/index.vue',
         type: 'registry:ui',
       },
     ],
@@ -996,7 +996,7 @@ export const ui: Registry['items'] = [
         type: 'registry:ui',
       },
       {
-        path: 'ui/input-otp/index.ts',
+        path: 'ui/input-otp/index.vue',
         type: 'registry:ui',
       },
     ],
@@ -1048,7 +1048,7 @@ export const ui: Registry['items'] = [
         type: 'registry:ui',
       },
       {
-        path: 'ui/item/index.ts',
+        path: 'ui/item/index.vue',
         type: 'registry:ui',
       },
     ],
@@ -1066,7 +1066,7 @@ export const ui: Registry['items'] = [
         type: 'registry:ui',
       },
       {
-        path: 'ui/kbd/index.ts',
+        path: 'ui/kbd/index.vue',
         type: 'registry:ui',
       },
     ],
@@ -1081,7 +1081,7 @@ export const ui: Registry['items'] = [
         type: 'registry:ui',
       },
       {
-        path: 'ui/label/index.ts',
+        path: 'ui/label/index.vue',
         type: 'registry:ui',
       },
     ],
@@ -1152,7 +1152,7 @@ export const ui: Registry['items'] = [
         type: 'registry:ui',
       },
       {
-        path: 'ui/menubar/index.ts',
+        path: 'ui/menubar/index.vue',
         type: 'registry:ui',
       },
     ],
@@ -1175,7 +1175,7 @@ export const ui: Registry['items'] = [
         type: 'registry:ui',
       },
       {
-        path: 'ui/native-select/index.ts',
+        path: 'ui/native-select/index.vue',
         type: 'registry:ui',
       },
     ],
@@ -1218,7 +1218,7 @@ export const ui: Registry['items'] = [
         type: 'registry:ui',
       },
       {
-        path: 'ui/navigation-menu/index.ts',
+        path: 'ui/navigation-menu/index.vue',
         type: 'registry:ui',
       },
     ],
@@ -1249,7 +1249,7 @@ export const ui: Registry['items'] = [
         type: 'registry:ui',
       },
       {
-        path: 'ui/number-field/index.ts',
+        path: 'ui/number-field/index.vue',
         type: 'registry:ui',
       },
     ],
@@ -1293,7 +1293,7 @@ export const ui: Registry['items'] = [
         type: 'registry:ui',
       },
       {
-        path: 'ui/pagination/index.ts',
+        path: 'ui/pagination/index.vue',
         type: 'registry:ui',
       },
     ],
@@ -1320,7 +1320,7 @@ export const ui: Registry['items'] = [
         type: 'registry:ui',
       },
       {
-        path: 'ui/pin-input/index.ts',
+        path: 'ui/pin-input/index.vue',
         type: 'registry:ui',
       },
     ],
@@ -1347,7 +1347,7 @@ export const ui: Registry['items'] = [
         type: 'registry:ui',
       },
       {
-        path: 'ui/popover/index.ts',
+        path: 'ui/popover/index.vue',
         type: 'registry:ui',
       },
     ],
@@ -1362,7 +1362,7 @@ export const ui: Registry['items'] = [
         type: 'registry:ui',
       },
       {
-        path: 'ui/progress/index.ts',
+        path: 'ui/progress/index.vue',
         type: 'registry:ui',
       },
     ],
@@ -1381,7 +1381,7 @@ export const ui: Registry['items'] = [
         type: 'registry:ui',
       },
       {
-        path: 'ui/radio-group/index.ts',
+        path: 'ui/radio-group/index.vue',
         type: 'registry:ui',
       },
     ],
@@ -1441,7 +1441,7 @@ export const ui: Registry['items'] = [
         type: 'registry:ui',
       },
       {
-        path: 'ui/range-calendar/index.ts',
+        path: 'ui/range-calendar/index.vue',
         type: 'registry:ui',
       },
     ],
@@ -1464,7 +1464,7 @@ export const ui: Registry['items'] = [
         type: 'registry:ui',
       },
       {
-        path: 'ui/resizable/index.ts',
+        path: 'ui/resizable/index.vue',
         type: 'registry:ui',
       },
     ],
@@ -1483,7 +1483,7 @@ export const ui: Registry['items'] = [
         type: 'registry:ui',
       },
       {
-        path: 'ui/scroll-area/index.ts',
+        path: 'ui/scroll-area/index.vue',
         type: 'registry:ui',
       },
     ],
@@ -1538,7 +1538,7 @@ export const ui: Registry['items'] = [
         type: 'registry:ui',
       },
       {
-        path: 'ui/select/index.ts',
+        path: 'ui/select/index.vue',
         type: 'registry:ui',
       },
     ],
@@ -1553,7 +1553,7 @@ export const ui: Registry['items'] = [
         type: 'registry:ui',
       },
       {
-        path: 'ui/separator/index.ts',
+        path: 'ui/separator/index.vue',
         type: 'registry:ui',
       },
     ],
@@ -1600,7 +1600,7 @@ export const ui: Registry['items'] = [
         type: 'registry:ui',
       },
       {
-        path: 'ui/sheet/index.ts',
+        path: 'ui/sheet/index.vue',
         type: 'registry:ui',
       },
     ],
@@ -1708,7 +1708,7 @@ export const ui: Registry['items'] = [
         type: 'registry:ui',
       },
       {
-        path: 'ui/sidebar/index.ts',
+        path: 'ui/sidebar/index.vue',
         type: 'registry:ui',
       },
       {
@@ -1726,7 +1726,7 @@ export const ui: Registry['items'] = [
         type: 'registry:ui',
       },
       {
-        path: 'ui/skeleton/index.ts',
+        path: 'ui/skeleton/index.vue',
         type: 'registry:ui',
       },
     ],
@@ -1741,7 +1741,7 @@ export const ui: Registry['items'] = [
         type: 'registry:ui',
       },
       {
-        path: 'ui/slider/index.ts',
+        path: 'ui/slider/index.vue',
         type: 'registry:ui',
       },
     ],
@@ -1756,7 +1756,7 @@ export const ui: Registry['items'] = [
         type: 'registry:ui',
       },
       {
-        path: 'ui/sonner/index.ts',
+        path: 'ui/sonner/index.vue',
         type: 'registry:ui',
       },
     ],
@@ -1770,7 +1770,7 @@ export const ui: Registry['items'] = [
         type: 'registry:ui',
       },
       {
-        path: 'ui/spinner/index.ts',
+        path: 'ui/spinner/index.vue',
         type: 'registry:ui',
       },
     ],
@@ -1809,7 +1809,7 @@ export const ui: Registry['items'] = [
         type: 'registry:ui',
       },
       {
-        path: 'ui/stepper/index.ts',
+        path: 'ui/stepper/index.vue',
         type: 'registry:ui',
       },
     ],
@@ -1824,7 +1824,7 @@ export const ui: Registry['items'] = [
         type: 'registry:ui',
       },
       {
-        path: 'ui/switch/index.ts',
+        path: 'ui/switch/index.vue',
         type: 'registry:ui',
       },
     ],
@@ -1871,7 +1871,7 @@ export const ui: Registry['items'] = [
         type: 'registry:ui',
       },
       {
-        path: 'ui/table/index.ts',
+        path: 'ui/table/index.vue',
         type: 'registry:ui',
       },
       {
@@ -1902,7 +1902,7 @@ export const ui: Registry['items'] = [
         type: 'registry:ui',
       },
       {
-        path: 'ui/tabs/index.ts',
+        path: 'ui/tabs/index.vue',
         type: 'registry:ui',
       },
     ],
@@ -1933,7 +1933,7 @@ export const ui: Registry['items'] = [
         type: 'registry:ui',
       },
       {
-        path: 'ui/tags-input/index.ts',
+        path: 'ui/tags-input/index.vue',
         type: 'registry:ui',
       },
     ],
@@ -1948,7 +1948,7 @@ export const ui: Registry['items'] = [
         type: 'registry:ui',
       },
       {
-        path: 'ui/textarea/index.ts',
+        path: 'ui/textarea/index.vue',
         type: 'registry:ui',
       },
     ],
@@ -1963,7 +1963,7 @@ export const ui: Registry['items'] = [
         type: 'registry:ui',
       },
       {
-        path: 'ui/toggle/index.ts',
+        path: 'ui/toggle/index.vue',
         type: 'registry:ui',
       },
     ],
@@ -1983,7 +1983,7 @@ export const ui: Registry['items'] = [
         type: 'registry:ui',
       },
       {
-        path: 'ui/toggle-group/index.ts',
+        path: 'ui/toggle-group/index.vue',
         type: 'registry:ui',
       },
     ],
@@ -2010,7 +2010,7 @@ export const ui: Registry['items'] = [
         type: 'registry:ui',
       },
       {
-        path: 'ui/tooltip/index.ts',
+        path: 'ui/tooltip/index.vue',
         type: 'registry:ui',
       },
     ],

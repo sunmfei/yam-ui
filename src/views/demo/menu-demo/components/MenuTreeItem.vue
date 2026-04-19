@@ -58,7 +58,7 @@
 </template>
 
 <script setup lang="ts">
-import type { MenuNode } from '@/types/menu'
+import type { MenuNode } from '@/types'
 
 interface Props {
   item: MenuNode

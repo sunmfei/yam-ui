@@ -1,4 +1,4 @@
-import type { MenuNode } from '@/types/menu'
+import type { MenuNode } from '@/types'
 
 /**
  * 菜单管理 API

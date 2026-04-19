@@ -1,4 +1,4 @@
-import type { AppRoute, BackendRoute, MergedRoute, RouteTreeNode } from '@/types/route'
+import type { AppRoute, BackendRoute, MergedRoute, RouteTreeNode } from '@/types'
 
 // 导入所有模块的路由配置
 import { localRoutes } from '@/views/router'

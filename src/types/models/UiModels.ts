@@ -1,7 +1,7 @@
 /**
- * 背景类型定义
+ * UI 相关模型
  */
-export type BackgroundType = 'particles' | 'gradient' | 'grid' | 'wave' | 'nature' | 'none'
+import type { BackgroundType } from '../enums/BackgroundType'
 
 /**
  * 背景选项接口

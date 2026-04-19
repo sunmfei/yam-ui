@@ -2,8 +2,8 @@
  * 系统路由配置（404、登录等）
  * 这些路由是应用级别的基础路由
  */
-import type { FrontendRoute } from '@/types/route'
-import { RouteSource } from '@/types/route'
+import type { FrontendRoute } from '@/types'
+import { RouteSource } from '@/types'
 
 /**
  * 基础页面路由

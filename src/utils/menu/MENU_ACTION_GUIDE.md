@@ -23,7 +23,7 @@
 
 ```typescript
 import { menuActionRegistry } from '@/utils/menu/menuActionRegistry'
-import type { ListItemData } from '@/types/menu'
+import type { ListItemData } from '@/data/menu'
 
 // 注册列表项点击处理
 menuActionRegistry.registerListItemClick('background-change', async (item: ListItemData) => {
@@ -99,7 +99,7 @@ const allMenus = [...DEFAULT_MENU, ...convertedMenus]
 ```typescript
 // src/utils/menu/menuActions.ts
 import { menuActionRegistry } from './menuActionRegistry'
-import type { ListItemData } from '@/types/menu'
+import type { ListItemData } from '@/data/menu'
 
 export function initBackgroundActions() {
   // 点击处理

@@ -12,14 +12,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { BACKGROUND_OPTIONS } from '@/types/background'
+import { BACKGROUND_OPTIONS, LocalCacheKey } from '@/types'
 
 import Search from '@/views/search/index.vue'
-import AppNavbar from '@/components/modules/navbar/index.vue'
-import type { MenuNode } from '@/types/menu'
-//import { DEFAULT_MENU } from './data/MenuData'
+import AppNavbar from '@/components/modules/menu/index.vue'
+import { type MenuNode } from '@/types'
+
+import { DEFAULT_MENU } from './data/MenuData'
 import LocalCache from '@/utils/cache/localCache.ts'
-import { LocalCacheKey } from '@/types/cache.ts'
 
 const menuNodes = ref<MenuNode[]>([])
 
@@ -28,8 +28,9 @@ onMounted(() => {
 })
 
 const getMenuData = () => {
-  let localMenuData = LocalCache.get<MenuNode[]>(LocalCacheKey.MENU_CONFIG) || []
-  return [...localMenuData]
+  const localMenuData = LocalCache.get<MenuNode[]>(LocalCacheKey.MENU_CONFIG)
+  // 优先使用缓存数据，如果缓存不存在则使用默认数据
+  return localMenuData && localMenuData.length > 0 ? localMenuData : DEFAULT_MENU
 }
 
 const appStore = useAppStore()
@@ -43,7 +44,7 @@ const selectedIcon = ref('Home')
 
 <template>
   <div class="min-h-screen bg-transparent overflow-hidden">
-    <AppNavbar :menu-nodes="menuNodes" theme="transparent" />
+    <AppNavbar :menus="menuNodes" />
     <Search />
     <!-- Features Section -->
     <div class="container mx-auto px-4 py-16">
@@ -60,7 +61,7 @@ const selectedIcon = ref('Home')
           </CardContent>
           <CardFooter>
             <div class="flex gap-2">
-              <Badge variant="success">Vite</Badge>
+              <Badge variant="default">Vite</Badge>
               <Badge variant="secondary">Fast</Badge>
             </div>
           </CardFooter>
@@ -76,7 +77,7 @@ const selectedIcon = ref('Home')
           </CardContent>
           <CardFooter>
             <div class="flex gap-2">
-              <Badge variant="warning">TailwindCSS</Badge>
+              <Badge variant="default">TailwindCSS</Badge>
               <Badge variant="secondary">Responsive</Badge>
             </div>
           </CardFooter>
@@ -114,7 +115,7 @@ const selectedIcon = ref('Home')
             <div class="space-y-4">
               <div class="flex items-center justify-between">
                 <span>Current Theme:</span>
-                <Badge :variant="appStore.isDark ? 'secondary' : 'warning'">
+                <Badge :variant="appStore.isDark ? 'secondary' : 'default'">
                   {{ appStore.isDark ? 'Dark Mode 🌙' : 'Light Mode ☀️' }}
                 </Badge>
               </div>

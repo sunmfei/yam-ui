@@ -51,7 +51,7 @@ http://localhost:5173/tree-table-demo
 ## 代码位置
 
 - **示例页面：** `src/views/tree-table-demo/index.vue`
-- **路由配置：** `src/views/tree-table-demo/router/index.ts`
+- **路由配置：** `src/views/tree-table-demo/router/index.vue`
 - **组件源码：** `src/components/ui/tree-table/index.vue`
 - **类型定义：** `src/components/ui/tree-table/types.ts`
 - **详细文档：** `src/components/ui/tree-table/README.md`
@@ -67,7 +67,7 @@ http://localhost:5173/tree-table-demo
 
 <script setup lang="ts">
 import TreeTable from '@/components/ui/tree-table/index.vue'
-import type { TreeTableNode } from '@/components/ui/tree-table/types'
+import type { TreeTableNode } from '@/components/ui/tree-table/data'
 
 const myColumns = [
   { key: 'name', title: '名称' },

@@ -1,8 +1,8 @@
 /**
  * Menu 模块路由配置
  */
-import type { FrontendRoute } from '@/types/route'
-import { RouteSource } from '@/types/route'
+import type { FrontendRoute } from '@/types'
+import { RouteSource } from '@/types'
 
 export const menuRoutes: FrontendRoute[] = [
   {

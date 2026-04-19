@@ -171,7 +171,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { Plus, Edit, Trash2, Check, RotateCcw } from 'lucide-vue-next'
-import type { MenuNode } from '@/types/menu'
+import type { MenuNode } from '@/types'
 import { menuConfig } from '@/utils/menu/MenuUtils'
 import { ElMessage, ElMessageBox } from '@/utils/message'
 

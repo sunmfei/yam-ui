@@ -1,17 +1,11 @@
-import type { RouteRecordRaw } from 'vue-router'
-
 /**
- * 路由来源类型
+ * 路由相关模型
  */
-export const RouteSource = {
-  FRONTEND: 'frontend', // 前端静态路由
-  BACKEND: 'backend', // 后端动态路由
-} as const
-
-export type RouteSource = (typeof RouteSource)[keyof typeof RouteSource]
+import type { RouteRecordRaw } from 'vue-router'
+import { RouteSource, type RouteSourceType } from '../constants/RouteConstants'
 
 /**
- * 扩展的路由元信息
+ * 路由元信息
  */
 export interface AppRouteMeta {
   /** 页面标题 */
@@ -29,7 +23,7 @@ export interface AppRouteMeta {
   /** 是否隐藏 */
   hidden?: boolean
   /** 路由来源 */
-  source?: RouteSource
+  source?: RouteSourceType
   /** 父级路由名称 */
   parentName?: string
   /** 额外数据 */
@@ -50,7 +44,7 @@ export interface AppRoute extends Omit<RouteRecordRaw, 'meta' | 'children'> {
   /** 子路由 */
   children?: AppRoute[]
   /** 路由来源 */
-  source?: RouteSource
+  source?: RouteSourceType
 }
 
 /**

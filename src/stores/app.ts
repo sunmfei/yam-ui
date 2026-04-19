@@ -1,38 +1,36 @@
 import { defineStore } from 'pinia'
-import { ref, computed, watch } from 'vue'
-import type { BackgroundType } from '@/types/background'
+import { ref, computed } from 'vue'
+import { useColorMode } from '@vueuse/core'
+import type { BackgroundType } from '@/types'
 import { localCache, LocalCacheKey } from '@/utils/cache'
 
 export const useAppStore = defineStore('app', () => {
+  // 使用 @vueuse/core 的 useColorMode 管理主题
+  const mode = useColorMode({
+    initialValue: 'auto',
+    disableTransition: false,
+  })
+
   // State
-  const isDark = ref(false)
   const sidebarCollapsed = ref(false)
   const language = ref('zh-CN')
   const backgroundType = ref<BackgroundType>('nature')
 
-  // Getters
-  const theme = computed(() => (isDark.value ? 'dark' : 'light'))
+  // Getters - 计算属性，从 mode 派生 isDark
+  const isDark = computed(() => mode.value === 'dark')
+  const theme = computed(() => mode.value)
 
   // Actions
   function toggleTheme() {
-    isDark.value = !isDark.value
-    updateThemeClass()
+    mode.value = mode.value === 'dark' ? 'light' : 'dark'
   }
 
   function setTheme(dark: boolean) {
-    isDark.value = dark
-    updateThemeClass()
+    mode.value = dark ? 'dark' : 'light'
   }
 
-  function updateThemeClass() {
-    // 更新 DOM class
-    if (isDark.value) {
-      document.documentElement.classList.add('dark')
-    } else {
-      document.documentElement.classList.remove('dark')
-    }
-    // 保存到本地缓存
-    localCache.set(LocalCacheKey.THEME, isDark.value ? 'dark' : 'light')
+  function setAutoTheme() {
+    mode.value = 'auto'
   }
 
   function toggleSidebar() {
@@ -57,14 +55,9 @@ export const useAppStore = defineStore('app', () => {
     const savedLanguage = localCache.get<string>(LocalCacheKey.LANGUAGE)
     const savedBackgroundType = localCache.get<BackgroundType>(LocalCacheKey.BACKGROUND_TYPE)
 
+    // 恢复主题设置（useColorMode 会自动处理 DOM class）
     if (savedTheme) {
-      isDark.value = savedTheme === 'dark'
-      updateThemeClass()
-    } else {
-      // 检测系统主题偏好
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-      isDark.value = prefersDark
-      updateThemeClass()
+      mode.value = savedTheme as 'light' | 'dark' | 'auto'
     }
 
     if (savedLanguage) {
@@ -76,22 +69,18 @@ export const useAppStore = defineStore('app', () => {
     }
   }
 
-  // 监听主题变化，自动保存
-  watch(isDark, () => {
-    updateThemeClass()
-  })
-
   return {
     // State
-    isDark,
     sidebarCollapsed,
     language,
     backgroundType,
     // Getters
+    isDark,
     theme,
     // Actions
     toggleTheme,
     setTheme,
+    setAutoTheme,
     toggleSidebar,
     setLanguage,
     setBackgroundType,

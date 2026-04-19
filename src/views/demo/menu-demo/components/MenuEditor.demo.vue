@@ -45,7 +45,7 @@
 import { ref, onMounted } from 'vue'
 import MenuEditor from './MenuEditor.vue'
 import { menuConfig } from '@/views/search/data/MenuData'
-import type { MenuItem } from '@/types/menu'
+import type { MenuItem } from '@/types'
 import { ElMessage } from '@/utils/message'
 
 const showEditor = ref(false)

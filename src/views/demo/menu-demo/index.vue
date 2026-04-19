@@ -433,7 +433,7 @@ import type {
   TreeTableSelectionConfig,
   TreeTableToolbarConfig,
 } from '@/components/ui/tree-table/types'
-import type { MenuNode, MenuNodeType } from '@/types/menu'
+import type { MenuNode, MenuNodeType } from '@/types'
 import { DEFAULT_MENU } from '@/views/home/data/MenuData'
 import { ElMessage, ElMessageBox } from '@/utils/message'
 

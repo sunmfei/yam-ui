@@ -1,4 +1,4 @@
-import type { AppRoute, RouteTreeNode } from '@/types/route'
+import type { AppRoute, RouteTreeNode } from '@/types'
 import { routeManager } from './manager'
 
 /**

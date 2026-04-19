@@ -1,19 +1,14 @@
 /**
- * 菜单 Action 类型（执行行为）
- */
-export type ActionHandler = (payload?: unknown) => void | Promise<void>
-
-/**
- * 菜单 Getter 类型（获取展示值）
- */
-export type GetterHandler = () => string | undefined
-
-/**
  * 菜单注册表
  *
  * 职责拆分：
  * 1. action：执行行为（点击、切换、提交）
  * 2. getter：获取展示值（当前选中项）
+ */
+import type { ActionHandler, GetterHandler } from './ActionHandlers'
+
+/**
+ * ActionHub - 菜单动作和状态管理器
  */
 class ActionHub {
   /**
@@ -60,7 +55,7 @@ class ActionHub {
     const handler = this.getAction(key)
     if (!handler) return
 
-    return await handler(payload)
+    return handler(payload)
   }
 
   // =========================

@@ -99,5 +99,5 @@ export default router
 // 导出路由管理器和工具函数
 export { routeManager } from './manager'
 export { getMenuRoutes, getRouteTree, findRouteByName, hasRoute, logRoutes } from './utils'
-export type { BackendRoute } from '@/types/route'
-export { RouteSource } from '@/types/route'
+export type { BackendRoute } from '@/types'
+export { RouteSource } from '@/types'

@@ -1,8 +1,4 @@
 /**
- * 缓存类型定义
- */
-
-/**
  * 本地缓存键名（用户行为数据）
  * 所有本地缓存 key 必须以 'local_' 开头
  */
@@ -15,7 +11,7 @@ export const LocalCacheKey = {
   MENU_CONFIG: 'local_menu_data', // 用户自定义菜单配置
 } as const
 
-export type LocalCacheKey = (typeof LocalCacheKey)[keyof typeof LocalCacheKey]
+export type LocalCacheKeyType = (typeof LocalCacheKey)[keyof typeof LocalCacheKey]
 
 /**
  * 系统缓存键名（服务器数据）
@@ -30,27 +26,4 @@ export const SystemCacheKey = {
   MENU_DATA: 'sys_menuData', // 后端菜单数据
 } as const
 
-export type SystemCacheKey = (typeof SystemCacheKey)[keyof typeof SystemCacheKey]
-
-/**
- * 缓存选项
- */
-export interface CacheOptions {
-  /** 过期时间（毫秒），0 表示永不过期 */
-  expire?: number
-  /** 是否加密存储 */
-  encrypt?: boolean
-}
-
-/**
- * 缓存项结构
- */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export interface CacheItem<T = any> {
-  /** 数据 */
-  data: T
-  /** 创建时间戳 */
-  timestamp: number
-  /** 过期时间戳 */
-  expireAt: number | null
-}
+export type SystemCacheKeyType = (typeof SystemCacheKey)[keyof typeof SystemCacheKey]

@@ -1,24 +1,9 @@
 <script setup lang="ts">
-import { watch } from 'vue'
-import { useAppStore } from '@/stores/app'
 import { useElementTheme } from '@/config/element-theme'
 import BaseBackground from '@/components/base/background/BaseBackground.vue'
+import { Toaster } from '@/components/ui/sonner'
 
-const appStore = useAppStore()
 const { customProperties } = useElementTheme()
-
-// 监听主题变化，更新 Element Plus 的深色模式和自定义样式
-watch(
-  () => appStore.isDark,
-  (isDark) => {
-    if (isDark) {
-      document.documentElement.classList.add('dark')
-    } else {
-      document.documentElement.classList.remove('dark')
-    }
-  },
-  { immediate: true }
-)
 </script>
 
 <template>
@@ -37,6 +22,10 @@ watch(
           </transition>
         </router-view>
       </main>
+    </div>
+    <!-- Toast 通知 - 最高层级 -->
+    <div class="fixed inset-0 pointer-events-none z-[99999]">
+      <Toaster position="top-center" :duration="3000" />
     </div>
   </div>
 </template>

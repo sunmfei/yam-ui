@@ -177,7 +177,7 @@ const basicData: TreeTableNode[] = [
         name: 'utils',
         type: '文件夹',
         size: '-',
-        children: [{ id: '1-2-1', name: 'index.ts', type: '文件', size: '0.5 KB' }],
+        children: [{ id: '1-2-1', name: 'index.vue', type: '文件', size: '0.5 KB' }],
       },
     ],
   },

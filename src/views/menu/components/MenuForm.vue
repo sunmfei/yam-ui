@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { MenuNode } from '@/types/menu'
+import type { MenuNode } from '@/types'
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
@@ -19,7 +19,7 @@ import { formFields } from '../data/menu.from.data'
 /**
  * MenuForm - 菜单表单组件
  *
- * 纯表单组件，不包含对话框逻辑
+ * 纯表单组件，包含完整的验证和提交逻辑
  * 使用 shadcn-vue Form + vee-validate 进行表单验证
  */
 defineOptions({
@@ -32,7 +32,7 @@ interface Props {
 }
 
 interface Emits {
-  (e: 'update:formData', value: Omit<MenuNode, 'id' | 'children'>): void
+  (e: 'submit', value: Omit<MenuNode, 'id' | 'children'>): void
 }
 
 const props = defineProps<Props>()
@@ -42,9 +42,9 @@ const emit = defineEmits<Emits>()
 const formSchema = toTypedSchema(
   z.object({
     name: z.string().min(1, '节点名称不能为空'),
-    type: z.enum(['route', 'button', 'dropdown', 'list', 'list-item']),
+    type: z.enum(['route', 'action', 'menu', 'select', 'option']),
     path: z.string().optional(),
-    component: z.string().optional(),
+    actionKey: z.string().optional(),
     icon: z.string().optional(),
     order: z.number().min(0, '排序号不能小于0').optional(),
     hidden: z.boolean().default(false),
@@ -53,15 +53,19 @@ const formSchema = toTypedSchema(
 )
 
 // 初始化表单
-const { values, setFieldValue } = useForm({
+const { values, setFieldValue, handleSubmit, errors } = useForm({
   validationSchema: formSchema,
-  initialValues: props.formData,
+  initialValues: {
+    name: props.formData.name ?? '',
+    type: props.formData.type ?? 'route',
+    path: props.formData.path ?? '',
+    actionKey: props.formData.actionKey ?? '',
+    icon: props.formData.icon ?? '',
+    order: props.formData.order ?? 0,
+    hidden: props.formData.hidden ?? false,
+    disabled: props.formData.disabled ?? false,
+  },
 })
-
-// 同步表单值到父组件
-const syncToParent = () => {
-  emit('update:formData', { ...values })
-}
 
 function shouldShowField(field: { showWhen?: (formData: Record<string, unknown>) => boolean }) {
   if (field.showWhen) {
@@ -69,6 +73,23 @@ function shouldShowField(field: { showWhen?: (formData: Record<string, unknown>)
   }
   return true
 }
+
+// 表单提交处理
+const onSubmit = handleSubmit((validValues) => {
+  emit('submit', validValues as Omit<MenuNode, 'id' | 'children'>)
+})
+
+// 暴露验证和提交方法给父组件
+defineExpose({
+  validate: () => {
+    return new Promise((resolve) => {
+      onSubmit()
+      resolve(Object.keys(errors.value).length === 0)
+    })
+  },
+  getValues: () => values,
+  submit: onSubmit,
+})
 </script>
 
 <template>
@@ -85,13 +106,8 @@ function shouldShowField(field: { showWhen?: (formData: Record<string, unknown>)
             <Input
               v-if="field.type === 'text'"
               :placeholder="field.placeholder"
-              :model-value="values[field.key]"
-              @update:model-value="
-                (val) => {
-                  setFieldValue(field.key, val)
-                  syncToParent()
-                }
-              "
+              :model-value="String(values[field.key as keyof typeof values] ?? '')"
+              @update:model-value="(val) => setFieldValue(field.key as keyof typeof values, val)"
             />
 
             <!-- 数字输入 -->
@@ -100,24 +116,18 @@ function shouldShowField(field: { showWhen?: (formData: Record<string, unknown>)
               type="number"
               :min="field.min"
               :placeholder="field.placeholder"
-              :model-value="values[field.key]"
+              :model-value="Number(values[field.key as keyof typeof values] ?? 0)"
               @update:model-value="
-                (val) => {
-                  setFieldValue(field.key, Number(val))
-                  syncToParent()
-                }
+                (val) => setFieldValue(field.key as keyof typeof values, Number(val))
               "
             />
 
             <!-- 下拉选择 -->
             <Select
               v-else-if="field.type === 'select'"
-              :model-value="String(values[field.key])"
+              :model-value="String(values[field.key as keyof typeof values])"
               @update:model-value="
-                (val) => {
-                  setFieldValue(field.key, val)
-                  syncToParent()
-                }
+                (val) => setFieldValue(field.key as keyof typeof values, (val as string) ?? '')
               "
             >
               <SelectTrigger>
@@ -133,14 +143,9 @@ function shouldShowField(field: { showWhen?: (formData: Record<string, unknown>)
             <!-- 图标选择器 -->
             <SunIconPicker
               v-else-if="field.type === 'icon-picker'"
-              :model-value="String(values[field.key] || '')"
+              :model-value="String(values[field.key as keyof typeof values] || '')"
               :is-block="true"
-              @update:model-value="
-                (val) => {
-                  setFieldValue(field.key, val)
-                  syncToParent()
-                }
-              "
+              @update:model-value="(val) => setFieldValue(field.key as keyof typeof values, val)"
             />
           </FormControl>
           <FormMessage />
@@ -159,12 +164,7 @@ function shouldShowField(field: { showWhen?: (formData: Record<string, unknown>)
             <FormControl>
               <Switch
                 :checked="values.hidden"
-                @update:checked="
-                  (val) => {
-                    setFieldValue('hidden', val)
-                    syncToParent()
-                  }
-                "
+                @update:checked="(val: boolean) => setFieldValue('hidden', val)"
               />
             </FormControl>
           </FormItem>
@@ -180,12 +180,7 @@ function shouldShowField(field: { showWhen?: (formData: Record<string, unknown>)
             <FormControl>
               <Switch
                 :checked="values.disabled"
-                @update:checked="
-                  (val) => {
-                    setFieldValue('disabled', val)
-                    syncToParent()
-                  }
-                "
+                @update:checked="(val: boolean) => setFieldValue('disabled', val)"
               />
             </FormControl>
           </FormItem>

@@ -1,5 +1,5 @@
 import { localCache, LocalCacheKey } from '@/utils/cache'
-import type { MenuNode } from '@/types/menu'
+import type { MenuNode } from '@/types'
 import { convertDatabaseMenus } from '@/utils/menu/menuConverter.ts'
 
 /**

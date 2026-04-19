@@ -155,7 +155,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import { Plus, RotateCcw, Download, Upload } from 'lucide-vue-next'
-import type { MenuNode } from '@/types/menu'
+import type { MenuNode } from '@/types'
 import { ElMessage, ElMessageBox } from '@/utils/message'
 import MenuTreeItem from './MenuTreeItem.vue'
 

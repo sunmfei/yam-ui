@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import type { MenuNode } from '@/types/menu'
+import { computed, ref } from 'vue'
+import type { MenuNode } from '@/types'
 import MenuForm from './MenuForm.vue'
 import BaseDialog from '@/components/base/modal/BaseDialog.vue'
 import { dialogConfig } from '../data/menu.dialog.data'
@@ -22,14 +22,16 @@ interface Props {
 
 interface Emits {
   (e: 'update:open', value: boolean): void
-  (e: 'update:formData', value: Omit<MenuNode, 'id' | 'children'>): void
-  (e: 'confirm'): void
+  (e: 'submit', value: Omit<MenuNode, 'id' | 'children'>): void
 }
 
 const props = withDefaults(defineProps<Props>(), {
   open: false,
 })
 const emit = defineEmits<Emits>()
+
+// 表单引用
+const formRef = ref<InstanceType<typeof MenuForm> | null>(null)
 
 const isOpen = computed({
   get: () => props.open,
@@ -50,8 +52,9 @@ function handleCancel() {
   isOpen.value = false
 }
 
-function handleConfirm() {
-  emit('confirm')
+async function handleConfirm() {
+  // 调用表单的 submit 方法，触发表单验证和提交
+  formRef.value?.submit()
 }
 </script>
 
@@ -76,10 +79,6 @@ function handleConfirm() {
       },
     ]"
   >
-    <MenuForm
-      :is-edit-mode="isEditMode"
-      :form-data="formData"
-      @update:form-data="$emit('update:formData', $event)"
-    />
+    <MenuForm ref="formRef" :is-edit-mode="isEditMode" :form-data="formData" />
   </BaseDialog>
 </template>

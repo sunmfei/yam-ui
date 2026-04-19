@@ -30,8 +30,30 @@ export const headerActions = [
 export const typeFilterOptions = [
   { value: 'all', label: '全部类型' },
   { value: 'route', label: '路由' },
-  { value: 'button', label: '按钮' },
-  { value: 'dropdown', label: '下拉菜单' },
-  { value: 'list', label: '列表' },
-  { value: 'list-item', label: '列表项' },
+  { value: 'action', label: '动作' },
+  { value: 'menu', label: '菜单' },
+  { value: 'select', label: '选择器' },
+  { value: 'option', label: '选项' },
 ]
+
+/**
+ * 类型标签映射
+ */
+export const typeLabelMap: Record<string, string> = {
+  route: '路由',
+  action: '动作',
+  menu: '菜单',
+  select: '选择器',
+  option: '选项',
+}
+
+/**
+ * 类型徽章样式映射
+ */
+export const typeVariantMap: Record<string, 'default' | 'secondary' | 'outline'> = {
+  route: 'default',
+  action: 'secondary',
+  menu: 'outline',
+  select: 'default',
+  option: 'secondary',
+}
