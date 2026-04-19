@@ -14,7 +14,7 @@
     @row-click="handleRowClick"
   >
     <!-- 面包屑导航 -->
-    <template #toolbar-left>
+    <!--    <template #toolbar-left>
       <SunBreadcrumb
         :items="[
           { title: '首页', href: '/' },
@@ -22,7 +22,7 @@
           { title: '菜单管理', isCurrent: true },
         ]"
       />
-    </template>
+    </template>-->
 
     <template #name="{ row }">
       <div v-if="row" class="flex min-w-0 items-center gap-3 transition-all hover:gap-4">
@@ -132,7 +132,6 @@ import { computed, onMounted, ref } from 'vue'
 import { Plus, Upload } from 'lucide-vue-next'
 import { Badge } from '@/components/ui/badge'
 import BaseButton from '@/components/base/button/BaseButton.vue'
-import { SunBreadcrumb } from '@/components/business/sun-breadcrumb'
 import { BaseTable } from '@/components/modules/table'
 import type { TreeTableNode } from '@/components/ui/tree-table/types'
 import type { MenuNode } from '@/types'

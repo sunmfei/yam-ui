@@ -15,9 +15,9 @@
       - 中性色视觉体系
       - 与 shadcn 风格统一
   -->
-  <div class="w-full max-w-180 mx-auto">
+  <div class="w-full max-w-[28rem] sm:max-w-[36rem] mx-auto px-2 sm:px-0">
     <div
-      class="flex items-center gap-2 px-3 py-2 rounded-xl bg-background border border-border shadow-sm transition-all duration-200"
+      class="flex flex-wrap sm:flex-nowrap items-center gap-2 px-3 py-2 rounded-xl bg-background border border-border shadow-sm transition-all duration-200"
       :class="focus ? 'ring-1 ring-border shadow-md' : 'hover:shadow-md'"
     >
       <!-- 图标 -->
@@ -51,7 +51,7 @@
       />
 
       <!-- 引擎选择 -->
-      <div v-if="engines.length" class="relative engine-selector">
+      <div v-if="engines.length" class="relative engine-selector shrink-0">
         <button
           class="px-2 py-1 text-xs rounded-md bg-muted text-foreground hover:bg-accent transition"
           @click="toggleMenu"
@@ -61,7 +61,7 @@
 
         <div
           v-if="showMenu"
-          class="absolute right-0 top-full mt-2 w-40 bg-popover border border-border rounded-md shadow-md z-50"
+          class="absolute right-0 top-full mt-2 w-40 bg-popover border border-border rounded-md shadow-md z-50 overflow-hidden"
         >
           <button
             v-for="eng in engines"
@@ -81,7 +81,7 @@
 
       <!-- 搜索 -->
       <button
-        class="px-3 py-1 text-sm rounded-md bg-primary text-primary-foreground hover:opacity-90 transition"
+        class="px-3 py-1 text-sm rounded-md bg-primary text-primary-foreground hover:opacity-90 transition shrink-0"
         @click="handleSearch"
       >
         搜索
@@ -89,7 +89,10 @@
     </div>
 
     <!-- 快捷提示 -->
-    <div class="mt-3 text-center text-xs text-muted-foreground">Enter 搜索 · / 聚焦 · Esc 清除</div>
+    <div class="mt-3 text-center text-xs text-muted-foreground px-2">
+      <span class="hidden sm:inline">Enter 搜索 · / 聚焦 · Esc 清除</span>
+      <span class="sm:hidden">点击搜索按钮</span>
+    </div>
   </div>
 </template>
 

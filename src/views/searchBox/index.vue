@@ -21,7 +21,7 @@ const handleSearch = (kw: string, engine: any) => {
 </script>
 
 <template>
-  <div class="min-h-screen flex items-center justify-center">
+  <div class="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 py-8">
     <ModernSearch v-model="keyword" :engines="engines" @search="handleSearch" />
   </div>
 </template>
