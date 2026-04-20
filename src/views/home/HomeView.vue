@@ -1,32 +1,24 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
-import { LocalCacheKey, type MenuNode, type NavigationItem } from '@/types'
+import { LocalCacheKey, type MenuNode } from '@/types'
 import { DEFAULT_MENU } from './data/MenuData'
-import { DEFAULT_NAVIGATION } from './data/NavigationData'
 import LocalCache from '@/utils/cache/localCache.ts'
 import AppMenubar from '@/components/modules/menu/index.vue'
 import SearchBox from '@/views/searchBox/index.vue'
 import { Globe, Search } from 'lucide-vue-next'
 import { Dock } from '@/components/inspira'
-import { SunNavigationCards } from '@/components/business'
+import { NavigationPage } from '@/components/modules/navigation'
 
 const menuNodes = ref<MenuNode[]>([])
-const navigationItems = ref<NavigationItem[]>([])
 const currentPage = ref(0) // 0: 搜索页, 1: 导航页
 
 onMounted(() => {
   menuNodes.value = getMenuData()
-  navigationItems.value = getNavigationData()
 })
 
 const getMenuData = () => {
   const localMenuData = LocalCache.get<MenuNode[]>(LocalCacheKey.MENU_CONFIG)
   return localMenuData && localMenuData.length > 0 ? localMenuData : DEFAULT_MENU
-}
-
-const getNavigationData = () => {
-  const localNavData = LocalCache.get<NavigationItem[]>(LocalCacheKey.NAVIGATION_CONFIG)
-  return localNavData && localNavData.length > 0 ? localNavData : DEFAULT_NAVIGATION || []
 }
 
 // 切换到指定页面
@@ -65,18 +57,8 @@ const dockItems = computed(() => [
 
       <!-- 第二页：导航 -->
       <Transition name="page-slide" mode="out-in">
-        <div v-if="currentPage === 1" key="navigation" class="absolute inset-0 overflow-y-auto p-6">
-          <!-- 页面标题 -->
-          <div class="mb-8 text-center">
-            <div class="flex items-center justify-center gap-3">
-              <Globe class="h-8 w-8 text-primary" />
-              <h1 class="text-3xl font-bold tracking-tight">网址导航</h1>
-            </div>
-            <p class="mt-2 text-muted-foreground">快速访问常用网站</p>
-          </div>
-
-          <!-- Sun Navigation Cards with Expandable Gallery -->
-          <SunNavigationCards :items="navigationItems" />
+        <div v-if="currentPage === 1" key="navigation" class="absolute inset-0 overflow-y-auto">
+          <NavigationPage />
         </div>
       </Transition>
     </div>
