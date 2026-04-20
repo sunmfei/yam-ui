@@ -27,6 +27,7 @@ const backgroundOptions = [
   { value: 'grid', label: '网格背景' },
   { value: 'wave', label: '波浪背景' },
   { value: 'nature', label: '自然背景' },
+  { value: 'sakura', label: '樱花飘落' },
 ]
 
 // 切换主题

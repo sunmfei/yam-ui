@@ -2,12 +2,12 @@
 import { computed } from 'vue'
 import { useAppStore } from '@/stores/app'
 import { BaseParticlesBg, BaseGradientBg, BaseGridBg, BaseWaveBg } from '@/components/base/ui-proxy'
-import { NatureBg } from '@/components/ui/bg'
+import { NatureBg, SakuraTreeSceneBg } from '@/components/ui/bg'
 
 /**
  * BaseBackground - 基础背景组件
  *
- * 提供多种背景效果：粒子、渐变、网格、波浪
+ * 提供多种背景效果：粒子、渐变、网格、波浪、樱花
  */
 defineOptions({
   name: 'BaseBackground',
@@ -44,8 +44,11 @@ const particleColor = computed(() => {
     <!-- 波浪背景 -->
     <BaseWaveBg v-else-if="appStore.backgroundType === 'wave'" />
 
-    <!-- 波浪背景 -->
+    <!-- 自然背景 -->
     <NatureBg v-else-if="appStore.backgroundType === 'nature'" />
+
+    <!-- 樱花树场景背景 -->
+    <SakuraTreeSceneBg v-else-if="appStore.backgroundType === 'sakura'" class="absolute inset-0" />
 
     <!-- 默认背景（当选择 none 时显示基础背景色） -->
     <div v-else class="absolute inset-0 bg-white dark:bg-gray-900"></div>

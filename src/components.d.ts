@@ -29,7 +29,7 @@ declare module 'vue' {
     MenuRender: typeof import('./components/modules/menu/components/MenuRender.vue')['default']
     MenuRoot: typeof import('./components/modules/menu/components/MenuRoot.vue')['default']
     ModernSearch: typeof import('./components/modules/search/ModernSearch.vue')['default']
-    Navbar: typeof import('./components/modules/navbar/Navbar.vue')['default']
+    Navbar: typeof import('./components/modules/navbar/index.vue')['default']
     PanelMenuRecursive: typeof import('./components/modules/base-panel/components/PanelMenuRecursive.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

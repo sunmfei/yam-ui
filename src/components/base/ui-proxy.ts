@@ -58,6 +58,8 @@ export { NatureBg as BaseNatureBg } from '@/components/ui/bg'
 export { NatureBgBak as BaseNatureBgBak } from '@/components/ui/bg'
 export { ParticlesBg as BaseParticlesBg } from '@/components/ui/bg'
 export { WaveBg as BaseWaveBg } from '@/components/ui/bg'
+export { SakuraBg as BaseSakuraBg } from '@/components/ui/bg'
+export { SakuraTreeSceneBg as BaseSakuraTreeSceneBg } from '@/components/ui/bg'
 
 // breadcrumb 相关
 export { Breadcrumb as BaseBreadcrumb } from '@/components/ui/breadcrumb'
