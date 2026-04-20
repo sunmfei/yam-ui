@@ -6,35 +6,36 @@
  */
 
 import { ref, computed } from 'vue'
+import MotionWrapper from './components/effect/MotionWrapper.vue'
 import NavHeader from './components/NavHeader.vue'
 import SearchBox from './components/SearchBox.vue'
 import CategoryTabs from './components/CategoryTabs.vue'
 import NavigationGrid from './components/NavigationGrid.vue'
-import { navigationList } from './data/navigation.data'
+import { useNavigationData } from './composables/useNavigationData'
 
 const activeCategory = ref('全部')
 
-// 计算分类列表
-const categoryList = computed(() => {
-  const set = new Set(navigationList.map((i) => i.category))
-  return ['全部', ...Array.from(set)]
-})
+// 使用导航数据管理
+const { categoryList, getFilteredList } = useNavigationData()
 
 // 计算过滤后的列表
-const filterList = computed(() => {
-  if (activeCategory.value === '全部') return navigationList
-  return navigationList.filter((i) => i.category === activeCategory.value)
-})
+const filterList = computed(() => getFilteredList(activeCategory.value))
 </script>
 
 <template>
-  <div class="p-6 space-y-6 max-w-7xl mx-auto">
-    <NavHeader />
+  <MotionWrapper>
+    <div class="h-screen flex flex-col bg-background/30">
+      <!-- 固定区域 -->
+      <div class="flex-shrink-0 p-6 space-y-6">
+        <NavHeader />
+        <SearchBox />
+        <CategoryTabs v-model="activeCategory" :list="categoryList" />
+      </div>
 
-    <SearchBox />
-
-    <CategoryTabs v-model="activeCategory" :list="categoryList" />
-
-    <NavigationGrid :list="filterList" />
-  </div>
+      <!-- 可滚动区域 -->
+      <div class="flex-1 overflow-y-auto px-6 pb-32">
+        <NavigationGrid :list="filterList" />
+      </div>
+    </div>
+  </MotionWrapper>
 </template>

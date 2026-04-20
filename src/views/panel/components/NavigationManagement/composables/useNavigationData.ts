@@ -1,11 +1,11 @@
 /**
- * useNavigationData - 菜单数据管理 Composable
+ * useNavigationData - 导航数据管理 Composable
  *
- * 负责菜单数据的加载、保存、合并等核心逻辑
+ * 负责导航数据的加载、保存、合并等核心逻辑（扁平结构）
  */
 import { ref } from 'vue'
 import type { NavigationItem } from '../types/NavigationItem'
-import { DEFAULT_NAVIGATION } from '@/views/home/data/NavigationData'
+import { navigationList as DEFAULT_NAVIGATION_LIST } from '@/components/modules/navigation/data/navigation.data'
 import { localCache } from '@/utils/cache/localCache'
 import { getNavigations } from '@/api/navigation'
 import { LocalCacheKey } from '@/types'
@@ -15,14 +15,14 @@ export function useNavigationData() {
   const navigations = ref<NavigationItem[]>([])
 
   /**
-   * 克隆树结构
+   * 克隆数组
    */
-  function cloneTree(data: NavigationItem[]): NavigationItem[] {
+  function cloneList(data: NavigationItem[]): NavigationItem[] {
     return JSON.parse(JSON.stringify(data)) as NavigationItem[]
   }
 
   /**
-   * 从后端 API 获取菜单数据
+   * 从后端 API 获取导航数据
    */
   async function fetchNavigationFromAPI(): Promise<NavigationItem[] | null> {
     try {
@@ -35,45 +35,31 @@ export function useNavigationData() {
   }
 
   /**
-   * 递归收集所有节点 ID
-   */
-  function collectAllIds(nodes: NavigationItem[], idSet: Set<string>): void {
-    for (const node of nodes) {
-      idSet.add(node.id)
-      if (node.children && node.children.length > 0) {
-        collectAllIds(node.children, idSet)
-      }
-    }
-  }
-
-  /**
-   * 合并菜单数据
+   * 合并导航数据
    */
   function mergeNavigationData(
     apiData: NavigationItem[],
     cachedData: NavigationItem[]
   ): NavigationItem[] {
-    const apiIds = new Set<string>()
-    collectAllIds(apiData, apiIds)
+    const apiIds = new Set(apiData.map((item) => item.id))
+    const uniqueCachedItems = cachedData.filter((item) => !apiIds.has(item.id))
 
-    const uniqueCachedNodes = cachedData.filter((node) => !apiIds.has(node.id))
-
-    if (uniqueCachedNodes.length === 0) {
+    if (uniqueCachedItems.length === 0) {
       return apiData
     }
 
-    return [...apiData, ...uniqueCachedNodes]
+    return [...apiData, ...uniqueCachedItems]
   }
 
   /**
-   * 保存菜单数据到本地缓存
+   * 保存导航数据到本地缓存
    */
   function saveNavigationData() {
     localCache.set(CACHE_KEY, navigations.value)
   }
 
   /**
-   * 加载菜单数据（混合数据源策略）
+   * 加载导航数据（混合数据源策略）
    */
   async function loadNavigationData() {
     try {
@@ -100,16 +86,17 @@ export function useNavigationData() {
     if (cached && Array.isArray(cached) && cached.length > 0) {
       navigations.value = cached
     } else {
-      navigations.value = cloneTree(DEFAULT_NAVIGATION)
+      // 将默认数据转换为扁平结构
+      navigations.value = cloneList(DEFAULT_NAVIGATION_LIST)
       saveNavigationData()
     }
   }
 
   /**
-   * 重置为默认菜单
+   * 重置为默认导航
    */
   function resetToDefault() {
-    navigations.value = cloneTree(DEFAULT_NAVIGATION)
+    navigations.value = cloneList(DEFAULT_NAVIGATION_LIST)
     saveNavigationData()
   }
 

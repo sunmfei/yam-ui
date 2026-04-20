@@ -1,15 +1,16 @@
-import type { TreeTableColumn } from '@/components/ui/tree-table/types'
+import type { TableColumn } from '@/components/ui/table/types'
+import { getCategoryName } from './category.dict'
 
 /**
- * 导航管理表格列配置
+ * 导航管理表格列配置（扁平结构）
  */
-export const navigationColumns: TreeTableColumn[] = [
-  { key: 'title', title: '标题', slot: 'title', width: '25%' },
-  { key: 'icon', title: '图标', slot: 'icon', width: '10%', align: 'center' },
-  { key: 'path', title: '路径', slot: 'path', width: '30%' },
-  { key: 'order', title: '排序', width: '10%', align: 'center' },
-  { key: 'status', title: '状态', slot: 'status', width: '10%' },
-  { key: 'actions', title: '操作', slot: 'actions', width: '15%', align: 'right' },
+export const navigationColumns: TableColumn[] = [
+  { key: 'title', title: '标题', slot: 'title', width: '20%' },
+  { key: 'icon', title: '图标', slot: 'icon', width: '8%', align: 'center' },
+  { key: 'url', title: 'URL', slot: 'url', width: '30%' },
+  { key: 'category', title: '分类', slot: 'category', width: '15%' },
+  { key: 'order', title: '排序', width: '8%', align: 'center' },
+  { key: 'actions', title: '操作', slot: 'actions', width: '19%', align: 'right' },
 ]
 
 /**
@@ -23,3 +24,10 @@ export const headerActions = [
   { label: '批量删除', key: 'batchDelete', variant: 'destructive' as const },
   { label: '添加导航', key: 'addRoot', variant: 'default' as const },
 ]
+
+/**
+ * 获取分类显示名称
+ */
+export function formatCategory(code: string): string {
+  return getCategoryName(code)
+}

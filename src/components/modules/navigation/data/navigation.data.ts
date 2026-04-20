@@ -13,92 +13,101 @@ export interface NavigationItem {
   icon?: string
 }
 
+// 从 DEFAULT_NAVIGATION 转换而来的扁平数据
 export const navigationList: NavigationItem[] = [
+  // 搜索引擎
+  {
+    id: 'nav-baidu',
+    title: '百度',
+    url: 'https://www.baidu.com',
+    description: '百度搜索',
+    category: '搜索引擎',
+    icon: 'Search',
+  },
+  {
+    id: 'nav-google',
+    title: 'Google',
+    url: 'https://www.google.com',
+    description: '谷歌搜索',
+    category: '搜索引擎',
+    icon: 'Globe',
+  },
+  {
+    id: 'nav-bing',
+    title: 'Bing',
+    url: 'https://www.bing.com',
+    description: '必应搜索',
+    category: '搜索引擎',
+    icon: 'Compass',
+  },
+  {
+    id: 'nav-so-gou',
+    title: 'SouGou',
+    url: 'https://www.sougou.com',
+    description: '搜狗搜索',
+    category: '搜索引擎',
+    icon: 'Compass',
+  },
+
   // 开发工具
   {
-    id: '1',
+    id: 'nav-github',
     title: 'GitHub',
     url: 'https://github.com',
-    description: '全球最大的代码托管平台',
-    category: '开发',
+    description: '代码托管平台',
+    category: '开发工具',
     icon: 'Github',
   },
   {
-    id: '2',
-    title: 'Vue.js',
-    url: 'https://vuejs.org',
-    description: '渐进式 JavaScript 框架',
-    category: '开发',
-    icon: 'FileCode',
-  },
-  {
-    id: '3',
-    title: 'Vite',
-    url: 'https://vitejs.dev',
-    description: '下一代前端构建工具',
-    category: '开发',
-    icon: 'Zap',
-  },
-  {
-    id: '4',
-    title: 'TypeScript',
-    url: 'https://www.typescriptlang.org',
-    description: 'JavaScript 的超集',
-    category: '开发',
-    icon: 'FileType',
-  },
-
-  // 设计资源
-  {
-    id: '5',
-    title: 'Figma',
-    url: 'https://www.figma.com',
-    description: '协作界面设计工具',
-    category: '设计',
-    icon: 'Palette',
-  },
-  {
-    id: '6',
-    title: 'Dribbble',
-    url: 'https://dribbble.com',
-    description: '设计师作品展示平台',
-    category: '设计',
-    icon: 'Image',
-  },
-
-  // 学习资源
-  {
-    id: '7',
-    title: 'MDN Web Docs',
-    url: 'https://developer.mozilla.org',
-    description: 'Web 技术文档',
-    category: '学习',
-    icon: 'BookOpen',
-  },
-  {
-    id: '8',
+    id: 'nav-stackoverflow',
     title: 'Stack Overflow',
     url: 'https://stackoverflow.com',
-    description: '开发者问答社区',
-    category: '学习',
+    description: '技术问答社区',
+    category: '开发工具',
     icon: 'HelpCircle',
   },
-
-  // 常用工具
   {
-    id: '9',
-    title: 'Google',
-    url: 'https://www.google.com',
-    description: '全球最大搜索引擎',
-    category: '工具',
-    icon: 'Search',
+    id: 'nav-mdn',
+    title: 'MDN',
+    url: 'https://developer.mozilla.org',
+    description: 'Web 技术文档',
+    category: '开发工具',
+    icon: 'FileText',
+  },
+
+  // 购物网站
+  {
+    id: 'nav-taobao',
+    title: '淘宝',
+    url: 'https://www.taobao.com',
+    description: '淘宝网',
+    category: '购物网站',
+    icon: 'ShoppingBag',
   },
   {
-    id: '10',
-    title: '百度',
-    url: 'https://www.baidu.com',
-    description: '中文搜索引擎',
-    category: '工具',
-    icon: 'Search',
+    id: 'nav-jd',
+    title: '京东',
+    url: 'https://www.jd.com',
+    description: '京东商城',
+    category: '购物网站',
+    icon: 'Package',
+  },
+
+  // 社交媒体
+  {
+    id: 'nav-weibo',
+    title: '微博',
+    url: 'https://weibo.com',
+    description: '新浪微博',
+    category: '社交媒体',
+    icon: 'MessageCircle',
+  },
+  {
+    id: 'nav-zhihu',
+    title: '知乎',
+    url: 'https://www.zhihu.com',
+    description: '知乎社区',
+    category: '社交媒体',
+    icon: 'BookOpen',
   },
 ]

@@ -14,7 +14,7 @@ defineProps<{
 </script>
 
 <template>
-  <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+  <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 content-start">
     <NavigationCard v-for="item in list" :key="item.id" :item="item" />
   </div>
 </template>

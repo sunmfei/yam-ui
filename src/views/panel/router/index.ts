@@ -7,7 +7,7 @@
 import type { FrontendRoute } from '@/types'
 import { adminRoutes } from '@/views/panel/admin/router'
 import { menuRoutes } from '@/views/panel/components/MenuManagement/router'
-import navigationRoutes from '@/views/panel/navigation/router'
+import navigationRoutes from '@/views/panel/components/NavigationManagement/router'
 
 // 导出所有面板模块的路由
 export const panelRoutes: FrontendRoute[] = [

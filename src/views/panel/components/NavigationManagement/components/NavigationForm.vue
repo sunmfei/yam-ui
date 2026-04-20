@@ -6,7 +6,6 @@ import * as z from 'zod'
 import SunIconPicker from '@/components/business/sun-icon-picker/SunIconPicker.vue'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { Switch } from '@/components/ui/switch'
 import {
   Select,
   SelectContent,
@@ -40,44 +39,14 @@ const emit = defineEmits<Emits>()
 
 // 定义表单验证 schema
 const formSchema = toTypedSchema(
-  z
-    .object({
-      title: z.string().min(1, '标题不能为空'),
-      icon: z.string().optional(),
-      path: z.string().optional(),
-      description: z.string().optional(),
-      openInNewTab: z.boolean().default(true),
-      order: z.number().min(0, '排序号不能小于0').optional(),
-      hidden: z.boolean().default(false),
-      disabled: z.boolean().default(false),
-    })
-    .superRefine((data, ctx) => {
-      // 如果有子节点（分类节点），路径可以为空
-      const hasChildren = props.formData.children && props.formData.children.length > 0
-
-      // 如果没有子节点（叶子节点），路径必填且必须是完整 URL
-      if (!hasChildren) {
-        if (!data.path) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: '导航项必须填写网站地址',
-            path: ['path'],
-          })
-          return
-        }
-
-        const path = data.path.trim()
-        const isExternalUrl = /^https?:\/\//.test(path)
-
-        if (!isExternalUrl) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: '网站地址必须是完整的 URL（以 http:// 或 https:// 开头）',
-            path: ['path'],
-          })
-        }
-      }
-    })
+  z.object({
+    title: z.string().min(1, '标题不能为空'),
+    icon: z.string().optional(),
+    url: z.string().min(1, '网站地址不能为空').url('请输入有效的 URL'),
+    category: z.string().min(1, '分类不能为空'),
+    description: z.string().optional(),
+    order: z.number().min(0, '排序号不能小于0').optional(),
+  })
 )
 
 // 初始化表单
@@ -90,12 +59,10 @@ const {
   initialValues: {
     title: props.formData.title ?? '',
     icon: props.formData.icon ?? '',
-    path: props.formData.path ?? '',
+    url: (props.formData as any).url ?? '',
+    category: (props.formData as any).category ?? '搜索引擎',
     description: props.formData.description ?? '',
-    openInNewTab: props.formData.openInNewTab ?? true,
     order: props.formData.order ?? 0,
-    hidden: props.formData.hidden ?? false,
-    disabled: props.formData.disabled ?? false,
   },
 })
 
@@ -186,54 +153,5 @@ defineExpose({
     </div>
 
     <!-- 状态选项 -->
-    <div class="flex gap-6 pt-2">
-      <div>
-        <FormField name="openInNewTab">
-          <FormItem class="flex flex-row items-center justify-between rounded-lg border p-4">
-            <div class="space-y-0.5">
-              <FormLabel class="text-base">新窗口打开</FormLabel>
-            </div>
-            <FormControl>
-              <Switch
-                :checked="values.openInNewTab"
-                @update:checked="(val: boolean) => setFieldValue('openInNewTab', val)"
-              />
-            </FormControl>
-          </FormItem>
-        </FormField>
-      </div>
-
-      <div>
-        <FormField name="hidden">
-          <FormItem class="flex flex-row items-center justify-between rounded-lg border p-4">
-            <div class="space-y-0.5">
-              <FormLabel class="text-base">隐藏</FormLabel>
-            </div>
-            <FormControl>
-              <Switch
-                :checked="values.hidden"
-                @update:checked="(val: boolean) => setFieldValue('hidden', val)"
-              />
-            </FormControl>
-          </FormItem>
-        </FormField>
-      </div>
-
-      <div>
-        <FormField name="disabled">
-          <FormItem class="flex flex-row items-center justify-between rounded-lg border p-4">
-            <div class="space-y-0.5">
-              <FormLabel class="text-base">禁用</FormLabel>
-            </div>
-            <FormControl>
-              <Switch
-                :checked="values.disabled"
-                @update:checked="(val: boolean) => setFieldValue('disabled', val)"
-              />
-            </FormControl>
-          </FormItem>
-        </FormField>
-      </div>
-    </div>
   </div>
 </template>

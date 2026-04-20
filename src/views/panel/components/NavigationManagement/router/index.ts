@@ -11,7 +11,7 @@ export const navigationRoutes: FrontendRoute[] = [
     component: () => import('@/views/panel/components/NavigationManagement/index.vue'),
     source: RouteSource.FRONTEND,
     meta: {
-      title: '菜单管理',
+      title: '导航管理',
       keepAlive: false,
       requiresAuth: false,
       icon: 'Navigation',
@@ -20,3 +20,6 @@ export const navigationRoutes: FrontendRoute[] = [
     },
   },
 ]
+
+// 默认导出
+export default navigationRoutes

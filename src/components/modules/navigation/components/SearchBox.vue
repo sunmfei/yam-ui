@@ -5,10 +5,10 @@
  * 设计目的：统一搜索入口
  */
 
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { MorphingTabs } from '@/components/inspira'
 import { Search as SearchIcon } from 'lucide-vue-next'
 
 const keyword = ref('')
@@ -19,6 +19,19 @@ const engines = [
   { label: '百度', value: 'baidu', url: 'https://www.baidu.com/s?wd=' },
   { label: 'Bing', value: 'bing', url: 'https://www.bing.com/search?q=' },
 ]
+
+// 计算当前选中的标签名称
+const engineLabel = computed(() => {
+  return engines.find((e) => e.value === engine.value)?.label || 'Google'
+})
+
+// 处理引擎切换
+function handleEngineChange(label: string) {
+  const e = engines.find((item) => item.label === label)
+  if (e) {
+    engine.value = e.value
+  }
+}
 
 function search() {
   if (!keyword.value.trim()) return
@@ -32,13 +45,11 @@ function search() {
 
 <template>
   <div class="flex flex-col items-center gap-4 mb-8">
-    <Tabs v-model="engine">
-      <TabsList>
-        <TabsTrigger v-for="item in engines" :key="item.value" :value="item.value">
-          {{ item.label }}
-        </TabsTrigger>
-      </TabsList>
-    </Tabs>
+    <MorphingTabs
+      :tabs="engines.map((e) => e.label)"
+      :active-tab="engineLabel"
+      @update:active-tab="handleEngineChange"
+    />
 
     <div class="flex w-full max-w-xl gap-2">
       <Input v-model="keyword" placeholder="输入搜索内容..." @keyup.enter="search">

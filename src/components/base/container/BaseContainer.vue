@@ -27,6 +27,8 @@ interface Props {
   customHeight?: string
   /** 是否全屏显示 */
   fullscreen?: boolean
+  /** 背景透明度 (0-100) */
+  bgOpacity?: number
   /** 额外的 class */
   class?: HTMLAttributes['class']
 }
@@ -36,16 +38,59 @@ const props = withDefaults(defineProps<Props>(), {
   customWidth: undefined,
   customHeight: undefined,
   fullscreen: false,
+  bgOpacity: 100,
+})
+
+// 计算容器的 class
+const containerClass = computed(() => {
+  const baseClasses = ['transition-all', 'duration-300', 'ease-in-out', 'relative']
+
+  // 根据尺寸添加不同的类
+  if (props.fullscreen) {
+    // 全屏模式占满父容器
+    baseClasses.push('w-full', 'h-full')
+  } else {
+    // 非全屏模式下，确保居中和正确的布局
+    baseClasses.push('flex', 'flex-col', 'mx-auto')
+  }
+
+  return cn(baseClasses, props.class)
+})
+
+// 计算背景 class
+const backgroundClass = computed(() => {
+  if (props.bgOpacity >= 100) return ''
+
+  // 映射常用的透明度值到 Tailwind class
+  const opacityMap: Record<number, string> = {
+    0: 'bg-background/0',
+    10: 'bg-background/10',
+    20: 'bg-background/20',
+    30: 'bg-background/30',
+    40: 'bg-background/40',
+    50: 'bg-background/50',
+    60: 'bg-background/60',
+    70: 'bg-background/70',
+    80: 'bg-background/80',
+    90: 'bg-background/90',
+  }
+
+  // 找到最接近的值
+  const closest = Object.keys(opacityMap)
+    .map(Number)
+    .reduce((prev, curr) =>
+      Math.abs(curr - props.bgOpacity) < Math.abs(prev - props.bgOpacity) ? curr : prev
+    )
+
+  return opacityMap[closest] || 'bg-background/50'
 })
 
 // 计算容器样式
 const containerStyle = computed(() => {
   if (props.fullscreen) {
     return {
-      width: '100vw',
-      height: '100vh',
-      maxWidth: '100vw',
-      maxHeight: '100vh',
+      width: '100%',
+      height: '100%',
     }
   }
 
@@ -81,28 +126,19 @@ const containerStyle = computed(() => {
     maxHeight: '100vh',
   }
 })
-
-// 计算容器的 class
-const containerClass = computed(() => {
-  const baseClasses = ['transition-all', 'duration-300', 'ease-in-out']
-
-  // 根据尺寸添加不同的类
-  if (props.fullscreen) {
-    // 只占满父容器，不脱离布局
-    baseClasses.push('w-full', 'h-full')
-    // baseClasses.push('fixed', 'inset-0', 'z-50')
-  } else {
-    // 非全屏模式下，确保居中和正确的布局
-    // mx-auto 必须在最后，以确保它不被覆盖
-    baseClasses.push('relative', 'flex', 'flex-col', 'mx-auto')
-  }
-
-  return cn(baseClasses, props.class)
-})
 </script>
 
 <template>
   <div :class="containerClass" :style="containerStyle">
-    <slot />
+    <!-- 背景层 -->
+    <div
+      v-if="bgOpacity < 100"
+      class="absolute inset-0 -z-10 pointer-events-none"
+      :class="backgroundClass"
+    />
+    <!-- 内容层 -->
+    <div class="relative z-10 h-full flex flex-col">
+      <slot />
+    </div>
   </div>
 </template>

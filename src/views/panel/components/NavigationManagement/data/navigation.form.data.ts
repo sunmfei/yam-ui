@@ -1,18 +1,25 @@
 import type { NavigationItem } from '../types/NavigationItem'
+import { getAllCategories } from './category.dict'
 
 /**
  * 表单初始值
  */
-export const initialFormState: Omit<NavigationItem, 'id' | 'children'> = {
+export const initialFormState: Omit<NavigationItem, 'id'> = {
   title: '',
   icon: '',
-  path: '',
+  url: '',
   description: '',
-  openInNewTab: true,
+  category: '搜索引擎',
   order: 0,
-  hidden: false,
-  disabled: false,
 }
+
+/**
+ * 分类选项（从字典获取）
+ */
+const categoryOptions = getAllCategories().map((cat) => ({
+  label: cat.name,
+  value: cat.code,
+}))
 
 /**
  * 表单字段配置
@@ -32,11 +39,19 @@ export const formFields = [
     placeholder: '选择图标',
   },
   {
-    key: 'path',
+    key: 'url',
     label: '网站地址',
     type: 'text',
     placeholder: 'https://www.example.com',
-    hint: '分类节点可不填，导航项必填（必须是完整 URL）',
+    hint: '必须是完整的 URL（以 http:// 或 https:// 开头）',
+  },
+  {
+    key: 'category',
+    label: '分类',
+    type: 'select',
+    placeholder: '请选择分类',
+    required: true,
+    options: categoryOptions,
   },
   {
     key: 'description',
