@@ -20,5 +20,6 @@ export const BACKGROUND_OPTIONS: BackgroundOption[] = [
   { label: '网格线条', value: 'grid' },
   { label: '波浪动画', value: 'wave' },
   { label: '自然风景', value: 'nature' },
+  { label: '樱花飘落', value: 'sakura' },
   { label: '无背景', value: 'none' },
 ]

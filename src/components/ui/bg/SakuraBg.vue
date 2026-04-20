@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, onMounted, onUnmounted } from 'vue'
 import { useAppStore } from '@/stores'
-import type { WindDirection } from '@/types'
 import SakuraIcon from '@/components/ui/icon/SakuraIcon.vue'
 
 interface Props {
@@ -15,8 +14,8 @@ interface Props {
   fallSpeed?: number
   /** 风力强度（像素，建议 50-200） */
   windStrength?: number
-  /** 风向 */
-  windDirection?: WindDirection
+  /** 风向 (left | right | none) */
+  windDirection?: 'left' | 'right' | 'none'
   /** 落地停留时间（秒），0 表示不循环 */
   stayTime?: number
   /** 樱花颜色（顶部/浅色） */
