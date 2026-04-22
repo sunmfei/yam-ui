@@ -14,7 +14,7 @@ export {
 } from './navigation'
 
 export type { NavigationItem } from './navigation'
-export { navigationList } from './navigation'
+// export { navigationList } from './navigation' // 数据来自 @/views/home/data/NavigationData
 
 // export { default as MenuTree } from './menu/MenuTree.vue'
 // export { default as NavbarMain } from './navbar/NavbarMain.vue'

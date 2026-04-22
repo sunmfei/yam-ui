@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { NavigationItem, NavigationChild } from '@/types'
+import type { NavigationItem } from '@/components/modules/navigation/data/navigation.data'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import BaseButton from '@/components/base/button/BaseButton.vue'
 import { ExternalLink, Globe } from 'lucide-vue-next'
-import { LocalCacheKey } from '@/types/constants/cache-key'
+import { LocalCacheKey } from '@/types'
 import { useLocalStorage } from '@vueuse/core'
-import { DEFAULT_NAVIGATION } from '@/views/home/data/NavigationData'
+import { navigationList as DEFAULT_NAVIGATION_LIST } from '@/views/home/data/NavigationData'
 
 /**
  * NavigationPage - 网址导航展示页面
@@ -19,28 +19,25 @@ defineOptions({
 // 从 localStorage 读取导航数据
 const storedNavigations = useLocalStorage<NavigationItem[]>(
   LocalCacheKey.NAVIGATION_CONFIG,
-  DEFAULT_NAVIGATION
+  DEFAULT_NAVIGATION_LIST
 )
 
-// 过滤掉隐藏的导航项和分类
-const visibleNavigations = computed(() => {
-  return storedNavigations.value
-    .filter((nav) => !nav.hidden)
-    .map((nav) => ({
-      ...nav,
-      children: nav.children?.filter((child) => !child.hidden),
-    }))
-    .filter((nav) => nav.children && nav.children.length > 0)
+// 按分类分组
+const groupedNavigations = computed(() => {
+  const groups: Record<string, NavigationItem[]> = {}
+  storedNavigations.value.forEach((item) => {
+    const category = item.category
+    if (!groups[category]) {
+      groups[category] = []
+    }
+    groups[category].push(item)
+  })
+  return groups
 })
 
 // 打开链接
-function openLink(child: NavigationChild) {
-  if (child.disabled) return
-
-  const url = child.path
-  const target = child.openInNewTab ? '_blank' : '_self'
-
-  window.open(url, target)
+function openLink(item: NavigationItem) {
+  window.open(item.url, '_blank')
 }
 </script>
 
@@ -59,55 +56,47 @@ function openLink(child: NavigationChild) {
       <!-- 导航卡片 -->
       <div class="space-y-6">
         <Card
-          v-for="category in visibleNavigations"
-          :key="category.id"
+          v-for="(items, category) in groupedNavigations"
+          :key="category"
           class="transition-all hover:shadow-lg"
         >
           <CardHeader>
             <CardTitle class="flex items-center gap-2">
-              <span v-if="category.icon" class="text-2xl">{{ category.icon }}</span>
-              {{ category.title }}
-              <Badge v-if="category.children" variant="secondary" class="ml-2">
-                {{ category.children.length }}
+              {{ category }}
+              <Badge variant="secondary" class="ml-2">
+                {{ items.length }}
               </Badge>
             </CardTitle>
-            <p v-if="category.description" class="text-sm text-muted-foreground">
-              {{ category.description }}
-            </p>
           </CardHeader>
 
           <CardContent>
             <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               <BaseButton
-                v-for="child in category.children"
-                :key="child.id"
+                v-for="item in items"
+                :key="item.id"
                 variant="outline"
-                :disabled="child.disabled"
-                class="h-auto flex-col items-start gap-3 p-5 transition-all hover:scale-105 hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
-                @click="openLink(child)"
+                class="h-auto flex-col items-start gap-3 p-5 transition-all hover:scale-105 hover:shadow-md"
+                @click="openLink(item)"
               >
                 <div class="flex w-full items-center justify-between">
                   <div class="flex items-center gap-3">
-                    <span v-if="child.icon" class="text-2xl">{{ child.icon }}</span>
-                    <span class="font-semibold">{{ child.title }}</span>
+                    <span v-if="item.icon" class="text-2xl">{{ item.icon }}</span>
+                    <span class="font-semibold">{{ item.title }}</span>
                   </div>
-                  <ExternalLink
-                    v-if="child.openInNewTab"
-                    class="h-4 w-4 shrink-0 text-muted-foreground"
-                  />
+                  <ExternalLink class="h-4 w-4 shrink-0 text-muted-foreground" />
                 </div>
                 <p
-                  v-if="child.description"
+                  v-if="item.description"
                   class="line-clamp-2 text-left text-xs text-muted-foreground"
                 >
-                  {{ child.description }}
+                  {{ item.description }}
                 </p>
               </BaseButton>
             </div>
 
             <!-- 空状态 -->
             <div
-              v-if="!category.children || category.children.length === 0"
+              v-if="!items || items.length === 0"
               class="py-8 text-center text-muted-foreground"
             >
               暂无导航项
@@ -117,7 +106,7 @@ function openLink(child: NavigationChild) {
       </div>
 
       <!-- 无数据状态 -->
-      <div v-if="visibleNavigations.length === 0" class="py-20 text-center">
+      <div v-if="Object.keys(groupedNavigations).length === 0" class="py-20 text-center">
         <Globe class="mx-auto h-16 w-16 text-muted-foreground/50" />
         <p class="mt-4 text-lg text-muted-foreground">暂无导航数据</p>
         <p class="mt-2 text-sm text-muted-foreground">请在导航管理中添加导航项</p>

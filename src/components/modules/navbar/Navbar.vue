@@ -51,9 +51,9 @@
 </template>
 
 <script setup lang="ts">
-import type { MenuNode } from '@/types/menu'
+import type { MenuNode } from '@/types'
 import { useRouter } from 'vue-router'
-import actionHub from '@/types/ActionHub.ts'
+import actionHub from '@/types'
 import {
   NavigationMenuItem,
   NavigationMenuTrigger,
@@ -97,12 +97,12 @@ function getSelectedLabel(node: MenuNode) {
 }
 
 function getIcon(node: MenuNode) {
-  // 优先使用动态图标
+  // 优先使用动态图�?
   if (node.getIconKey) {
     const icon = actionHub.getString(node.getIconKey)
     if (icon) return icon
   }
-  // 其次使用静态图标
+  // 其次使用静态图�?
   return node.icon || 'Circle'
 }
 

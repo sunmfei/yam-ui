@@ -99,7 +99,7 @@ const columns: ColumnDef<TableData>[] = [
   {
     id: 'drag',
     header: () => null,
-    cell: ({ row }) => h(DragHandle),
+    cell: ({ row: _row }) => h(DragHandle),
   },
   {
     id: 'select',

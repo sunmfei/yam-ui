@@ -114,8 +114,8 @@ export function useMenuCRUD(menus: Ref<MenuNode[]>, saveMenuData: () => void) {
         `确定删除节点 "${sourceNode.name}" 及其所有子节点吗？`,
         '删除确认',
         {
-          confirmButtonText: '删除',
-          cancelButtonText: '取消',
+          confirmText: '删除',
+          cancelText: '取消',
           type: 'warning',
         }
       )
@@ -156,8 +156,8 @@ export function useMenuCRUD(menus: Ref<MenuNode[]>, saveMenuData: () => void) {
         `确定删除选中的 ${deletableKeys.length} 个节点及其子节点吗？`,
         '批量删除确认',
         {
-          confirmButtonText: '删除',
-          cancelButtonText: '取消',
+          confirmText: '删除',
+          cancelText: '取消',
           type: 'warning',
         }
       )

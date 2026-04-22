@@ -1,17 +1,17 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 /**
- * BasePanelRoot - 面板根组件（最终版）
+ * BasePanelRoot - 闈㈡澘鏍圭粍浠讹紙鏈€缁堢増锛?
  *
- * 功能：
- * 1. 管理菜单状态
- * 2. 动态加载组件
- * 3. 承载整体布局
+ * 鍔熻兘锛?
+ * 1. 绠＄悊鑿滃崟鐘舵€?
+ * 2. 鍔ㄦ€佸姞杞界粍浠?
+ * 3. 鎵胯浇鏁翠綋甯冨眬
  *
- * 执行结果：
- * 完整的配置驱动页面系统
+ * 鎵ц�缁撴灉锛?
+ * 瀹屾暣鐨勯厤缃�┍鍔ㄩ〉闈㈢郴缁?
  *
- * 设计目的：
- * 将菜单、行为、内容统一入口
+ * 璁捐�鐩�殑锛?
+ * 灏嗚彍鍗曘€佽�涓恒€佸唴瀹圭粺涓€鍏ュ彛
  */
 
 import { computed, defineAsyncComponent, watch } from 'vue'
@@ -50,7 +50,7 @@ const props = withDefaults(defineProps<Props>(), {
   side: 'left',
   collapsible: true,
   sidebarWidth: '240px',
-  headerTitle: '设置',
+  headerTitle: '璁剧疆',
   showHeader: true,
   sidebarBgClass: 'bg-sidebar/80 backdrop-blur-xl',
   contentBgClass: 'bg-background/60 backdrop-blur-xl',
@@ -61,7 +61,7 @@ const emit = defineEmits<{
 }>()
 
 /**
- * 查找节点
+ * 鏌ユ壘鑺傜偣
  */
 const findNode = (list: PanelSection[], id?: string): PanelSection | null => {
   if (!id) return null
@@ -76,7 +76,7 @@ const findNode = (list: PanelSection[], id?: string): PanelSection | null => {
 }
 
 /**
- * 查找第一个可点击的节点（有 componentPath）
+ * 鏌ユ壘绗�竴涓�彲鐐瑰嚮鐨勮妭鐐癸紙鏈?componentPath锛?
  */
 const findFirstClickableNode = (list: PanelSection[]): string | null => {
   for (const item of list) {
@@ -92,7 +92,7 @@ const findFirstClickableNode = (list: PanelSection[]): string | null => {
 }
 
 /**
- * 初始化 active：如果为空，自动选中第一个可点击节点
+ * 鍒濆�鍖?active锛氬�鏋滀负绌猴紝鑷�姩閫変腑绗�竴涓�彲鐐瑰嚮鑺傜偣
  */
 const initActive = () => {
   if (!props.active || props.active === '') {
@@ -103,7 +103,7 @@ const initActive = () => {
   }
 }
 
-// 监听 sections 变化，自动初始化
+// 鐩戝惉 sections 鍙樺寲锛岃嚜鍔ㄥ垵濮嬪寲
 watch(
   () => props.sections,
   () => {
@@ -113,31 +113,31 @@ watch(
 )
 
 /**
- * 当前组件
+ * 褰撳墠缁勪欢
  */
 const activeComponent = computed(() => {
   const node = findNode(props.sections, props.active)
 
   if (!node) {
-    console.warn('⚠️ 未找到 active 节点:', props.active)
+    console.warn('鈿狅笍 鏈�壘鍒?active 鑺傜偣:', props.active)
     return null
   }
 
   const loader = loadPanelComponent(node?.componentPath)
 
   if (!loader) {
-    console.warn('⚠️ 组件加载器为空:', node.componentPath)
+    console.warn('鈿狅笍 缁勪欢鍔犺浇鍣ㄤ负绌?', node.componentPath)
     return null
   }
 
-  return defineAsyncComponent(loader as () => Promise<unknown>)
+  return defineAsyncComponent(loader as any)
 })
 
 /**
- * 侧边栏 Header 组件
+ * 渚ц竟鏍?Header 缁勪欢
  */
 const sidebarHeaderComponent = computed(() => {
-  // 查找第一个有 sidebarHeaderPath 的节点
+  // 鏌ユ壘绗�竴涓�湁 sidebarHeaderPath 鐨勮妭鐐?
   const findHeader = (list: PanelSection[]): string | null => {
     for (const item of list) {
       if (item.sidebarHeaderPath) return item.sidebarHeaderPath
@@ -155,14 +155,14 @@ const sidebarHeaderComponent = computed(() => {
   const loader = loadPanelComponent(headerPath)
   if (!loader) return null
 
-  return defineAsyncComponent(loader as () => Promise<unknown>)
+  return defineAsyncComponent(loader as any)
 })
 
 /**
- * 侧边栏 Footer 组件
+ * 渚ц竟鏍?Footer 缁勪欢
  */
 const sidebarFooterComponent = computed(() => {
-  // 查找第一个有 sidebarFooterPath 的节点
+  // 鏌ユ壘绗�竴涓�湁 sidebarFooterPath 鐨勮妭鐐?
   const findFooter = (list: PanelSection[]): string | null => {
     for (const item of list) {
       if (item.sidebarFooterPath) return item.sidebarFooterPath
@@ -180,18 +180,18 @@ const sidebarFooterComponent = computed(() => {
   const loader = loadPanelComponent(footerPath)
   if (!loader) return null
 
-  return defineAsyncComponent(loader as () => Promise<unknown>)
+  return defineAsyncComponent(loader as any)
 })
 
 /**
- * 动态计算侧边栏样式
+ * 鍔ㄦ€佽�绠椾晶杈规爮鏍峰紡
  */
 const sidebarStyle = computed(() => ({
   '--sidebar-width': props.sidebarWidth,
 }))
 
 /**
- * 选择菜单
+ * 閫夋嫨鑿滃崟
  */
 const handleSelect = (id: string) => {
   emit('update:active', id)
@@ -201,7 +201,7 @@ const handleSelect = (id: string) => {
 <template>
   <SidebarProvider>
     <div class="flex h-screen w-full" :style="sidebarStyle">
-      <!-- 侧边栏 -->
+      <!-- 渚ц竟鏍?-->
       <Sidebar
         :side="side"
         :collapsible="collapsible ? 'icon' : 'none'"
@@ -241,10 +241,10 @@ const handleSelect = (id: string) => {
         <SidebarRail />
       </Sidebar>
 
-      <!-- 主内容区 -->
+      <!-- 涓诲唴瀹瑰尯 -->
       <SidebarInset class="bg-transparent">
         <div class="flex h-full flex-col" :class="contentBgClass">
-          <!-- 顶部工具栏 -->
+          <!-- 椤堕儴宸ュ叿鏍?-->
           <header
             v-if="showHeader"
             class="flex h-16 shrink-0 items-center gap-2 border-b px-4 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12"
@@ -259,7 +259,7 @@ const handleSelect = (id: string) => {
             </div>
           </header>
 
-          <!-- 内容区 -->
+          <!-- 鍐呭�鍖?-->
           <main class="min-h-0 flex-1 overflow-auto">
             <div class="relative h-full min-h-0 p-4 pt-0">
               <component :is="activeComponent" v-if="activeComponent" />

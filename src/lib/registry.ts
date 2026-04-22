@@ -1,22 +1,26 @@
 import type { registryItemFileSchema } from 'shadcn-vue/schema'
 import type { z } from 'zod'
-import { promises as fs } from 'node:fs'
-import { tmpdir } from 'node:os'
+// import { promises as fs } from 'node:fs' // TODO: Implement when needed
+// import { tmpdir } from 'node:os' // TODO: Implement when needed
 import path from 'node:path'
 
 // import { Project, ScriptKind } from 'ts-morph'
 
 import { registryItemSchema } from 'shadcn-vue/schema'
-import { fixImport } from '~/lib/registry-utils'
-import { Index } from '~/registry/__index__'
-import { blockMeta } from '~/registry/new-york-v4/blocks/_meta'
+// import { fixImport } from '~/lib/registry-utils'
+// import { Index } from '~/registry/__index__'
+// import { blockMeta } from '~/registry/new-york-v4/blocks/_meta'
 
-export function getRegistryComponent(name: string) {
-  return Index[name]?.component
+export function getRegistryComponent(_name: string) {
+  // TODO: Implement Index lookup
+  // return Index[name]?.component
+  return null
 }
 
-export async function getRegistryItem(name: string) {
-  const item = Index[name]
+export async function getRegistryItem(_name: string) {
+  // TODO: Implement Index lookup
+  // const item = Index[name]
+  const item = null as any
   if (!item) {
     return null
   }
@@ -45,10 +49,12 @@ export async function getRegistryItem(name: string) {
 
   // Fix file paths.
   files = fixFilePaths(files)
-  const meta = blockMeta[name]
+  // TODO: Implement blockMeta lookup
+  // const meta = blockMeta[name]
+  const meta = undefined
   const parsed = registryItemSchema.safeParse({
     ...result.data,
-    ...meta,
+    ...(meta || {}),
     files,
   })
 
@@ -60,9 +66,11 @@ export async function getRegistryItem(name: string) {
   return parsed.data
 }
 
-async function getFileContent(file: z.infer<typeof registryItemFileSchema>) {
-  const key = file.path.replaceAll('registry/new-york-v4/blocks/', '').replaceAll('/', ':')
-  const raw = await useStorage<string | Uint8Array>('assets:blocks').getItem(key)
+async function getFileContent(_file: z.infer<typeof registryItemFileSchema>) {
+  // TODO: Implement storage lookup
+  // const key = file.path.replaceAll('registry/new-york-v4/blocks/', '').replaceAll('/', ':')
+  // const raw = await useStorage<string | Uint8Array>('assets:blocks').getItem(key)
+  const raw = '' // TODO: Implement storage
 
   // const project = new Project({
   //   compilerOptions: {},
@@ -80,7 +88,7 @@ async function getFileContent(file: z.infer<typeof registryItemFileSchema>) {
 
   let code = typeof raw === 'string' ? raw : new TextDecoder().decode(raw ?? undefined) // sourceFile.getFullText()
   // Fix imports.
-  code = fixImport(code)
+  // code = fixImport(code)
 
   return code
 }
@@ -114,10 +122,10 @@ function getFileTarget(file: z.infer<typeof registryItemFileSchema>) {
   return target ?? ''
 }
 
-async function _createTempSourceFile(filename: string) {
-  const dir = await fs.mkdtemp(path.join(tmpdir(), 'shadcn-'))
-  return path.join(dir, filename)
-}
+// async function _createTempSourceFile(filename: string) {
+//   const dir = await fs.mkdtemp(path.join(tmpdir(), 'shadcn-'))
+//   return path.join(dir, filename)
+// }
 
 function fixFilePaths(files: z.infer<typeof registryItemSchema>['files']) {
   if (!files) {

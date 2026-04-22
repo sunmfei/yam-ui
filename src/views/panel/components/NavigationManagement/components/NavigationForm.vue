@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { NavigationItem } from '../types/NavigationItem'
+import type { NavigationItem } from '@/components/modules/navigation/data/navigation.data'
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
@@ -27,11 +27,11 @@ defineOptions({
 
 interface Props {
   isEditMode: boolean
-  formData: Omit<NavigationItem, 'id' | 'children'>
+  formData: Omit<NavigationItem, 'id'>
 }
 
 interface Emits {
-  (e: 'submit', value: Omit<NavigationItem, 'id' | 'children'>): void
+  (e: 'submit', value: Omit<NavigationItem, 'id'>): void
 }
 
 const props = defineProps<Props>()
@@ -59,15 +59,15 @@ const {
   initialValues: {
     title: props.formData.title ?? '',
     icon: props.formData.icon ?? '',
-    url: (props.formData as any).url ?? '',
-    category: (props.formData as any).category ?? '搜索引擎',
+    url: props.formData.url ?? '',
+    category: props.formData.category ?? '搜索引擎',
     description: props.formData.description ?? '',
     order: props.formData.order ?? 0,
   },
 })
 
-function shouldShowField(field: { showWhen?: (formData: Record<string, unknown>) => boolean }) {
-  if (field.showWhen) {
+function shouldShowField(field: Record<string, unknown>) {
+  if (field.showWhen && typeof field.showWhen === 'function') {
     return field.showWhen(values as Record<string, unknown>)
   }
   return true
@@ -84,7 +84,7 @@ defineExpose({
     // 先验证，验证通过后再提交
     const { valid } = await validateForm()
     if (valid) {
-      emit('submit', { ...values } as Omit<NavigationItem, 'id' | 'children'>)
+      emit('submit', { ...values } as Omit<NavigationItem, 'id'>)
     }
   },
 })

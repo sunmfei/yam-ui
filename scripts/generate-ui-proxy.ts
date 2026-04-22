@@ -191,70 +191,72 @@ function scanDirectory(dir: string, relativePath: string = ''): ComponentInfo[] 
  * 扫描目录下的所有 .vue 文件（无 index 时）
  */
 
-function _scanVueFilesInDir(dir: string, relativePath: string): ComponentInfo[] {
-  const components: ComponentInfo[] = []
-
-  if (!fs.existsSync(dir)) return components
-
-  const files = fs.readdirSync(dir, { withFileTypes: true })
-
-  for (const file of files) {
-    if (file.isFile() && file.name.endsWith('.vue') && !shouldExclude(file.name)) {
-      const fileName = file.name.replace('.vue', '')
-      const componentName = toPascalCase(fileName)
-
-      // 检查是否已存在
-      const dirName = path.basename(dir)
-      if (existingBaseComponents.has(dirName.toLowerCase())) {
-        console.log(`⏭️  跳过 ${componentName}（base 中已有自定义组件）`)
-        continue
-      }
-
-      components.push({
-        name: componentName,
-        pascalName: componentName,
-        basePath: relativePath,
-        importPath: `@/components/ui/${relativePath}/${file.name}`,
-        isDefault: true,
-        hasNamedExports: [],
-      })
-    }
-  }
-
-  return components
-}
+// TODO: Implement this function when needed
+// function _scanVueFilesInDir(dir: string, relativePath: string): ComponentInfo[] {
+//   const components: ComponentInfo[] = []
+//
+//   if (!fs.existsSync(dir)) return components
+//
+//   const files = fs.readdirSync(dir, { withFileTypes: true })
+//
+//   for (const file of files) {
+//     if (file.isFile() && file.name.endsWith('.vue') && !shouldExclude(file.name)) {
+//       const fileName = file.name.replace('.vue', '')
+//       const componentName = toPascalCase(fileName)
+//
+//       // 检查是否已存在
+//       const dirName = path.basename(dir)
+//       if (existingBaseComponents.has(dirName.toLowerCase())) {
+//         console.log(`⏭️  跳过 ${componentName}（base 中已有自定义组件）`)
+//         continue
+//       }
+//
+//       components.push({
+//         name: componentName,
+//         pascalName: componentName,
+//         basePath: relativePath,
+//         importPath: `@/components/ui/${relativePath}/${file.name}`,
+//         isDefault: true,
+//         hasNamedExports: [],
+//       })
+//     }
+//   }
+//
+//   return components
+// }
 
 /**
  * 读取 Vue 文件，分析导出
  */
 
-function _analyzeVueFile(filePath: string): { hasDefault: boolean; namedExports: string[] } {
-  try {
-    const content = fs.readFileSync(filePath, 'utf-8')
-
-    // 简单分析：检查是否有 script setup 和 export
-    const hasScriptSetup = content.includes('<script setup')
-    const hasDefaultExport = hasScriptSetup // script setup 默认导出组件
-
-    // 查找命名导出（export const/function/type）
-    const namedExports: string[] = []
-    const exportMatches = content.matchAll(
-      /export\s+(?:const|function|type|interface|enum)\s+(\w+)/g
-    )
-    for (const match of exportMatches) {
-      if (match[1]) {
-        namedExports.push(match[1])
-      }
-    }
-
-    return {
-      hasDefault: hasDefaultExport,
-      namedExports,
-    }
-  } catch {
-    return { hasDefault: true, namedExports: [] }
-  }
-}
+// TODO: Implement this function when needed
+// function _analyzeVueFile(filePath: string): { hasDefault: boolean; namedExports: string[] } {
+//   try {
+//     const content = fs.readFileSync(filePath, 'utf-8')
+//
+//     // 简单分析：检查是否有 script setup 和 export
+//     const hasScriptSetup = content.includes('<script setup')
+//     const hasDefaultExport = hasScriptSetup // script setup 默认导出组件
+//
+//     // 查找命名导出（export const/function/type）
+//     const namedExports: string[] = []
+//     const exportMatches = content.matchAll(
+//       /export\s+(?:const|function|type|interface|enum)\s+(\w+)/g
+//     )
+//     for (const match of exportMatches) {
+//       if (match[1]) {
+//         namedExports.push(match[1])
+//       }
+//     }
+//
+//     return {
+//       hasDefault: hasDefaultExport,
+//       namedExports,
+//     }
+//   } catch {
+//     return { hasDefault: true, namedExports: [] }
+//   }
+// }
 
 /**
  * 生成代理文件内容

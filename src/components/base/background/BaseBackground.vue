@@ -7,7 +7,7 @@ import { NatureBg, SakuraTreeSceneBg } from '@/components/ui/bg'
 /**
  * BaseBackground - 基础背景组件
  *
- * 提供多种背景效果：粒子、渐变、网格、波浪、樱花
+ * 提供多种背景效果：粒子、渐变、网格、波浪、樱�?
  */
 defineOptions({
   name: 'BaseBackground',
@@ -47,7 +47,7 @@ const particleColor = computed(() => {
     <!-- 自然背景 -->
     <NatureBg v-else-if="appStore.backgroundType === 'nature'" />
 
-    <!-- 樱花树场景背景 -->
+    <!-- 樱花树场景背�?-->
     <SakuraTreeSceneBg v-else-if="appStore.backgroundType === 'sakura'" class="absolute inset-0" />
 
     <!-- 默认背景（当选择 none 时显示基础背景色） -->

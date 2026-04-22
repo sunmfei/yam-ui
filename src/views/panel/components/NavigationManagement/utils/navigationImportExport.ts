@@ -1,7 +1,7 @@
 /**
  * navigationImportExport - 菜单导入导出工具
  */
-import type { NavigationItem } from '../types/NavigationItem'
+import type { NavigationItem } from '@/components/modules/navigation/data/navigation.data'
 import { SunMessage } from '@/utils/message'
 
 /**
@@ -19,7 +19,7 @@ export function exportNavigationData(navigations: NavigationItem[]) {
 }
 
 /**
- * 验证菜单数据结构
+ * 验证导航数据结构（扁平结构）
  */
 export function validateNavigationData(data: unknown[]): void {
   for (let i = 0; i < data.length; i++) {
@@ -28,11 +28,8 @@ export function validateNavigationData(data: unknown[]): void {
       throw new Error(`第 ${i + 1} 个节点格式错误`)
     }
     const node = item as Record<string, unknown>
-    if (!node.id || !node.name || !node.type) {
-      throw new Error(`第 ${i + 1} 个节点缺少必要字段（id、name、type）`)
-    }
-    if (node.children && Array.isArray(node.children)) {
-      validateNavigationData(node.children as unknown[])
+    if (!node.id || !node.title || !node.url || !node.category) {
+      throw new Error(`第 ${i + 1} 个节点缺少必要字段（id、title、url、category）`)
     }
   }
 }

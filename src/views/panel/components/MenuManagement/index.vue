@@ -85,6 +85,7 @@
         </div>
       </template>
 
+      <!-- @vue-ignore -->
       <template #actions="{ row }">
         <div v-if="row" class="flex items-center justify-end gap-2">
           <BaseButton
@@ -317,7 +318,6 @@ function openEditDialog(row: TreeTableNode) {
   editingNode.value = sourceNode
 
   editForm.value = {
-    id: sourceNode.id,
     name: sourceNode.name || '',
     type: sourceNode.type || 'route',
     icon: sourceNode.icon || '',

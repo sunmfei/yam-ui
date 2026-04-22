@@ -18,10 +18,10 @@
         <!-- 搜索图标 -->
         <span class="text-white/60">🔍</span>
 
-        <!-- 输入框 -->
+        <!-- 输入�?-->
         <input
           v-model="keyword"
-          placeholder="输入关键词开始搜索..."
+          placeholder="输入关键词开始搜�?.."
           class="flex-1 bg-transparent outline-none text-white text-lg placeholder-white/40"
           @focus="focus = true"
           @blur="focus = false"
@@ -57,11 +57,11 @@
 
 <script setup lang="ts">
 /**
- * 搜索框核心逻辑：
- * 1. keyword：输入内容
+ * 搜索框核心逻辑�?
+ * 1. keyword：输入内�?
  * 2. engine：搜索引擎选择
- * 3. focus：控制动效状态
- * 4. doSearch：根据引擎拼接 URL 跳转
+ * 3. focus：控制动效状�?
+ * 4. doSearch：根据引擎拼�?URL 跳转
  */
 
 import { ref } from 'vue'

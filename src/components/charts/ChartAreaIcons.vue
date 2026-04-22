@@ -1,5 +1,5 @@
-<script setup lang="ts">
-import type { ChartConfig } from '@/registry/new-york-v4/ui/chart'
+﻿<script setup lang="ts">
+import type { ChartConfig } from '@/components/ui/chart'
 // import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts"
 import { VisArea, VisAxis, VisLine, VisXYContainer } from '@unovis/vue'
 import { TrendingDown, TrendingUp } from 'lucide-vue-next'
@@ -11,7 +11,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/registry/new-york-v4/ui/card'
+} from '@/components/ui/card'
 import {
   ChartContainer,
   ChartCrosshair,
@@ -19,9 +19,9 @@ import {
   ChartTooltip,
   ChartTooltipContent,
   componentToString,
-} from '@/registry/new-york-v4/ui/chart'
+} from '@/components/ui/chart'
 
-const _description = 'An area chart with axes'
+// const _description = 'An area chart with axes'
 
 const chartData = [
   { month: 1, monthLabel: 'January', desktop: 186, mobile: 80 },

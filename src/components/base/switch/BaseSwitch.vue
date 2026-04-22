@@ -5,9 +5,9 @@ import { cn } from '@/lib/utils'
 import { glassSwitch } from '@/lib/glass-theme'
 
 /**
- * BaseSwitch - 基础开关组件
+ * BaseSwitch - 基础开关组�?
  *
- * 封装 ui/switch，提供统一的开关样式
+ * 封装 ui/switch，提供统一的开关样�?
  * 禁止在业务代码中直接使用 ui/switch
  */
 defineOptions({
@@ -35,7 +35,7 @@ const isChecked = computed({
 // 检测是否为深色模式
 const isDark = computed(() => document.documentElement.classList.contains('dark'))
 
-// 根据主题和状态动态获取类名
+// 根据主题和状态动态获取类�?
 const switchClasses = computed(() => {
   const baseClasses =
     'peer inline-flex h-[24px] w-[44px] shrink-0 cursor-pointer items-center rounded-full border transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50'

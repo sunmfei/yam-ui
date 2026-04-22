@@ -1,4 +1,4 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 import type { SidebarProps } from '@/components/ui/sidebar'
 
 import {
@@ -123,7 +123,7 @@ const data = {
     {
       name: 'Language Learning Progress & Resources',
       url: '#',
-      emoji: '🗣️',
+      emoji: '',
     },
     {
       name: 'Home Renovation Ideas & Budget Tracker',
@@ -143,7 +143,7 @@ const data = {
     {
       name: 'Daily Habit Tracker & Goal Setting',
       url: '#',
-      emoji: '✅',
+      emoji: '',
     },
   ],
   workspaces: [
@@ -201,7 +201,7 @@ const data = {
         {
           name: 'Art & Design Portfolio',
           url: '#',
-          emoji: '🖼️',
+          emoji: '',
         },
         {
           name: 'Music Composition & Practice Log',
@@ -238,7 +238,7 @@ const data = {
         {
           name: 'Trip Planning & Itineraries',
           url: '#',
-          emoji: '🗺️',
+          emoji: '',
         },
         {
           name: 'Travel Bucket List & Inspiration',

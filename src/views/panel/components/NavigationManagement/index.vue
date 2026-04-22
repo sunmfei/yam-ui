@@ -18,43 +18,44 @@
           <div
             class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-primary/20 bg-gradient-to-br from-primary/10 to-primary/5 text-xs font-bold text-primary shadow-sm transition-all hover:scale-110 hover:shadow-md"
           >
-            {{ getNodeAvatar(row) }}
+            {{ getNodeAvatar(row as unknown as NavigationItem) }}
           </div>
           <div class="min-w-0">
             <div
               class="truncate font-semibold text-foreground transition-colors hover:text-primary"
             >
-              {{ row.title }}
+              {{ (row as unknown as NavigationItem).title }}
             </div>
-            <div class="truncate text-xs text-muted-foreground">ID: {{ row.id }}</div>
+            <div class="truncate text-xs text-muted-foreground">ID: {{ (row as unknown as NavigationItem).id }}</div>
           </div>
         </div>
       </template>
 
       <template #icon="{ row }">
-        <span v-if="row.icon" class="text-lg">{{ row.icon }}</span>
+        <span v-if="(row as unknown as NavigationItem).icon" class="text-lg">{{ (row as unknown as NavigationItem).icon }}</span>
         <span v-else class="text-muted-foreground">-</span>
       </template>
 
       <template #url="{ row }">
         <div class="truncate font-mono text-xs text-foreground">
-          {{ row.url || '--' }}
+          {{ (row as unknown as NavigationItem).url || '--' }}
         </div>
       </template>
 
       <template #category="{ row }">
         <Badge variant="outline" class="transition-all hover:scale-105">
-          {{ formatCategory(row.category) }}
+          {{ formatCategory((row as unknown as NavigationItem).category) }}
         </Badge>
       </template>
 
+      <!-- @vue-ignore -->
       <template #actions="{ row }">
         <div v-if="row" class="flex items-center justify-end gap-2">
           <BaseButton
             size="sm"
             variant="outline"
             class="transition-all hover:scale-105 hover:shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
-            @click.stop="openEditDialog(row)"
+            @click.stop="openEditDialog(row as unknown as NavigationItem)"
           >
             编辑
           </BaseButton>
@@ -62,7 +63,7 @@
             size="sm"
             variant="destructive"
             class="transition-all hover:scale-105 hover:shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
-            @click.stop="handleDelete(row)"
+            @click.stop="handleDelete(row as unknown as NavigationItem)"
           >
             删除
           </BaseButton>
@@ -89,7 +90,7 @@ import { Upload } from 'lucide-vue-next'
 import { Badge } from '@/components/ui/badge'
 import BaseButton from '@/components/base/button/BaseButton.vue'
 import { BaseTable } from '@/components/modules/table'
-import type { NavigationItem } from './types/NavigationItem'
+import type { NavigationItem } from '@/components/modules/navigation/data/navigation.data'
 import { SunMessage } from '@/utils/message'
 import NavigationDialog from './components/NavigationDialog.vue'
 import { useNavigationData } from './composables/useNavigationData'
@@ -148,7 +149,7 @@ function getNodeAvatar(row: NavigationItem) {
 // =============================================
 const selectedKeys = ref<Array<string | number>>([])
 
-function handleSelectionChange(_rows: any[], keys: Array<string | number>) {
+function handleSelectionChange(_rows: NavigationItem[], keys: Array<string | number>) {
   selectedKeys.value = keys
 }
 

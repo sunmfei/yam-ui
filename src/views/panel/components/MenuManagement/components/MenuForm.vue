@@ -42,7 +42,7 @@ const emit = defineEmits<Emits>()
 const formSchema = toTypedSchema(
   z.object({
     name: z.string().min(1, '节点名称不能为空'),
-    type: z.enum(['route', 'action', 'menu', 'select', 'option']),
+    type: z.enum(['route', 'action', 'menu', 'select', 'option', 'button', 'dropdown', 'list']),
     path: z.string().optional(),
     actionKey: z.string().optional(),
     icon: z.string().optional(),

@@ -4,8 +4,8 @@
  * 负责导航数据的加载、保存、合并等核心逻辑（扁平结构）
  */
 import { ref } from 'vue'
-import type { NavigationItem } from '../types/NavigationItem'
-import { navigationList as DEFAULT_NAVIGATION_LIST } from '@/components/modules/navigation/data/navigation.data'
+import type { NavigationItem } from '@/components/modules/navigation/data/navigation.data'
+import { navigationList as DEFAULT_NAVIGATION_LIST } from '@/views/home/data/NavigationData'
 import { localCache } from '@/utils/cache/localCache'
 import { getNavigations } from '@/api/navigation'
 import { LocalCacheKey } from '@/types'

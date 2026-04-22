@@ -8,7 +8,7 @@ import { SakuraBg } from './index'
  */
 const appStore = useAppStore()
 
-// 天空渐变：上方天蓝 → 下方极淡粉（几乎透明）
+// 天空渐变：上方天蓝，下方极淡粉（几乎透明）
 const bgColor = computed(() => {
   return appStore.isDark
     ? 'linear-gradient(to bottom, #0f172a 0%, #1e1b3a 50%, #2d1b4e 100%)'
@@ -18,7 +18,7 @@ const bgColor = computed(() => {
 
 <template>
   <div class="relative w-full h-full overflow-hidden" :style="{ background: bgColor }">
-    <!-- 樱花飘落层 -->
+    <!-- 樱花飘落 -->
     <SakuraBg class="absolute inset-0 z-0" />
   </div>
 </template>

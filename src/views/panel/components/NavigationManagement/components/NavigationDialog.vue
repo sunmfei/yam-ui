@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import type { NavigationItem } from '../types/NavigationItem'
+import type { NavigationItem } from '@/components/modules/navigation/data/navigation.data'
 import NavigationForm from './NavigationForm.vue'
 import BaseDialog from '@/components/base/modal/BaseDialog.vue'
 import { dialogConfig } from '../data/navigation.dialog.data'

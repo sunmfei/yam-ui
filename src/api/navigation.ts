@@ -1,4 +1,4 @@
-import type { NavigationItem } from '@/types'
+import type { NavigationItem } from '@/components/modules/navigation/data/navigation.data'
 
 /**
  * 导航管理 API

@@ -7,11 +7,11 @@ import { VisArea, VisAxis, VisLine, VisXYContainer } from '@unovis/vue'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   ChartContainer,
-  ChartCrosshair,
+  // ChartCrosshair,
   ChartLegendContent,
-  ChartTooltip,
-  ChartTooltipContent,
-  componentToString,
+  // ChartTooltip,
+  // ChartTooltipContent,
+  // componentToString,
 } from '@/components/ui/chart'
 import {
   Select,
@@ -21,7 +21,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 
-const description = 'An interactive area chart'
+// const description = 'An interactive area chart'
 
 const chartData = [
   { date: new Date('2024-04-01'), desktop: 222, mobile: 150 },
@@ -209,14 +209,14 @@ const filterRange = computed(() => {
           <VisArea
             :x="(d: Data) => d.date"
             :y="[(d: Data) => d.mobile, (d: Data) => d.desktop]"
-            :color="(d: Data, i: number) => ['url(#fillMobile)', 'url(#fillDesktop)'][i]"
+            :color="(_d: Data, i: number) => ['url(#fillMobile)', 'url(#fillDesktop)'][i]"
             :opacity="0.6"
           />
           <VisLine
             :x="(d: Data) => d.date"
             :y="[(d: Data) => d.mobile, (d: Data) => d.mobile + d.desktop]"
             :color="
-              (d: Data, i: number) => [chartConfig.mobile.color, chartConfig.desktop.color][i]
+              (_d: Data, i: number) => [chartConfig.mobile.color, chartConfig.desktop.color][i]
             "
             :line-width="1"
           />
@@ -228,7 +228,7 @@ const filterRange = computed(() => {
             :grid-line="false"
             :num-ticks="6"
             :tick-format="
-              (d: number, index: number) => {
+              (d: number, _index: number) => {
                 const date = new Date(d)
                 return date.toLocaleDateString('en-US', {
                   month: 'short',

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import type { NavigationItem, NavigationChild } from '@/types'
+import type { NavigationItem } from '@/components/modules/navigation/data/navigation.data'
 import { ExternalLink } from 'lucide-vue-next'
 import BaseButton from '@/components/base/button/BaseButton.vue'
 
@@ -10,27 +10,27 @@ interface Props {
 
 const props = defineProps<Props>()
 
-// 当前激活的卡片索引
+// 当前选中的卡片
 const activeIndex = ref(0)
 
-// 过滤可见的分类
+// 处理隐藏的卡片?
 const visibleItems = computed(() => {
   return props.items.filter((item) => !item.hidden && item.children && item.children.length > 0)
 })
 
-// 切换到指定卡片
+// 切换卡片
 function goTo(index: number) {
   activeIndex.value = index
 }
 
-// 下一个
+// 下一张?
 function next() {
   if (activeIndex.value < visibleItems.value.length - 1) {
     activeIndex.value++
   }
 }
 
-// 上一个
+// 上一张?
 function prev() {
   if (activeIndex.value > 0) {
     activeIndex.value--
@@ -38,10 +38,11 @@ function prev() {
 }
 
 // 打开链接
-function openLink(child: NavigationChild) {
+function openLink(child: NavigationItem) {
   if (child.disabled) return
-  window.open(child.path, child.openInNewTab ? '_blank' : '_self')
+  window.open(child.url, '_blank')
 }
+
 </script>
 
 <template>
@@ -55,7 +56,7 @@ function openLink(child: NavigationChild) {
           :key="item.id"
           class="absolute inset-0 flex flex-col"
         >
-          <!-- 卡片背景渐变 -->
+          <!-- 卡片背景 -->
           <div
             class="absolute inset-0 rounded-3xl bg-gradient-to-br from-primary/10 via-background to-muted/30 transition-all duration-500"
           />
@@ -74,11 +75,11 @@ function openLink(child: NavigationChild) {
                 </p>
               </div>
               <div class="rounded-full bg-secondary px-3 py-1 text-sm font-medium">
-                {{ item.children?.length }} 个网站
+                {{ item.children?.length }} 个子项?
               </div>
             </div>
 
-            <!-- 导航项网格 -->
+            <!-- 子项列表 -->
             <div
               class="grid flex-1 grid-cols-1 gap-4 overflow-y-auto sm:grid-cols-2 lg:grid-cols-3"
             >
@@ -118,9 +119,9 @@ function openLink(child: NavigationChild) {
       </TransitionGroup>
     </div>
 
-    <!-- 底部控制栏 -->
+    <!-- 底部导航 -->
     <div class="mt-6 flex items-center justify-between">
-      <!-- 指示器 -->
+      <!-- 圆点导航 -->
       <div class="flex gap-2">
         <button
           v-for="(_, index) in visibleItems"
@@ -133,10 +134,10 @@ function openLink(child: NavigationChild) {
         />
       </div>
 
-      <!-- 导航按钮 -->
+      <!-- 子项导航 -->
       <div class="flex gap-2">
         <BaseButton size="sm" variant="outline" :disabled="activeIndex === 0" @click="prev">
-          上一个
+          上一张?
         </BaseButton>
         <BaseButton
           size="sm"
@@ -144,14 +145,14 @@ function openLink(child: NavigationChild) {
           :disabled="activeIndex === visibleItems.length - 1"
           @click="next"
         >
-          下一个
+          下一张?
         </BaseButton>
       </div>
     </div>
 
-    <!-- 空状态 -->
+    <!-- 无数据 -->
     <div v-if="visibleItems.length === 0" class="py-20 text-center">
-      <p class="text-lg text-muted-foreground">暂无导航数据</p>
+      <p class="text-lg text-muted-foreground">没有子项数据</p>
     </div>
   </div>
 </template>

@@ -16,6 +16,12 @@ export const MenuType = {
   SELECT: 'select',
   /** @deprecated 选项类型：选择器的子项 */
   OPTION: 'option',
+  /** 按钮类型：普通按钮 */
+  BUTTON: 'button',
+  /** 下拉菜单类型 */
+  DROPDOWN: 'dropdown',
+  /** 列表类型 */
+  LIST: 'list',
 } as const
 
 export type MenuNodeType = (typeof MenuType)[keyof typeof MenuType]

@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, onMounted, onUnmounted } from 'vue'
-import { useAppStore } from '@/stores'
+import { ref, onMounted, onUnmounted } from 'vue'
 import SakuraIcon from '@/components/ui/icon/SakuraIcon.vue'
 
 interface Props {
@@ -18,9 +17,9 @@ interface Props {
   windDirection?: 'left' | 'right' | 'none'
   /** 落地停留时间（秒），0 表示不循环 */
   stayTime?: number
-  /** 樱花颜色（顶部/浅色） */
+  /** 樱花颜色（顶部-浅色） */
   colorTop?: string
-  /** 樱花颜色（底部/深色） */
+  /** 樱花颜色（底部-深色） */
   colorBottom?: string
   /** 是否显示渐变蒙版 */
   showGradientMask?: boolean
@@ -46,19 +45,6 @@ const props = withDefaults(defineProps<Props>(), {
   gradientStartOpacity: 0.3,
   gradientEndOpacity: 0.9,
   class: '',
-})
-
-const appStore = useAppStore()
-
-// 樱花颜色计算
-const sakuraColorTop = computed(() => {
-  if (props.colorTop) return props.colorTop
-  return appStore.isDark ? 'rgba(255, 183, 197, 0.6)' : 'rgba(255, 192, 203, 0.7)'
-})
-
-const sakuraColorBottom = computed(() => {
-  if (props.colorBottom) return props.colorBottom
-  return appStore.isDark ? 'rgba(255, 183, 197, 0.95)' : 'rgba(255, 192, 203, 1)'
 })
 
 // 樱花粒子接口
@@ -114,7 +100,7 @@ function createSakura(id: number, randomY = false): Sakura {
     y: randomY ? Math.random() * -100 : -10 - Math.random() * 50, // 从上方不同位置开始
     size: Math.random() * 10 + 8, // 8-18px
     fallSpeed: Math.random() * 3 + props.fallSpeed - 1.5, // 基础速度 ± 1.5s
-    windOffset: windForce * (0.8 + Math.random() * 0.4), // 风力影响（80%-120%）
+    windOffset: windForce * (0.8 + Math.random() * 0.4), // 风力影响，80%-120%
     rotation: Math.random() * 360,
     rotationSpeed: (Math.random() - 0.5) * 90, // -45 到 45 deg/s
     opacity: 0,
@@ -128,40 +114,6 @@ function createSakura(id: number, randomY = false): Sakura {
  */
 function generateSakuras() {
   sakuras.value = Array.from({ length: props.count }, (_, i) => createSakura(i, true))
-}
-
-/**
- * 根据位置计算樱花颜色（渐变效果）
- */
-
-function _getSakuraColor(y: number): string {
-  if (!props.showGradientMask) return sakuraColorTop.value
-
-  // 将 y 从 -10~100 映射到 0~1
-  const progress = Math.max(0, Math.min(1, (y + 10) / 110))
-
-  const parseColor = (color: string) => {
-    const match = color.match(/rgba?\((\d+),\s*(\d+),\s*(\d+),\s*([\d.]+)\)/)
-    if (!match) return { r: 255, g: 192, b: 203, a: 0.8 }
-    return {
-      r: parseInt(match[1]),
-      g: parseInt(match[2]),
-      b: parseInt(match[3]),
-      a: parseFloat(match[4]),
-    }
-  }
-
-  const top = parseColor(sakuraColorTop.value)
-  const bottom = parseColor(sakuraColorBottom.value)
-
-  // 线性插值
-  const r = Math.round(top.r + (bottom.r - top.r) * progress)
-  const g = Math.round(top.g + (bottom.g - top.g) * progress)
-  const b = Math.round(top.b + (bottom.b - top.b) * progress)
-  const a =
-    props.gradientStartOpacity + (props.gradientEndOpacity - props.gradientStartOpacity) * progress
-
-  return `rgba(${r}, ${g}, ${b}, ${a.toFixed(2)})`
 }
 
 /**
@@ -264,8 +216,8 @@ onUnmounted(() => {
       v-if="showGradientMask"
       class="absolute inset-0 pointer-events-none"
       :style="{
-        background: `linear-gradient(to bottom, 
-          rgba(255,255,255,${1 - gradientStartOpacity}) 0%, 
+        background: `linear-gradient(to bottom,
+          rgba(255,255,255,${1 - gradientStartOpacity}) 0%,
           rgba(255,255,255,${1 - gradientEndOpacity}) 100%)`,
       }"
     />

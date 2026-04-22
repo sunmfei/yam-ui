@@ -1,4 +1,4 @@
-import type { NavigationItem } from '../types/NavigationItem'
+import type { NavigationItem } from '@/components/modules/navigation/data/navigation.data'
 import { getAllCategories } from './category.dict'
 
 /**

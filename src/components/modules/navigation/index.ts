@@ -10,4 +10,4 @@ export { default as NavigationGrid } from './components/NavigationGrid.vue'
 export { default as NavigationCard } from './components/NavigationCard.vue'
 
 export type { NavigationItem } from './data/navigation.data'
-export { navigationList } from './data/navigation.data'
+// export { navigationList } from './data/navigation.data' // 数据来自 @/views/home/data/NavigationData
