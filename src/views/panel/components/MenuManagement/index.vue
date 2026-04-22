@@ -1,20 +1,22 @@
 <template>
-  <BaseTable
-    title="菜单管理"
-    :subtitle="`展示配置驱动的树形表格功能，包括树形模式、多选、分页等特性。`"
-    :data="filteredMenus as unknown as TreeTableNode[]"
-    :columns="columns"
-    searchable
-    search-placeholder="搜索名称、路径或操作键"
-    :filters="typeFilterOptions"
-    :actions="headerActions"
-    configurable
-    @filter="handleFilter"
-    @selection-change="handleSelectionChange"
-    @row-click="handleRowClick"
-  >
-    <!-- 面包屑导航 -->
-    <!--    <template #toolbar-left>
+  <div class="relative h-full min-h-0">
+    <BaseTable
+      class="absolute inset-0"
+      title="菜单管理"
+      :subtitle="`展示配置驱动的树形表格功能，包括树形模式、多选、分页等特性。`"
+      :data="filteredMenus as unknown as TreeTableNode[]"
+      :columns="columns"
+      searchable
+      search-placeholder="搜索名称、路径或操作键"
+      :filters="typeFilterOptions"
+      :actions="headerActions"
+      configurable
+      @filter="handleFilter"
+      @selection-change="handleSelectionChange"
+      @row-click="handleRowClick"
+    >
+      <!-- 面包屑导航 -->
+      <!--    <template #toolbar-left>
       <SunBreadcrumb
         :items="[
           { title: '首页', href: '/' },
@@ -24,107 +26,110 @@
       />
     </template>-->
 
-    <template #name="{ row }">
-      <div v-if="row" class="flex min-w-0 items-center gap-3 transition-all hover:gap-4">
-        <div
-          class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-primary/20 bg-gradient-to-br from-primary/10 to-primary/5 text-xs font-bold text-primary shadow-sm transition-all hover:scale-110 hover:shadow-md"
-        >
-          {{ getNodeAvatar(row) }}
-        </div>
-        <div class="min-w-0">
-          <div class="truncate font-semibold text-foreground transition-colors hover:text-primary">
-            {{ row.name }}
+      <template #name="{ row }">
+        <div v-if="row" class="flex min-w-0 items-center gap-3 transition-all hover:gap-4">
+          <div
+            class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-primary/20 bg-gradient-to-br from-primary/10 to-primary/5 text-xs font-bold text-primary shadow-sm transition-all hover:scale-110 hover:shadow-md"
+          >
+            {{ getNodeAvatar(row) }}
           </div>
-          <div class="truncate text-xs text-muted-foreground">ID: {{ row.id }}</div>
+          <div class="min-w-0">
+            <div
+              class="truncate font-semibold text-foreground transition-colors hover:text-primary"
+            >
+              {{ row.name }}
+            </div>
+            <div class="truncate text-xs text-muted-foreground">ID: {{ row.id }}</div>
+          </div>
         </div>
-      </div>
-    </template>
+      </template>
 
-    <template #type="{ row }">
-      <Badge
-        :variant="getTypeVariant(row.type)"
-        class="transition-all hover:scale-105 hover:shadow-sm"
-      >
-        {{ getTypeLabel(row.type) }}
-      </Badge>
-    </template>
-
-    <template #target="{ row }">
-      <div class="space-y-1.5 text-xs">
-        <div class="truncate font-mono font-medium text-foreground">
-          {{ row.path || row.actionKey || '--' }}
-        </div>
-        <div
-          v-if="row.getSelectedLabelKey || row.onItemClickKey"
-          class="truncate text-muted-foreground"
-        >
-          {{ row.getSelectedLabelKey || row.onItemClickKey }}
-        </div>
-      </div>
-    </template>
-
-    <template #status="{ row }">
-      <div class="flex flex-wrap gap-2">
-        <Badge v-if="row.hidden" variant="outline" class="transition-all hover:scale-105">
-          隐藏
-        </Badge>
-        <Badge v-if="row.disabled" variant="destructive" class="transition-all hover:scale-105">
-          禁用
-        </Badge>
+      <template #type="{ row }">
         <Badge
-          v-if="!row.hidden && !row.disabled"
-          variant="secondary"
-          class="transition-all hover:scale-105"
+          :variant="getTypeVariant(row.type)"
+          class="transition-all hover:scale-105 hover:shadow-sm"
         >
-          正常
+          {{ getTypeLabel(row.type) }}
         </Badge>
-      </div>
-    </template>
+      </template>
 
-    <template #actions="{ row }">
-      <div v-if="row" class="flex items-center justify-end gap-2">
-        <BaseButton
-          size="sm"
-          variant="outline"
-          :disabled="row.type !== 'menu' && row.type !== 'select'"
-          class="gap-1.5 transition-all hover:scale-105 hover:shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
-          @click.stop="handleAddChild(row)"
-        >
-          <Plus class="h-3.5 w-3.5" />
-          添加子节点
-        </BaseButton>
-        <BaseButton
-          size="sm"
-          variant="outline"
-          :disabled="crud.isHardcodedNode(row.id ?? '')"
-          class="transition-all hover:scale-105 hover:shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
-          @click.stop="openEditDialog(row)"
-        >
-          编辑
-        </BaseButton>
-        <BaseButton
-          size="sm"
-          variant="destructive"
-          :disabled="crud.isHardcodedNode(row.id ?? '')"
-          class="transition-all hover:scale-105 hover:shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
-          @click.stop="handleDelete(row)"
-        >
-          删除
-        </BaseButton>
-      </div>
-    </template>
-  </BaseTable>
+      <template #target="{ row }">
+        <div class="space-y-1.5 text-xs">
+          <div class="truncate font-mono font-medium text-foreground">
+            {{ row.path || row.actionKey || '--' }}
+          </div>
+          <div
+            v-if="row.getSelectedLabelKey || row.onItemClickKey"
+            class="truncate text-muted-foreground"
+          >
+            {{ row.getSelectedLabelKey || row.onItemClickKey }}
+          </div>
+        </div>
+      </template>
 
-  <!-- 编辑对话框 -->
-  <MenuDialog
-    v-model:open="showEditDialog"
-    :is-edit-mode="isEditMode"
-    :form-data="editForm"
-    @submit="handleFormSubmit"
-  />
+      <template #status="{ row }">
+        <div class="flex flex-wrap gap-2">
+          <Badge v-if="row.hidden" variant="outline" class="transition-all hover:scale-105">
+            隐藏
+          </Badge>
+          <Badge v-if="row.disabled" variant="destructive" class="transition-all hover:scale-105">
+            禁用
+          </Badge>
+          <Badge
+            v-if="!row.hidden && !row.disabled"
+            variant="secondary"
+            class="transition-all hover:scale-105"
+          >
+            正常
+          </Badge>
+        </div>
+      </template>
 
-  <!-- 隐藏的文件输入 -->
-  <input ref="fileInputRef" type="file" accept=".json" class="hidden" @change="handleImport" />
+      <template #actions="{ row }">
+        <div v-if="row" class="flex items-center justify-end gap-2">
+          <BaseButton
+            size="sm"
+            variant="outline"
+            :disabled="row.type !== 'menu' && row.type !== 'select'"
+            class="gap-1.5 transition-all hover:scale-105 hover:shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+            @click.stop="handleAddChild(row)"
+          >
+            <Plus class="h-3.5 w-3.5" />
+            添加子节点
+          </BaseButton>
+          <BaseButton
+            size="sm"
+            variant="outline"
+            :disabled="crud.isHardcodedNode(row.id ?? '')"
+            class="transition-all hover:scale-105 hover:shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+            @click.stop="openEditDialog(row)"
+          >
+            编辑
+          </BaseButton>
+          <BaseButton
+            size="sm"
+            variant="destructive"
+            :disabled="crud.isHardcodedNode(row.id ?? '')"
+            class="transition-all hover:scale-105 hover:shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+            @click.stop="handleDelete(row)"
+          >
+            删除
+          </BaseButton>
+        </div>
+      </template>
+    </BaseTable>
+
+    <!-- 编辑对话框 -->
+    <MenuDialog
+      v-model:open="showEditDialog"
+      :is-edit-mode="isEditMode"
+      :form-data="editForm"
+      @submit="handleFormSubmit"
+    />
+
+    <!-- 隐藏的文件输入 -->
+    <input ref="fileInputRef" type="file" accept=".json" class="hidden" @change="handleImport" />
+  </div>
 </template>
 
 <script setup lang="ts">

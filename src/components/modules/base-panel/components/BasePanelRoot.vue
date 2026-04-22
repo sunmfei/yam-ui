@@ -260,8 +260,8 @@ const handleSelect = (id: string) => {
           </header>
 
           <!-- 内容区 -->
-          <main class="flex-1 overflow-auto">
-            <div class="p-4 pt-0">
+          <main class="min-h-0 flex-1 overflow-auto">
+            <div class="relative h-full min-h-0 p-4 pt-0">
               <component :is="activeComponent" v-if="activeComponent" />
               <slot v-else />
             </div>

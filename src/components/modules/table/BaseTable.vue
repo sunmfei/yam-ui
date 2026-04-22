@@ -1,13 +1,13 @@
 <template>
   <!-- 背景容器 - 始终全屏固定 -->
-  <div class="h-screen w-full overflow-hidden p-6">
+  <div class="h-full min-h-0 w-full overflow-hidden p-6">
     <!-- 响应式内容容器 -->
     <BaseContainer
-      :size="localContainerSize"
-      :custom-width="localCustomWidth || '85%'"
-      :custom-height="localCustomHeight || 'auto'"
+      size="custom"
+      :custom-width="resolvedContainerWidth"
+      :custom-height="resolvedContainerHeight"
       :fullscreen="isFullscreen"
-      class="h-full space-y-6 overflow-hidden"
+      class="h-full min-h-0 space-y-6 overflow-hidden"
     >
       <!-- 头部区域 -->
       <section
@@ -51,7 +51,7 @@
       </section>
 
       <!-- 表格区域 + 配置面板 -->
-      <section class="flex-1 overflow-hidden">
+      <section class="min-h-0 flex-1 overflow-hidden">
         <div
           class="grid h-full gap-6 transition-all"
           :class="
@@ -61,10 +61,11 @@
           <!-- 左侧：表格区域 -->
           <div class="flex min-h-0 flex-col space-y-5">
             <div
-              class="flex-1 overflow-auto rounded-3xl p-4 transition-all duration-300 hover:shadow-lg"
+              class="flex min-h-0 flex-1 flex-col overflow-hidden rounded-3xl p-4 transition-all duration-300 hover:shadow-lg"
               :class="getGlassCardClass(isDark)"
             >
               <BaseTreeTable
+                class="min-h-0 flex-1"
                 :data="tableData"
                 :columns="tableColumns"
                 :tree-config="resolvedTreeConfig"
@@ -620,7 +621,9 @@ const showConfigPanel = ref(false)
 // 容器尺寸配置
 const localContainerSize = ref<ContainerSize>(props.containerSize)
 const localCustomWidth = ref(props.customWidth ?? '85%')
-const localCustomHeight = ref(props.customHeight ?? 'auto')
+const localCustomHeight = ref(
+  props.customHeight && props.customHeight !== 'auto' ? props.customHeight : '90vh'
+)
 const isFullscreen = ref(props.fullscreen)
 
 // 树形配置
@@ -643,6 +646,31 @@ const hasActions = computed(() => props.actions && props.actions.length > 0)
 
 const tableData = computed(() => props.data)
 const tableColumns = computed(() => props.columns)
+const presetContainerWidthMap: Record<'small' | 'medium' | 'large', string> = {
+  small: '70%',
+  medium: '85%',
+  large: '100%',
+}
+
+const resolvedContainerWidth = computed(() => {
+  if (localContainerSize.value === 'custom') {
+    return localCustomWidth.value || '85%'
+  }
+
+  return presetContainerWidthMap[localContainerSize.value]
+})
+
+const resolvedContainerHeight = computed(() => {
+  if (localContainerSize.value === 'custom') {
+    return localCustomHeight.value || '90vh'
+  }
+
+  if (props.customHeight && props.customHeight !== 'auto') {
+    return props.customHeight
+  }
+
+  return '100%'
+})
 
 const tableToolbarConfig = computed<TreeTableToolbarConfig>(() => ({
   enabled: true,

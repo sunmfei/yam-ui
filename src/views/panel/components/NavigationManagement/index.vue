@@ -1,81 +1,86 @@
 <template>
-  <BaseTable
-    title="导航管理"
-    :subtitle="`管理用户自定义导航项，支持添加、编辑、删除操作。`"
-    :data="navigations as unknown as any[]"
-    :columns="columns"
-    searchable
-    search-placeholder="搜索标题或URL"
-    :actions="headerActions"
-    configurable
-    @selection-change="handleSelectionChange"
-    @row-click="handleRowClick"
-  >
-    <template #title="{ row }">
-      <div v-if="row" class="flex min-w-0 items-center gap-3 transition-all hover:gap-4">
-        <div
-          class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-primary/20 bg-gradient-to-br from-primary/10 to-primary/5 text-xs font-bold text-primary shadow-sm transition-all hover:scale-110 hover:shadow-md"
-        >
-          {{ getNodeAvatar(row) }}
-        </div>
-        <div class="min-w-0">
-          <div class="truncate font-semibold text-foreground transition-colors hover:text-primary">
-            {{ row.title }}
+  <div class="relative h-full min-h-0">
+    <BaseTable
+      class="absolute inset-0"
+      title="导航管理"
+      :subtitle="`管理用户自定义导航项，支持添加、编辑、删除操作。`"
+      :data="navigations as unknown as any[]"
+      :columns="columns"
+      searchable
+      search-placeholder="搜索标题或URL"
+      :actions="headerActions"
+      configurable
+      @selection-change="handleSelectionChange"
+      @row-click="handleRowClick"
+    >
+      <template #title="{ row }">
+        <div v-if="row" class="flex min-w-0 items-center gap-3 transition-all hover:gap-4">
+          <div
+            class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-primary/20 bg-gradient-to-br from-primary/10 to-primary/5 text-xs font-bold text-primary shadow-sm transition-all hover:scale-110 hover:shadow-md"
+          >
+            {{ getNodeAvatar(row) }}
           </div>
-          <div class="truncate text-xs text-muted-foreground">ID: {{ row.id }}</div>
+          <div class="min-w-0">
+            <div
+              class="truncate font-semibold text-foreground transition-colors hover:text-primary"
+            >
+              {{ row.title }}
+            </div>
+            <div class="truncate text-xs text-muted-foreground">ID: {{ row.id }}</div>
+          </div>
         </div>
-      </div>
-    </template>
+      </template>
 
-    <template #icon="{ row }">
-      <span v-if="row.icon" class="text-lg">{{ row.icon }}</span>
-      <span v-else class="text-muted-foreground">-</span>
-    </template>
+      <template #icon="{ row }">
+        <span v-if="row.icon" class="text-lg">{{ row.icon }}</span>
+        <span v-else class="text-muted-foreground">-</span>
+      </template>
 
-    <template #url="{ row }">
-      <div class="truncate font-mono text-xs text-foreground">
-        {{ row.url || '--' }}
-      </div>
-    </template>
+      <template #url="{ row }">
+        <div class="truncate font-mono text-xs text-foreground">
+          {{ row.url || '--' }}
+        </div>
+      </template>
 
-    <template #category="{ row }">
-      <Badge variant="outline" class="transition-all hover:scale-105">
-        {{ formatCategory(row.category) }}
-      </Badge>
-    </template>
+      <template #category="{ row }">
+        <Badge variant="outline" class="transition-all hover:scale-105">
+          {{ formatCategory(row.category) }}
+        </Badge>
+      </template>
 
-    <template #actions="{ row }">
-      <div v-if="row" class="flex items-center justify-end gap-2">
-        <BaseButton
-          size="sm"
-          variant="outline"
-          class="transition-all hover:scale-105 hover:shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
-          @click.stop="openEditDialog(row)"
-        >
-          编辑
-        </BaseButton>
-        <BaseButton
-          size="sm"
-          variant="destructive"
-          class="transition-all hover:scale-105 hover:shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
-          @click.stop="handleDelete(row)"
-        >
-          删除
-        </BaseButton>
-      </div>
-    </template>
-  </BaseTable>
+      <template #actions="{ row }">
+        <div v-if="row" class="flex items-center justify-end gap-2">
+          <BaseButton
+            size="sm"
+            variant="outline"
+            class="transition-all hover:scale-105 hover:shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+            @click.stop="openEditDialog(row)"
+          >
+            编辑
+          </BaseButton>
+          <BaseButton
+            size="sm"
+            variant="destructive"
+            class="transition-all hover:scale-105 hover:shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+            @click.stop="handleDelete(row)"
+          >
+            删除
+          </BaseButton>
+        </div>
+      </template>
+    </BaseTable>
 
-  <!-- 编辑对话框 -->
-  <NavigationDialog
-    v-model:open="showEditDialog"
-    :is-edit-mode="isEditMode"
-    :form-data="editForm"
-    @submit="handleFormSubmit"
-  />
+    <!-- 编辑对话框 -->
+    <NavigationDialog
+      v-model:open="showEditDialog"
+      :is-edit-mode="isEditMode"
+      :form-data="editForm"
+      @submit="handleFormSubmit"
+    />
 
-  <!-- 隐藏的文件输入 -->
-  <input ref="fileInputRef" type="file" accept=".json" class="hidden" @change="handleImport" />
+    <!-- 隐藏的文件输入 -->
+    <input ref="fileInputRef" type="file" accept=".json" class="hidden" @change="handleImport" />
+  </div>
 </template>
 
 <script setup lang="ts">

@@ -1,5 +1,5 @@
 <template>
-  <div class="flex h-full flex-col space-y-4">
+  <div class="flex h-full min-h-0 flex-col space-y-4">
     <div
       v-if="mergedToolbarConfig.enabled"
       class="flex shrink-0 flex-col gap-4 rounded-2xl border border-border/60 bg-card p-4 md:flex-row md:items-center md:justify-between"
@@ -55,11 +55,16 @@
     <div
       class="flex min-h-0 flex-1 flex-col overflow-hidden rounded-2xl border border-border/60 bg-card"
     >
-      <div class="shrink-0 overflow-x-auto">
-        <Table>
+      <div class="shrink-0 overflow-hidden border-b border-border/60">
+        <Table class="min-w-full table-fixed" container-class="overflow-hidden">
+          <colgroup>
+            <col v-if="mergedSelectionConfig.enabled" class="w-14" />
+            <col v-for="column in columns" :key="column.key" :style="getColumnStyle(column)" />
+          </colgroup>
+
           <TableHeader>
             <TableRow class="hover:bg-transparent">
-              <TableHead v-if="mergedSelectionConfig.enabled" class="w-14 text-center">
+              <TableHead v-if="mergedSelectionConfig.enabled" class="w-14 bg-card text-center">
                 <input
                   type="checkbox"
                   class="h-4 w-4 rounded border-input accent-primary"
@@ -71,9 +76,8 @@
               <TableHead
                 v-for="(column, index) in columns"
                 :key="column.key"
-                :style="{ width: column.width }"
                 :class="[
-                  'h-12 bg-muted/40 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground',
+                  'h-12 bg-card text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground',
                   getAlignClass(column.align),
                   column.headerClass,
                   index === 0 ? 'pl-4' : '',
@@ -86,8 +90,13 @@
         </Table>
       </div>
 
-      <div class="min-h-0 flex-1 overflow-auto">
-        <Table>
+      <div class="min-h-0 flex-1 overflow-auto overscroll-contain [scrollbar-gutter:stable]">
+        <Table class="min-w-full table-fixed" container-class="overflow-visible">
+          <colgroup>
+            <col v-if="mergedSelectionConfig.enabled" class="w-14" />
+            <col v-for="column in columns" :key="column.key" :style="getColumnStyle(column)" />
+          </colgroup>
+
           <TableBody>
             <template v-if="loading">
               <TableRow class="hover:bg-transparent">
@@ -809,6 +818,15 @@ function getAlignClass(align?: TreeTableColumn['align']) {
  * @param column - 列配置
  * @returns 单元格的值
  */
+function getColumnStyle(column: TreeTableColumn) {
+  if (!column.width) return undefined
+
+  return {
+    width: column.width,
+    minWidth: column.width,
+  }
+}
+
 function getCellValue(row: TreeTableNode, column: TreeTableColumn) {
   return row[column.key]
 }
