@@ -21,9 +21,10 @@ export default function initMenuActions() {
     menuConfig.resetToDefault()
   })
 
-  actionHub.registerAction(MenuActionKey.CHANGE_BG, async (item: { value?: string }) => {
-    if (item?.value) {
-      appStore.setBackgroundType(item.value)
+  actionHub.registerAction(MenuActionKey.CHANGE_BG, async (item: unknown) => {
+    const payload = item as { value?: string }
+    if (payload?.value) {
+      appStore.setBackgroundType(payload.value as any)
     }
   })
 

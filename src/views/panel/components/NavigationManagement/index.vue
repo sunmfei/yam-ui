@@ -11,7 +11,7 @@
       :actions="headerActions"
       configurable
       @selection-change="handleSelectionChange"
-      @row-click="handleRowClick"
+      @row-click="(row: any) => handleRowClick(row as NavigationItem)"
     >
       <template #title="{ row }: any">
         <div v-if="row" class="flex min-w-0 items-center gap-3 transition-all hover:gap-4">

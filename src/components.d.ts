@@ -24,7 +24,6 @@ declare module 'vue' {
     BaseSwitch: typeof import('./components/base/switch/BaseSwitch.vue')['default']
     BaseTable: typeof import('./components/modules/table/BaseTable.vue')['default']
     BaseVanishingInput: typeof import('./components/base/input/vanishing/BaseVanishingInput.vue')['default']
-    BeautifiedIframe: typeof import('./components/base/iframe/BeautifiedIframe.vue')['default']
     CategoryTabs: typeof import('./components/modules/navigation/components/CategoryTabs.vue')['default']
     GlowBox: typeof import('./components/modules/navigation/components/effect/GlowBox.vue')['default']
     HaloSearch: typeof import('./components/modules/search/HaloSearch.vue')['default']

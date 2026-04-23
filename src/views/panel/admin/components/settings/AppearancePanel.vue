@@ -31,7 +31,7 @@ const backgroundOptions = [
 ]
 
 // 切换主题
-const handleThemeChange = (value: string | number | boolean) => {
+const handleThemeChange = (value: unknown) => {
   const themeValue = String(value)
   if (themeValue === 'auto') {
     appStore.setAutoTheme()
@@ -43,7 +43,7 @@ const handleThemeChange = (value: string | number | boolean) => {
 }
 
 // 切换背景
-const handleBackgroundChange = (value: string | number | boolean) => {
+const handleBackgroundChange = (value: unknown) => {
   const bgValue = String(value)
   appStore.setBackgroundType(bgValue as any)
   SunMessage.success('背景已更新')

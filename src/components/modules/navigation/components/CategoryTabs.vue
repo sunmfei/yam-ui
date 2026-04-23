@@ -16,10 +16,25 @@ const model = defineModel<string>()
 
 <template>
   <Tabs v-model="model" class="mb-6">
-    <TabsList class="w-full justify-start overflow-x-auto">
-      <TabsTrigger v-for="item in list" :key="item" :value="item">
+    <TabsList
+      class="w-full justify-start overflow-x-auto scrollbar-hide relative"
+      style="scrollbar-width: none; -ms-overflow-style: none"
+    >
+      <TabsTrigger
+        v-for="item in list"
+        :key="item"
+        :value="item"
+        class="min-w-fit px-4 relative z-10 cursor-pointer"
+      >
         {{ item }}
       </TabsTrigger>
     </TabsList>
   </Tabs>
 </template>
+
+<style scoped>
+/* 隐藏滚动条 */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+</style>

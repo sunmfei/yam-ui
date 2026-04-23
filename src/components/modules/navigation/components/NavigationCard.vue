@@ -21,7 +21,7 @@ function open() {
 const IconComponent = computed(() => {
   if (!props.item.icon) return null
   const iconName = props.item.icon as keyof typeof Icons
-  return Icons[iconName] || null
+  return (Icons[iconName] as any) || null
 })
 </script>
 
@@ -35,20 +35,42 @@ const IconComponent = computed(() => {
             v-if="IconComponent"
             class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors"
           >
-            <component :is="IconComponent" class="w-5 h-5 text-primary" />
+            <component :is="IconComponent" class="w-5 h-5 text-primary" v-bind="$attrs" />
           </div>
 
-          <!-- 美化版 iframe -->
-          <BaseIframe
-            :config="{
-              src: item.url,
-              height: '200px',
-              loading: true,
-            }"
-            :rounded="true"
-            :shadow="true"
-            :border="true"
-          />
+          <!-- iframe 预览区域（保持固定高度） -->
+          <div class="h-[200px]">
+            <BaseIframe
+              v-if="item.enablePreview && item.url"
+              :config="{
+                src: item.url,
+                height: '100%',
+                loading: true,
+              }"
+              :rounded="true"
+              :shadow="true"
+              :border="true"
+            />
+            <!-- 未启用预览时的占位 -->
+            <div
+              v-else
+              class="w-full h-full rounded-lg border border-dashed border-border/40 bg-muted/10 flex items-center justify-center"
+            >
+              <div class="text-center space-y-2">
+                <div
+                  class="w-12 h-12 mx-auto rounded-full bg-primary/5 flex items-center justify-center"
+                >
+                  <component
+                    :is="IconComponent"
+                    v-if="IconComponent"
+                    class="w-6 h-6 text-primary/40"
+                    v-bind="$attrs"
+                  />
+                </div>
+                <p class="text-xs text-muted-foreground/60">点击卡片访问网站</p>
+              </div>
+            </div>
+          </div>
 
           <!-- 描述 -->
           <div class="text-sm text-muted-foreground line-clamp-2 min-h-[2.5rem]">

@@ -40,7 +40,7 @@ export const navigationList: NavigationItem[] = [
     description: 'coding',
     category: 'system',
     icon: 'Globe',
-    enablePreview: false, // 不启用预览
+    enablePreview: true, // 测试连接失败拦截
   },
   {
     id: 'nav-mgr',
@@ -49,6 +49,6 @@ export const navigationList: NavigationItem[] = [
     description: '统一身份认证',
     category: 'system',
     icon: 'Compass',
-    enablePreview: true, // 启用预览功能
+    enablePreview: true, // 可以正常访问，启用预览
   },
 ]

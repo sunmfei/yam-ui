@@ -3,7 +3,7 @@ import { useUserStore } from '@/stores'
 import { routeManager } from './manager'
 
 // 获取完整的路由配置（包含前端静态路由、后端动态路由和404）
-const routes = routeManager.getCompleteRoutes()
+const routes = routeManager.getCompleteRoutes() as any
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
