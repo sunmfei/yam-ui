@@ -10,7 +10,7 @@ import { computed } from 'vue'
 import { Menubar } from '@/components/ui/menubar'
 import MenuRender from './MenuRender.vue'
 import type { MenuNode } from '@/types'
-import { useAppStore } from '@/stores/app'
+import { useAppStore } from '@/stores'
 import { MENU_THEMES, type MenuTheme, type MenuThemeConfig } from '../data/menu-themes'
 
 /**

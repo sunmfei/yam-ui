@@ -6,11 +6,11 @@
 
 import { computed } from 'vue'
 import type { NavigationItem } from '../data/navigation.type'
-import { navigationList } from '@/components/modules'
+import { navigationList as defaultNavigationList } from '@/components/modules'
 
-export function useNavigationData() {
-  // 使用默认导航数据
-  const navigationListRef = navigationList
+export function useNavigationData(customData?: NavigationItem[]) {
+  // 使用自定义数据或默认导航数据
+  const navigationListRef = customData || defaultNavigationList
 
   // 计算分类列表
   const categoryList = computed(() => {

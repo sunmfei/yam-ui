@@ -2,7 +2,7 @@
 /**
  * AppearancePanel - 外观设置面板
  */
-import { useAppStore } from '@/stores/app.ts'
+import { useAppStore } from '@/stores'
 import { localCache, LocalCacheKey } from '@/utils/cache'
 import { SunMessage } from '@/utils/message.ts'
 import { Label } from '@/components/ui/label'
@@ -31,7 +31,7 @@ const backgroundOptions = [
 ]
 
 // 切换主题
-const handleThemeChange = (value: any) => {
+const handleThemeChange = (value: string | number | boolean) => {
   const themeValue = String(value)
   if (themeValue === 'auto') {
     appStore.setAutoTheme()
@@ -43,7 +43,7 @@ const handleThemeChange = (value: any) => {
 }
 
 // 切换背景
-const handleBackgroundChange = (value: any) => {
+const handleBackgroundChange = (value: string | number | boolean) => {
   const bgValue = String(value)
   appStore.setBackgroundType(bgValue as any)
   SunMessage.success('背景已更新')

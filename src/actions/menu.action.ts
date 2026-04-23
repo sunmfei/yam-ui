@@ -1,4 +1,4 @@
-import { useAppStore } from '@/stores/app'
+import { useAppStore } from '@/stores'
 import menuConfig from '@/utils/menu/MenuUtils.ts'
 import { BACKGROUND_OPTIONS } from '@/types'
 import actionHub from '@/types'
@@ -21,7 +21,7 @@ export default function initMenuActions() {
     menuConfig.resetToDefault()
   })
 
-  actionHub.registerAction(MenuActionKey.CHANGE_BG, async (item: any) => {
+  actionHub.registerAction(MenuActionKey.CHANGE_BG, async (item: { value?: string }) => {
     if (item?.value) {
       appStore.setBackgroundType(item.value)
     }

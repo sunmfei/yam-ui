@@ -484,7 +484,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { Maximize2, Minimize2, Search, Settings } from 'lucide-vue-next'
-import { useAppStore } from '@/stores/app.ts'
+import { useAppStore } from '@/stores'
 import BaseButton from '../../base/button/BaseButton.vue'
 import BaseInput from '../../base/input/BaseInput.vue'
 import BaseSwitch from '../../base/switch/BaseSwitch.vue'
@@ -518,7 +518,7 @@ defineOptions({
 interface Action {
   label: string
   onClick?: () => void
-  props?: Record<string, any>
+  props?: Record<string, unknown>
 }
 
 interface Filter {
@@ -600,8 +600,8 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits<{
   search: [keyword: string]
   filter: [value: string]
-  selectionChange: [rows: any[], keys: Array<string | number>]
-  rowClick: [row: any]
+  selectionChange: [rows: TreeTableNode[], keys: Array<string | number>]
+  rowClick: [row: TreeTableNode]
   configToggle: []
 }>()
 

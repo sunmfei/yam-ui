@@ -58,7 +58,7 @@ const dockItems = computed(() => [
       <!-- 第二页：导航 -->
       <Transition name="page-slide" mode="out-in">
         <div v-if="currentPage === 1" key="navigation" class="absolute inset-0">
-          <NavigationPage />
+          <NavigationPage :data="null" />
         </div>
       </Transition>
     </div>

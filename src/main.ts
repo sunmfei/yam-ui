@@ -6,7 +6,7 @@ import App from './App.vue'
 import router from './router'
 import pinia from './stores'
 
-import { useAppStore } from './stores/app'
+import { useAppStore } from '@/stores'
 import { GlobalFunctions } from '@/global'
 
 const app = createApp(App)

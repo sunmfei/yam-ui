@@ -1,5 +1,5 @@
 import { computed } from 'vue'
-import { useAppStore } from '@/stores/app'
+import { useAppStore } from '@/stores'
 
 /**
  * Element Plus 主题配置

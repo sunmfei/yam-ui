@@ -4,7 +4,7 @@ import axios, {
   type AxiosResponse,
   type InternalAxiosRequestConfig,
 } from 'axios'
-import { useUserStore } from '@/stores/user'
+import { useUserStore } from '@/stores'
 
 // 创建 axios 实例
 const service: AxiosInstance = axios.create({

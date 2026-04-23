@@ -12,7 +12,7 @@
 import { computed } from 'vue'
 import { NavigationMenu, NavigationMenuList } from '@/components/ui/navigation-menu'
 import Navbar from './Navbar.vue'
-import { useAppStore } from '@/stores/app'
+import { useAppStore } from '@/stores'
 import { NAVBAR_THEMES, type NavbarTheme, type NavbarThemeConfig } from './data/navbar-themes'
 import type { MenuNode } from '@/types'
 

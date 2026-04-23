@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { useUserStore } from '@/stores/user'
+import { useUserStore } from '@/stores'
 import { routeManager } from './manager'
 
 // 获取完整的路由配置（包含前端静态路由、后端动态路由和404）
@@ -7,7 +7,7 @@ const routes = routeManager.getCompleteRoutes()
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes: routes as any,
+  routes,
   scrollBehavior(to, _from, savedPosition) {
     // 如果有保存的位置，返回到保存的位置
     if (savedPosition) {
