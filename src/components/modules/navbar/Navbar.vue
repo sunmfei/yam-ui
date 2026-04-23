@@ -1,6 +1,6 @@
 <template>
-  <!-- button -->
-  <NavigationMenuItem v-if="node.type === 'button'">
+  <!-- button - 使用 action 类型 -->
+  <NavigationMenuItem v-if="node.type === 'action'">
     <button class="nav-button" @click="emitAction(node)">
       <component :is="getIconComponent(getIcon(node))" class="h-4 w-4" />
       {{ node.name }}
@@ -15,8 +15,8 @@
     </button>
   </NavigationMenuItem>
 
-  <!-- dropdown - 使用 Navigation Menu -->
-  <NavigationMenuItem v-else-if="node.type === 'dropdown'">
+  <!-- dropdown - 使用 menu 类型 -->
+  <NavigationMenuItem v-else-if="node.type === 'menu'">
     <NavigationMenuTrigger>
       <component :is="getIconComponent(getIcon(node))" class="h-4 w-4" />
       {{ node.name }}
@@ -30,8 +30,8 @@
     </NavigationMenuContent>
   </NavigationMenuItem>
 
-  <!-- list - 使用 Navigation Menu -->
-  <NavigationMenuItem v-else-if="node.type === 'list'">
+  <!-- list - 使用 select 类型 -->
+  <NavigationMenuItem v-else-if="node.type === 'select'">
     <NavigationMenuTrigger>
       {{ getSelectedLabel(node) }}
     </NavigationMenuTrigger>
@@ -51,9 +51,10 @@
 </template>
 
 <script setup lang="ts">
-import type { MenuNode } from '@/types/menu'
+import type { MenuNode } from '@/types'
 import { useRouter } from 'vue-router'
-import actionHub from '@/types/ActionHub.ts'
+import { actionHub } from '@/types'
+
 import {
   NavigationMenuItem,
   NavigationMenuTrigger,

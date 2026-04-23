@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ChartConfig } from '@/registry/new-york-v4/ui/chart'
+import type { ChartConfig } from '@/components/ui/chart'
 
 import { Donut } from '@unovis/ts'
 import { VisDonut, VisSingleContainer } from '@unovis/vue'
@@ -11,15 +11,15 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/registry/new-york-v4/ui/card'
+} from '@/components/ui/card'
 import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
   componentToString,
-} from '@/registry/new-york-v4/ui/chart'
+} from '@/components/ui/chart'
 
-const _description = 'A pie chart with stacked sections'
+// const _description = 'A pie chart with stacked sections'
 
 const desktopData = [
   { month: 'january', desktop: 186, fill: 'var(--color-january)' },

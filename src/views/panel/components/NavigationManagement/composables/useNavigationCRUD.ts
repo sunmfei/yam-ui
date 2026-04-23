@@ -4,7 +4,7 @@
  * 负责菜单节点的增删改查操作
  */
 import { type Ref, ref } from 'vue'
-import type { NavigationItem } from '../types/NavigationItem'
+import type { NavigationItem } from '@/components/modules'
 import type { TreeTableNode } from '@/components/ui/tree-table/types'
 import { SunMessage, SunMessageBox } from '@/utils/message'
 
@@ -82,7 +82,7 @@ export function useNavigationCRUD(
     if (parentNode) {
       // 使用展开运算符创建新数组，确保触发 Vue 响应式更新
       parentNode.children = [...(parentNode.children || []), newNode]
-      SunMessage.success(`子节点已添加到 ${parentNode.name}`)
+      SunMessage.success(`子节点已添加到 ${parentNode.title}`)
     } else {
       // 使用展开运算符创建新数组，确保触发 Vue 响应式更新
       navigations.value = [...navigations.value, newNode]
@@ -114,11 +114,11 @@ export function useNavigationCRUD(
 
     try {
       await SunMessageBox.confirm(
-        `确定删除节点 "${sourceNode.name}" 及其所有子节点吗？`,
+        `确定删除节点 "${sourceNode.title}" 及其所有子节点吗？`,
         '删除确认',
         {
-          confirmButtonText: '删除',
-          cancelButtonText: '取消',
+          confirmText: '删除',
+          cancelText: '取消',
           type: 'warning',
         }
       )
@@ -159,8 +159,8 @@ export function useNavigationCRUD(
         `确定删除选中的 ${deletableKeys.length} 个节点及其子节点吗？`,
         '批量删除确认',
         {
-          confirmButtonText: '删除',
-          cancelButtonText: '取消',
+          confirmText: '删除',
+          cancelText: '取消',
           type: 'warning',
         }
       )

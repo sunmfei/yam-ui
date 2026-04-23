@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ChartConfig } from '@/registry/new-york-v4/ui/chart'
+import type { ChartConfig } from '@/components/ui/chart'
 
 import { VisAxis, VisStackedBar, VisXYContainer } from '@unovis/vue'
 import { TrendingUp } from 'lucide-vue-next'
@@ -10,16 +10,16 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/registry/new-york-v4/ui/card'
+} from '@/components/ui/card'
 import {
   ChartContainer,
   ChartCrosshair,
   ChartTooltip,
   ChartTooltipContent,
   componentToString,
-} from '@/registry/new-york-v4/ui/chart'
+} from '@/components/ui/chart'
 
-const _description = 'A line chart'
+// const _description = 'A line chart'
 
 const chartData = [
   { date: new Date('2024-07-15'), running: 450, swimming: 300 },

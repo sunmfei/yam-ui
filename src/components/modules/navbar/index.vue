@@ -10,11 +10,11 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { MenuNode } from '@/types/menu'
 import { NavigationMenu, NavigationMenuList } from '@/components/ui/navigation-menu'
 import Navbar from './Navbar.vue'
 import { useAppStore } from '@/stores/app'
 import { NAVBAR_THEMES, type NavbarTheme, type NavbarThemeConfig } from './data/navbar-themes'
+import type { MenuNode } from '@/types'
 
 const appStore = useAppStore()
 

@@ -1,10 +1,10 @@
-import type { TableColumn } from '@/components/ui/table/types'
+import type { TreeTableColumn } from '@/components/ui/tree-table/types'
 import { getCategoryName } from './category.dict'
 
 /**
  * 导航管理表格列配置（扁平结构）
  */
-export const navigationColumns: TableColumn[] = [
+export const navigationColumns: TreeTableColumn[] = [
   { key: 'title', title: '标题', slot: 'title', width: '20%' },
   { key: 'icon', title: '图标', slot: 'icon', width: '8%', align: 'center' },
   { key: 'url', title: 'URL', slot: 'url', width: '30%' },

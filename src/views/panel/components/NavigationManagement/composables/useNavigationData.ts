@@ -1,11 +1,11 @@
 /**
  * useNavigationData - 导航数据管理 Composable
  *
- * 负责导航数据的加载、保存、合并等核心逻辑（扁平结构）
+ * 负责导航数据的加载、保存、合并等核心逻辑
  */
 import { ref } from 'vue'
-import type { NavigationItem } from '../types/NavigationItem'
-import { navigationList as DEFAULT_NAVIGATION_LIST } from '@/components/modules/navigation/data/navigation.data'
+import type { NavigationItem } from '@/components/modules/navigation/data/navigation.type'
+import { navigationList } from '@/components/modules/navigation/data/navigation.data'
 import { localCache } from '@/utils/cache/localCache'
 import { getNavigations } from '@/api/navigation'
 import { LocalCacheKey } from '@/types'
@@ -86,8 +86,8 @@ export function useNavigationData() {
     if (cached && Array.isArray(cached) && cached.length > 0) {
       navigations.value = cached
     } else {
-      // 将默认数据转换为扁平结构
-      navigations.value = cloneList(DEFAULT_NAVIGATION_LIST)
+      // 使用默认数据（扁平结构）
+      navigations.value = cloneList(navigationList)
       saveNavigationData()
     }
   }
@@ -96,7 +96,7 @@ export function useNavigationData() {
    * 重置为默认导航
    */
   function resetToDefault() {
-    navigations.value = cloneList(DEFAULT_NAVIGATION_LIST)
+    navigations.value = cloneList(navigationList)
     saveNavigationData()
   }
 

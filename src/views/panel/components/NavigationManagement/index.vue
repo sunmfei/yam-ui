@@ -13,20 +13,22 @@
       @selection-change="handleSelectionChange"
       @row-click="handleRowClick"
     >
-      <template #title="{ row }">
+      <template #title="{ row }: any">
         <div v-if="row" class="flex min-w-0 items-center gap-3 transition-all hover:gap-4">
           <div
             class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-primary/20 bg-gradient-to-br from-primary/10 to-primary/5 text-xs font-bold text-primary shadow-sm transition-all hover:scale-110 hover:shadow-md"
           >
-            {{ getNodeAvatar(row) }}
+            {{ getNodeAvatar(row as NavigationItem) }}
           </div>
           <div class="min-w-0">
             <div
               class="truncate font-semibold text-foreground transition-colors hover:text-primary"
             >
-              {{ row.title }}
+              {{ (row as NavigationItem).title }}
             </div>
-            <div class="truncate text-xs text-muted-foreground">ID: {{ row.id }}</div>
+            <div class="truncate text-xs text-muted-foreground">
+              ID: {{ (row as NavigationItem).id }}
+            </div>
           </div>
         </div>
       </template>
@@ -42,13 +44,13 @@
         </div>
       </template>
 
-      <template #category="{ row }">
+      <template #category="{ row }: any">
         <Badge variant="outline" class="transition-all hover:scale-105">
-          {{ formatCategory(row.category) }}
+          {{ formatCategory((row as NavigationItem).category || '') }}
         </Badge>
       </template>
 
-      <template #actions="{ row }">
+      <template #actions="{ row }: any">
         <div v-if="row" class="flex items-center justify-end gap-2">
           <BaseButton
             size="sm"
@@ -218,12 +220,12 @@ function handleFormSubmit(formData: Omit<NavigationItem, 'id'>) {
     return
   }
 
-  if (!formData.url.trim()) {
+  if (!formData.url?.trim()) {
     SunMessage.warning('请输入URL')
     return
   }
 
-  if (!formData.category.trim()) {
+  if (!formData.category?.trim()) {
     SunMessage.warning('请输入分类')
     return
   }

@@ -1,24 +1,18 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import type { ChartConfig } from '@/registry/new-york-v4/ui/chart'
+import type { ChartConfig } from '@/components/ui/chart'
 
 import { VisAxis, VisGroupedBar, VisXYContainer } from '@unovis/vue'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/registry/new-york-v4/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   ChartContainer,
   ChartCrosshair,
   ChartTooltip,
   ChartTooltipContent,
   componentToString,
-} from '@/registry/new-york-v4/ui/chart'
+} from '@/components/ui/chart'
 
-const _description = 'An interactive line chart'
+// const _description = 'An interactive line chart'
 
 const chartData = [
   { date: new Date('2024-04-01'), desktop: 222, mobile: 150 },

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ChartConfig } from '@/registry/new-york-v4/ui/chart'
+import type { ChartConfig } from '@/components/ui/chart'
 // import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts"
 import { VisArea, VisAxis, VisLine, VisXYContainer } from '@unovis/vue'
 
@@ -11,16 +11,16 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/registry/new-york-v4/ui/card'
+} from '@/components/ui/card'
 import {
   ChartContainer,
   ChartCrosshair,
   ChartTooltip,
   ChartTooltipContent,
   componentToString,
-} from '@/registry/new-york-v4/ui/chart'
+} from '@/components/ui/chart'
 
-const _description = 'An area chart with axes'
+// const _description = 'An area chart with axes'
 
 const chartData = [
   { month: 1, monthLabel: 'January', desktop: 186, mobile: 80 },
@@ -84,14 +84,14 @@ const svgDefs = `
           <VisArea
             :x="(d: Data) => d.month"
             :y="[(d: Data) => d.mobile, (d: Data) => d.desktop]"
-            :color="(d: Data, i: number) => ['url(#fillMobile)', 'url(#fillDesktop)'][i]"
+            :color="(_d: Data, i: number) => ['url(#fillMobile)', 'url(#fillDesktop)'][i]"
             :opacity="0.4"
           />
           <VisLine
             :x="(d: Data) => d.month"
             :y="[(d: Data) => d.mobile, (d: Data) => d.mobile + d.desktop]"
             :color="
-              (d: Data, i: number) => [chartConfig.mobile.color, chartConfig.desktop.color][i]
+              (_d: Data, i: number) => [chartConfig.mobile.color, chartConfig.desktop.color][i]
             "
             :line-width="1"
           />
@@ -113,7 +113,7 @@ const svgDefs = `
             :num-ticks="3"
             :tick-line="false"
             :domain-line="false"
-            :tick-format="(d: number, index: number) => ''"
+            :tick-format="(d: number, _index: number) => ''"
           />
           <ChartTooltip />
           <ChartCrosshair
@@ -121,7 +121,7 @@ const svgDefs = `
               componentToString(chartConfig, ChartTooltipContent, { labelKey: 'monthLabel' })
             "
             :color="
-              (d: Data, i: number) => [chartConfig.mobile.color, chartConfig.desktop.color][i % 2]
+              (_d: Data, i: number) => [chartConfig.mobile.color, chartConfig.desktop.color][i % 2]
             "
           />
         </VisXYContainer>

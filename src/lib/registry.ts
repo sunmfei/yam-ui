@@ -7,9 +7,8 @@ import path from 'node:path'
 // import { Project, ScriptKind } from 'ts-morph'
 
 import { registryItemSchema } from 'shadcn-vue/schema'
-import { fixImport } from '~/lib/registry-utils'
-import { Index } from '~/registry/__index__'
-import { blockMeta } from '~/registry/new-york-v4/blocks/_meta'
+import { fixImport } from './registry-utils'
+import { Index } from '@/registry/__index__'
 
 export function getRegistryComponent(name: string) {
   return Index[name]?.component
@@ -45,10 +44,10 @@ export async function getRegistryItem(name: string) {
 
   // Fix file paths.
   files = fixFilePaths(files)
-  const meta = blockMeta[name]
+  // const meta = blockMeta[name]
   const parsed = registryItemSchema.safeParse({
     ...result.data,
-    ...meta,
+    // ...meta,
     files,
   })
 
@@ -60,9 +59,10 @@ export async function getRegistryItem(name: string) {
   return parsed.data
 }
 
-async function getFileContent(file: z.infer<typeof registryItemFileSchema>) {
-  const key = file.path.replaceAll('registry/new-york-v4/blocks/', '').replaceAll('/', ':')
-  const raw = await useStorage<string | Uint8Array>('assets:blocks').getItem(key)
+async function getFileContent(_file: z.infer<typeof registryItemFileSchema>) {
+  // TODO: 实现 useStorage 或移除该功能
+  // const raw = await useStorage<string | Uint8Array>('assets:blocks').getItem(key)
+  const raw = ''
 
   // const project = new Project({
   //   compilerOptions: {},

@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { NavigationItem, NavigationChild } from '@/types'
+import type { NavigationItem } from '@/components/modules/navigation/data/navigation.type'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import BaseButton from '@/components/base/button/BaseButton.vue'
 import { ExternalLink, Globe } from 'lucide-vue-next'
-import { LocalCacheKey } from '@/types/constants/cache-key'
+import { LocalCacheKey } from '@/types'
 import { useLocalStorage } from '@vueuse/core'
 import { DEFAULT_NAVIGATION } from '@/views/home/data/NavigationData'
 
@@ -25,16 +25,16 @@ const storedNavigations = useLocalStorage<NavigationItem[]>(
 // 过滤掉隐藏的导航项和分类
 const visibleNavigations = computed(() => {
   return storedNavigations.value
-    .filter((nav) => !nav.hidden)
-    .map((nav) => ({
+    .filter((nav: NavigationItem) => !nav.hidden)
+    .map((nav: NavigationItem) => ({
       ...nav,
       children: nav.children?.filter((child) => !child.hidden),
     }))
-    .filter((nav) => nav.children && nav.children.length > 0)
+    .filter((nav: NavigationItem) => nav.children && nav.children.length > 0)
 })
 
 // 打开链接
-function openLink(child: NavigationChild) {
+function openLink(child: NavigationItem) {
   if (child.disabled) return
 
   const url = child.path

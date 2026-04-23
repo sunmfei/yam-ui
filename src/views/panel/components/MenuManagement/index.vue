@@ -85,7 +85,7 @@
         </div>
       </template>
 
-      <template #actions="{ row }">
+      <template #actions="{ row }: any">
         <div v-if="row" class="flex items-center justify-end gap-2">
           <BaseButton
             size="sm"
@@ -100,7 +100,7 @@
           <BaseButton
             size="sm"
             variant="outline"
-            :disabled="crud.isHardcodedNode(row.id ?? '')"
+            :disabled="crud.isHardcodedNode((row.id as string) ?? '')"
             class="transition-all hover:scale-105 hover:shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
             @click.stop="openEditDialog(row)"
           >
@@ -109,7 +109,7 @@
           <BaseButton
             size="sm"
             variant="destructive"
-            :disabled="crud.isHardcodedNode(row.id ?? '')"
+            :disabled="crud.isHardcodedNode((row.id as string) ?? '')"
             class="transition-all hover:scale-105 hover:shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
             @click.stop="handleDelete(row)"
           >
@@ -317,7 +317,6 @@ function openEditDialog(row: TreeTableNode) {
   editingNode.value = sourceNode
 
   editForm.value = {
-    id: sourceNode.id,
     name: sourceNode.name || '',
     type: sourceNode.type || 'route',
     icon: sourceNode.icon || '',

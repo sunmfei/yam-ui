@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { NavigationItem } from '@/types'
+import type { NavigationItem } from '@/components/modules/navigation/data/navigation.type'
 import ExpandableGallery from '@/components/inspira/expandable-gallery/ExpandableGallery.vue'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'

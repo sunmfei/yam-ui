@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import type { NavigationItem } from '@/types'
+import type { NavigationItem } from '@/components/modules/navigation/data/navigation.type'
 import ExpandableGallery from '@/components/inspira/expandable-gallery/ExpandableGallery.vue'
 import BaseButton from '@/components/base/button/BaseButton.vue'
 

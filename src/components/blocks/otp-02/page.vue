@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import OTPForm from '~/registry/new-york-v4/blocks/otp-02/components/OTPForm.vue'
+import OTPForm from './components/OTPForm.vue'
 </script>
 
 <template>

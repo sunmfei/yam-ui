@@ -1,16 +1,10 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import type { ChartConfig } from '@/registry/new-york-v4/ui/chart'
+import type { ChartConfig } from '@/components/ui/chart'
 
 // import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts"
 import { VisArea, VisAxis, VisLine, VisXYContainer } from '@unovis/vue'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/registry/new-york-v4/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   ChartContainer,
   ChartCrosshair,
@@ -18,16 +12,16 @@ import {
   ChartTooltip,
   ChartTooltipContent,
   componentToString,
-} from '@/registry/new-york-v4/ui/chart'
+} from '@/components/ui/chart'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/registry/new-york-v4/ui/select'
+} from '@/components/ui/select'
 
-const _description = 'An interactive area chart'
+// const _description = 'An interactive area chart'
 
 const chartData = [
   { date: new Date('2024-04-01'), desktop: 222, mobile: 150 },
@@ -215,14 +209,14 @@ const filterRange = computed(() => {
           <VisArea
             :x="(d: Data) => d.date"
             :y="[(d: Data) => d.mobile, (d: Data) => d.desktop]"
-            :color="(d: Data, i: number) => ['url(#fillMobile)', 'url(#fillDesktop)'][i]"
+            :color="(_d: Data, i: number) => ['url(#fillMobile)', 'url(#fillDesktop)'][i]"
             :opacity="0.6"
           />
           <VisLine
             :x="(d: Data) => d.date"
             :y="[(d: Data) => d.mobile, (d: Data) => d.mobile + d.desktop]"
             :color="
-              (d: Data, i: number) => [chartConfig.mobile.color, chartConfig.desktop.color][i]
+              (_d: Data, i: number) => [chartConfig.mobile.color, chartConfig.desktop.color][i]
             "
             :line-width="1"
           />
@@ -234,7 +228,7 @@ const filterRange = computed(() => {
             :grid-line="false"
             :num-ticks="6"
             :tick-format="
-              (d: number, index: number) => {
+              (d: number, _index: number) => {
                 const date = new Date(d)
                 return date.toLocaleDateString('en-US', {
                   month: 'short',
@@ -257,7 +251,7 @@ const filterRange = computed(() => {
               })
             "
             :color="
-              (d: Data, i: number) => [chartConfig.mobile.color, chartConfig.desktop.color][i % 2]
+              (_d: Data, i: number) => [chartConfig.mobile.color, chartConfig.desktop.color][i % 2]
             "
           />
         </VisXYContainer>

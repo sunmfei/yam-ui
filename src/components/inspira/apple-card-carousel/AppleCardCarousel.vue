@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import type { NavigationItem, NavigationChild } from '@/types'
+import type { NavigationItem } from '@/components/modules/navigation/data/navigation.type'
 import { ExternalLink } from 'lucide-vue-next'
 import BaseButton from '@/components/base/button/BaseButton.vue'
 
@@ -38,7 +38,7 @@ function prev() {
 }
 
 // 打开链接
-function openLink(child: NavigationChild) {
+function openLink(child: NavigationItem) {
   if (child.disabled) return
   window.open(child.path, child.openInNewTab ? '_blank' : '_self')
 }

@@ -16,6 +16,6 @@ const model = defineModel<string>()
 
 <template>
   <div class="mb-6">
-    <MorphingTabs :tabs="list" :active-tab="model" @update:active-tab="model = $event" />
+    <MorphingTabs :tabs="list" :active-tab="model || ''" @update:active-tab="model = $event" />
   </div>
 </template>

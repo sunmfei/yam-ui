@@ -19,8 +19,8 @@ export { routeManager } from './manager'
 // 本地路由汇总（从 views/router 导出）
 export { localRoutes, localRouter } from '@/views/router'
 
-// 系统路由细分（可选导出）
-export { baseRoutes, authRoutes, errorRoutes, systemRoutes } from '@/views/router/sysRouter'
+// 系统路由细分（可选导出）- 已合并到 localRoutes
+// export { baseRoutes, authRoutes, errorRoutes, systemRoutes } from '@/views/router/sysRouter'
 
 // 工具函数
 export {

@@ -144,10 +144,10 @@ function _getSakuraColor(y: number): string {
     const match = color.match(/rgba?\((\d+),\s*(\d+),\s*(\d+),\s*([\d.]+)\)/)
     if (!match) return { r: 255, g: 192, b: 203, a: 0.8 }
     return {
-      r: parseInt(match[1]),
-      g: parseInt(match[2]),
-      b: parseInt(match[3]),
-      a: parseFloat(match[4]),
+      r: parseInt(match[1] || '255'),
+      g: parseInt(match[2] || '192'),
+      b: parseInt(match[3] || '203'),
+      a: parseFloat(match[4] || '0.8'),
     }
   }
 

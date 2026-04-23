@@ -18,7 +18,7 @@
  * 使用 localStorage 实现数据持久化
  */
 
-import type { NavigationItem } from '@/types'
+import type { NavigationItem } from '@/components/modules/navigation/data/navigation.type'
 
 const STORAGE_KEY = 'yam-ui-navigations'
 

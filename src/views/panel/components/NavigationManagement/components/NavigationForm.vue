@@ -66,7 +66,19 @@ const {
   },
 })
 
-function shouldShowField(field: { showWhen?: (formData: Record<string, unknown>) => boolean }) {
+interface NavigationFormField {
+  key: string
+  label: string
+  type: string
+  placeholder?: string
+  required?: boolean
+  hint?: string
+  options?: Array<{ value: string; label: string }>
+  min?: number
+  showWhen?: (formData: Record<string, unknown>) => boolean
+}
+
+function shouldShowField(field: NavigationFormField) {
   if (field.showWhen) {
     return field.showWhen(values as Record<string, unknown>)
   }

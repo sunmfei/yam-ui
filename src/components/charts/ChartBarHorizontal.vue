@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ChartConfig } from '@/registry/new-york-v4/ui/chart'
+import type { ChartConfig } from '@/components/ui/chart'
 
 import { Orientation } from '@unovis/ts'
 import { VisAxis, VisGroupedBar, VisXYContainer } from '@unovis/vue'
@@ -11,16 +11,16 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/registry/new-york-v4/ui/card'
+} from '@/components/ui/card'
 import {
   ChartContainer,
   ChartCrosshair,
   ChartTooltip,
   ChartTooltipContent,
   componentToString,
-} from '@/registry/new-york-v4/ui/chart'
+} from '@/components/ui/chart'
 
-const _description = 'A line chart'
+// const _description = 'A line chart'
 
 const chartData = [
   { date: new Date('2024-01-01'), desktop: 186 },

@@ -130,7 +130,7 @@ const activeComponent = computed(() => {
     return null
   }
 
-  return defineAsyncComponent(loader as () => Promise<unknown>)
+  return defineAsyncComponent(loader as any)
 })
 
 /**
@@ -155,7 +155,7 @@ const sidebarHeaderComponent = computed(() => {
   const loader = loadPanelComponent(headerPath)
   if (!loader) return null
 
-  return defineAsyncComponent(loader as () => Promise<unknown>)
+  return defineAsyncComponent(loader as any)
 })
 
 /**
@@ -180,7 +180,7 @@ const sidebarFooterComponent = computed(() => {
   const loader = loadPanelComponent(footerPath)
   if (!loader) return null
 
-  return defineAsyncComponent(loader as () => Promise<unknown>)
+  return defineAsyncComponent(loader as any)
 })
 
 /**

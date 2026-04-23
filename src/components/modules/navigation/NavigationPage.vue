@@ -6,6 +6,7 @@
  */
 
 import { ref, computed } from 'vue'
+import type { NavigationItem } from './data/navigation.type'
 import MotionWrapper from './components/effect/MotionWrapper.vue'
 import NavHeader from './components/NavHeader.vue'
 import SearchBox from './components/SearchBox.vue'
@@ -19,7 +20,10 @@ const activeCategory = ref('全部')
 const { categoryList, getFilteredList } = useNavigationData()
 
 // 计算过滤后的列表
-const filterList = computed(() => getFilteredList(activeCategory.value))
+const filterList = computed(() => {
+  const result = getFilteredList(activeCategory.value)
+  return (Array.isArray(result) ? result : []) as NavigationItem[]
+})
 </script>
 
 <template>

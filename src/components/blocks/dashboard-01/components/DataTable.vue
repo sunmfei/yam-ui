@@ -99,7 +99,7 @@ const columns: ColumnDef<TableData>[] = [
   {
     id: 'drag',
     header: () => null,
-    cell: ({ row }) => h(DragHandle),
+    cell: () => h(DragHandle),
   },
   {
     id: 'select',
@@ -376,6 +376,7 @@ const table = useVueTable({
     </div>
     <TabsContent value="outline" class="relative flex flex-col gap-4 overflow-auto px-4 lg:px-6">
       <div class="overflow-hidden rounded-lg border">
+        <!-- @ts-ignore - dnd-kit plugin type compatibility issue between versions -->
         <DragDropProvider :modifiers="[RestrictToVerticalAxis]">
           <Table>
             <TableHeader class="bg-muted sticky top-0 z-10">

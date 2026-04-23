@@ -1,18 +1,18 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import type { NavigationChild } from '@/types'
+import type { NavigationItem } from '@/components/modules/navigation/data/navigation.type'
 import { ExternalLink } from 'lucide-vue-next'
 import LinkPreview from '../link-preview/LinkPreview.vue'
 
 interface Props {
-  items: NavigationChild[]
+  items: NavigationItem[]
 }
 
 defineProps<Props>()
 
 const hoveredIndex = ref<number | null>(null)
 
-function openLink(child: NavigationChild) {
+function openLink(child: NavigationItem) {
   if (child.disabled) return
   window.open(child.path, child.openInNewTab ? '_blank' : '_self')
 }
@@ -36,7 +36,7 @@ function openLink(child: NavigationChild) {
 
       <!-- 内容 -->
       <LinkPreview
-        :url="item.path"
+        :url="item.path || item.url || ''"
         :title="item.title"
         :description="item.description"
         class="relative z-10 flex h-full flex-col justify-between p-6"
