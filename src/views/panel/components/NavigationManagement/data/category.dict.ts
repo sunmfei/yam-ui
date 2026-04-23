@@ -22,46 +22,16 @@ export interface CategoryDict {
  */
 export const DEFAULT_CATEGORY_DICT: CategoryDict[] = [
   {
-    code: '搜索引擎',
-    name: '搜索引擎',
+    code: 'sit',
+    name: 'sit导航',
     icon: 'Search',
     order: 1,
   },
   {
-    code: '开发工具',
-    name: '开发工具',
+    code: 'system',
+    name: '系统导航',
     icon: 'Code',
     order: 2,
-  },
-  {
-    code: '购物网站',
-    name: '购物网站',
-    icon: 'ShoppingBag',
-    order: 3,
-  },
-  {
-    code: '社交媒体',
-    name: '社交媒体',
-    icon: 'MessageCircle',
-    order: 4,
-  },
-  {
-    code: '学习资源',
-    name: '学习资源',
-    icon: 'BookOpen',
-    order: 5,
-  },
-  {
-    code: '娱乐视频',
-    name: '娱乐视频',
-    icon: 'Play',
-    order: 6,
-  },
-  {
-    code: '新闻资讯',
-    name: '新闻资讯',
-    icon: 'Newspaper',
-    order: 7,
   },
   {
     code: '其他',

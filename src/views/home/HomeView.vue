@@ -7,7 +7,11 @@ import AppMenubar from '@/components/modules/menu/index.vue'
 import SearchBox from '@/views/searchBox/index.vue'
 import { Globe, Search } from 'lucide-vue-next'
 import { Dock } from '@/components/inspira'
-import { type NavigationItem, NavigationPage } from '@/components/modules/navigation'
+import {
+  type NavigationItem,
+  navigationList,
+  NavigationPage,
+} from '@/components/modules/navigation'
 
 const menuNodes = ref<MenuNode[]>([])
 const navigationItem = ref<NavigationItem[]>([])
@@ -25,7 +29,9 @@ const getMenuData = () => {
 
 const getNavigationData = () => {
   const localNavigationData = LocalCache.get<NavigationItem[]>(LocalCacheKey.NAVIGATION_CONFIG)
-  return localNavigationData && localNavigationData.length > 0 ? localNavigationData : []
+  return localNavigationData && localNavigationData.length > 0
+    ? localNavigationData
+    : navigationList
 }
 
 const engines = [

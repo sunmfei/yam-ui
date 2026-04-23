@@ -1,17 +1,13 @@
 <script setup lang="ts">
-/**
- * 功能：导航卡片
- * 结果：展示网站信息
- * 设计目的：复用卡片结构
- */
-
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import type { NavigationItem } from '../data/navigation.data'
+import type { NavigationItem } from '@/components/modules'
 import * as Icons from 'lucide-vue-next'
 import { computed } from 'vue'
 import MagneticCard from './effect/MagneticCard.vue'
 import GlowBox from './effect/GlowBox.vue'
+import { LinkPreview } from '@/components/inspira'
+import { BaseIframe } from '@/components/base'
 
 const props = defineProps<{
   item: NavigationItem
@@ -24,7 +20,8 @@ function open() {
 // 动态获取图标组件
 const IconComponent = computed(() => {
   if (!props.item.icon) return null
-  return (Icons as any)[props.item.icon] || null
+  const iconName = props.item.icon as keyof typeof Icons
+  return Icons[iconName] || null
 })
 </script>
 
@@ -32,7 +29,7 @@ const IconComponent = computed(() => {
   <MagneticCard>
     <GlowBox>
       <Card class="cursor-pointer hover:shadow-xl transition" @click="open">
-        <CardContent class="p-4 space-y-3">
+        <LinkPreview :url="item?.url || '/'" class="p-4 space-y-3font-bold">
           <!-- 图标 -->
           <div
             v-if="IconComponent"
@@ -41,10 +38,17 @@ const IconComponent = computed(() => {
             <component :is="IconComponent" class="w-5 h-5 text-primary" />
           </div>
 
-          <!-- 标题 -->
-          <div class="font-semibold truncate" :title="item.title">
-            {{ item.title }}
-          </div>
+          <!-- 美化版 iframe -->
+          <BaseIframe
+            :config="{
+              src: item.url,
+              height: '200px',
+              loading: true,
+            }"
+            :rounded="true"
+            :shadow="true"
+            :border="true"
+          />
 
           <!-- 描述 -->
           <div class="text-sm text-muted-foreground line-clamp-2 min-h-[2.5rem]">
@@ -55,7 +59,7 @@ const IconComponent = computed(() => {
           <Badge variant="secondary" class="text-xs">
             {{ item.category }}
           </Badge>
-        </CardContent>
+        </LinkPreview>
       </Card>
     </GlowBox>
   </MagneticCard>

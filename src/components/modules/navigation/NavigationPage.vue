@@ -6,7 +6,7 @@
  */
 
 import { ref, computed, type PropType } from 'vue'
-import type { NavigationItem } from './data/navigation.type'
+import type { NavigationItem } from '@/components/modules'
 import MotionWrapper from './components/effect/MotionWrapper.vue'
 import NavHeader from './components/NavHeader.vue'
 import SearchBox from './components/SearchBox.vue'
@@ -14,8 +14,7 @@ import CategoryTabs from './components/CategoryTabs.vue'
 import NavigationGrid from './components/NavigationGrid.vue'
 import { useNavigationData } from './composables/useNavigationData'
 import { useCacheStore } from '@/stores'
-import { LocalCacheKey } from '@/types'
-import type { SearchEngine } from '@/components/modules/search/ModernSearch.vue'
+import { LocalCacheKey, type SearchEngine } from '@/types'
 
 const props = defineProps({
   data: {

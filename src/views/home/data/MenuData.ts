@@ -4,15 +4,6 @@ import { BACKGROUND_OPTIONS } from '@/types'
 
 export const DEFAULT_MENU: MenuNode[] = [
   {
-    id: 'MFei',
-    name: 'MFei',
-    type: MenuType.ROUTE,
-    icon: ICON_POOL.Home,
-    path: '/demoRouter',
-    order: 0,
-  },
-
-  {
     id: 'theme',
     name: '主题切换',
     type: MenuType.ACTION,
