@@ -12,7 +12,7 @@
       <!-- 头部区域 -->
       <section
         v-if="showHeader"
-        class="relative overflow-hidden rounded-3xl px-6 py-4 transition-all duration-300 hover:shadow-lg"
+        class="relative mb-6 overflow-hidden rounded-3xl px-6 py-4 transition-all duration-300 hover:shadow-lg"
         :class="getGlassCardClass(isDark)"
       >
         <div class="relative flex flex-col gap-6 xl:flex-row xl:items-start xl:justify-between">
