@@ -7,19 +7,32 @@ import AppMenubar from '@/components/modules/menu/index.vue'
 import SearchBox from '@/views/searchBox/index.vue'
 import { Globe, Search } from 'lucide-vue-next'
 import { Dock } from '@/components/inspira'
-import { NavigationPage } from '@/components/modules/navigation'
+import { type NavigationItem, NavigationPage } from '@/components/modules/navigation'
 
 const menuNodes = ref<MenuNode[]>([])
+const navigationItem = ref<NavigationItem[]>([])
 const currentPage = ref(0) // 0: 搜索页, 1: 导航页
 
 onMounted(() => {
   menuNodes.value = getMenuData()
+  navigationItem.value = getNavigationData()
 })
 
 const getMenuData = () => {
   const localMenuData = LocalCache.get<MenuNode[]>(LocalCacheKey.MENU_CONFIG)
   return localMenuData && localMenuData.length > 0 ? localMenuData : DEFAULT_MENU
 }
+
+const getNavigationData = () => {
+  const localNavigationData = LocalCache.get<NavigationItem[]>(LocalCacheKey.NAVIGATION_CONFIG)
+  return localNavigationData && localNavigationData.length > 0 ? localNavigationData : []
+}
+
+const engines = [
+  { id: 'google', name: 'Google', url: 'https://www.google.com/search?q=' },
+  { id: 'bing', name: 'Bing', url: 'https://www.bing.com/search?q=' },
+  { id: 'baidu', name: '百度', url: 'https://www.baidu.com/s?wd=' },
+]
 
 // 切换到指定页面
 function goToPage(page: number) {
@@ -51,14 +64,14 @@ const dockItems = computed(() => [
       <!-- 第一页：搜索 -->
       <Transition name="page-slide" mode="out-in">
         <div v-if="currentPage === 0" key="search" class="absolute inset-0">
-          <SearchBox />
+          <SearchBox :engines="engines" />
         </div>
       </Transition>
 
       <!-- 第二页：导航 -->
       <Transition name="page-slide" mode="out-in">
         <div v-if="currentPage === 1" key="navigation" class="absolute inset-0">
-          <NavigationPage :data="null" />
+          <NavigationPage :data="navigationItem" :engines="engines" />
         </div>
       </Transition>
     </div>

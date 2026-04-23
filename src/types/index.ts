@@ -28,6 +28,7 @@ export type { CacheOptions, CacheItem } from './models/CacheModels'
 
 export type { MenuNode } from './models/MenuNode'
 export type { PanelSection } from './models/PanelSection.type'
+export type { SearchEngine } from './models/SearchModels'
 
 export type {
   AppRouteMeta,

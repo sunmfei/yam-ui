@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { NavigationItem } from '@/components/modules/navigation/data/navigation.type'
+import {
+  type NavigationItem,
+  navigationList,
+} from '@/components/modules/navigation/data/navigation.type'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import BaseButton from '@/components/base/button/BaseButton.vue'
 import { ExternalLink, Globe } from 'lucide-vue-next'
 import { LocalCacheKey } from '@/types'
 import { useLocalStorage } from '@vueuse/core'
-import { DEFAULT_NAVIGATION } from '@/views/home/data/NavigationData'
 
 /**
  * NavigationPage - 网址导航展示页面
@@ -19,7 +21,7 @@ defineOptions({
 // 从 localStorage 读取导航数据
 const storedNavigations = useLocalStorage<NavigationItem[]>(
   LocalCacheKey.NAVIGATION_CONFIG,
-  DEFAULT_NAVIGATION
+  navigationList
 )
 
 // 过滤掉隐藏的导航项和分类

@@ -114,12 +114,7 @@
  */
 
 import { ref, watch, onMounted, onUnmounted } from 'vue'
-
-export interface SearchEngine {
-  id: string
-  name: string
-  url: string
-}
+import type { SearchEngine } from '@/types'
 
 const props = withDefaults(
   defineProps<{

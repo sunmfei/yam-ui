@@ -15,10 +15,15 @@ import NavigationGrid from './components/NavigationGrid.vue'
 import { useNavigationData } from './composables/useNavigationData'
 import { useCacheStore } from '@/stores'
 import { LocalCacheKey } from '@/types'
+import type { SearchEngine } from '@/components/modules/search/ModernSearch.vue'
 
 const props = defineProps({
   data: {
     type: Array as PropType<NavigationItem[]>,
+    default: () => [],
+  },
+  engines: {
+    type: Array as PropType<SearchEngine[]>,
     default: () => [],
   },
 })
@@ -53,7 +58,7 @@ const filterList = computed(() => {
       <!-- 固定区域 -->
       <div class="flex-shrink-0 p-6 space-y-6">
         <NavHeader />
-        <SearchBox />
+        <SearchBox :engines="engines" />
         <CategoryTabs v-model="activeCategory" :list="categoryList" />
       </div>
 
