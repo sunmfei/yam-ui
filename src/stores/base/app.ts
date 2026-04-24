@@ -14,7 +14,7 @@ export const useAppStore = defineStore('app', () => {
   // State
   const sidebarCollapsed = ref(false)
   const language = ref('zh-CN')
-  const backgroundType = ref<BackgroundType>('sakura')
+  const backgroundType = ref<BackgroundType>()
 
   // Getters - 计算属性，从 mode 派生 isDark
   const isDark = computed(() => mode.value === 'dark')

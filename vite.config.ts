@@ -92,12 +92,12 @@ export default defineConfig(({ mode }) => {
       assetsDir: 'assets',
       // 启用 sourcemap（生产环境建议关闭）
       sourcemap: mode === 'development',
-      // 代码分割阈值
-      chunkSizeWarningLimit: 1000,
+      // 代码分割阈值（提高到 3000kb，因为现代应用不可避免会有较大的 bundle）
+      chunkSizeWarningLimit: 3000,
       // CSS 代码分割
       cssCodeSplit: true,
-      // 目标浏览器
-      target: 'es2015',
+      // 目标浏览器（支持 top-level await）
+      target: 'es2022',
       // 最小化
       minify: 'terser',
       // Terser 压缩配置
@@ -117,13 +117,21 @@ export default defineConfig(({ mode }) => {
       // Rollup 打包配置
       rollupOptions: {
         output: {
-          // 手动代码分割
+          // 手动代码分割（优化策略）
           manualChunks(id) {
             // node_modules 中的依赖单独打包
             if (id.includes('node_modules')) {
-              // Vue 核心库
-              if (id.includes('vue') || id.includes('@vue')) {
-                return 'vue-vendor'
+              // Vue 核心库 - 拆分为更小的块
+              if (id.includes('/vue/') || id.includes('/@vue/runtime-core/')) {
+                return 'vue-core'
+              }
+              // Vue Router
+              if (id.includes('vue-router')) {
+                return 'vue-router'
+              }
+              // Pinia 状态管理
+              if (id.includes('pinia')) {
+                return 'pinia'
               }
               // VueUse 工具库
               if (id.includes('@vueuse')) {
@@ -133,11 +141,31 @@ export default defineConfig(({ mode }) => {
               if (id.includes('motion')) {
                 return 'motion'
               }
+              // Lucide 图标库
+              if (id.includes('lucide')) {
+                return 'icons'
+              }
               // TailwindCSS 相关
               if (id.includes('tailwind') || id.includes('@inspira')) {
                 return 'ui-vendor'
               }
-              // 其他第三方库
+              // Element Plus UI 库（如果存在）
+              if (id.includes('element-plus')) {
+                return 'element-ui'
+              }
+              // 其他第三方库按功能分组
+              const match = id.match(/[\\/]node_modules[\\/](@?[^\/]+)/)
+              if (match) {
+                const name = match[1]
+                // 数据请求相关
+                if (name.startsWith('axios') || name.startsWith('@tanstack')) {
+                  return 'data-fetching'
+                }
+                // 工具库
+                if (name.startsWith('lodash') || name.startsWith('dayjs') || name.startsWith('date-fns')) {
+                  return 'utils'
+                }
+              }
               return 'vendor'
             }
           },

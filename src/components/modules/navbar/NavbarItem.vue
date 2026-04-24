@@ -24,7 +24,7 @@
     <NavigationMenuContent>
       <ul class="grid w-50 gap-3 p-4">
         <li v-for="child in node.children" :key="child.id">
-          <Navbar :node="child" @action="emitAction" />
+          <NavbarItem :node="child" @action="emitAction" />
         </li>
       </ul>
     </NavigationMenuContent>

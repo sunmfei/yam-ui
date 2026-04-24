@@ -1,9 +1,57 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 60">
-  <!-- Sun 手写体 -->
-  <path d="M15 15 Q25 10 35 15 M15 25 Q25 20 35 25 Q40 35 35 45 M35 45 Q25 50 15 45 M45 25 Q50 15 55 25 Q60 35 55 45 M65 20 Q70 15 75 20 M75 20 Q80 15 85 20 M75 20 L75 45 M85 20 L85 45"
-    fill="none"
-    stroke="#ea580c"
-    stroke-width="8"
-    stroke-linecap="round"
-    stroke-linejoin="round"/>
+<!--
+文件核心作用：
+Sun 品牌文字 SVG 图标（双层阴影立体风格）
+
+模块职责划分：
+- 背景层：透明画布
+- 阴影层：红棕色偏移投影
+- 主视觉层：金黄色品牌字体
+- 对齐层：整体居中布局控制
+
+整体结构说明：
+采用双文本叠加实现立体视觉效果，通过轻微位移形成品牌厚重感
+
+对外能力或接口说明：
+可直接用于 favicon / logo / banner 图标资源
+
+关键设计点总结：
+- 双层 text 实现立体阴影
+- 居中对齐保证多场景适配
+- 无外部依赖，纯 SVG 可用
+-->
+
+<svg width="128" height="128" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+
+  <!-- 背景 -->
+  <rect width="512" height="512" fill="transparent"/>
+
+  <!-- 阴影层 -->
+  <text
+    x="50%"
+    y="50%"
+    text-anchor="middle"
+    dominant-baseline="middle"
+    font-size="280"
+    font-family="Georgia, serif"
+    font-weight="700"
+    fill="#7A1E1E"
+    transform="translate(15,15)"
+  >
+    Sun
+  </text>
+
+  <!-- 主视觉层 -->
+  <text
+    x="50%"
+    y="50%"
+    text-anchor="middle"
+    dominant-baseline="middle"
+    font-size="280"
+    font-family="Georgia, serif"
+    font-weight="700"
+    fill="#FFC107"
+  >
+    Sun
+  </text>
+
 </svg>

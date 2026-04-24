@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { useAppStore } from '@/stores'
 import { BaseParticlesBg, BaseGradientBg, BaseGridBg, BaseWaveBg } from '@/components/base/ui-proxy'
 import { NatureBg, SakuraTreeSceneBg } from '@/components/ui/bg'
+import DefaultBackground from '@/components/ui/bg/DefaultBackground.vue'
 
 /**
  * BaseBackground - 基础背景组件
@@ -51,6 +52,7 @@ const particleColor = computed(() => {
     <SakuraTreeSceneBg v-else-if="appStore.backgroundType === 'sakura'" class="absolute inset-0" />
 
     <!-- 默认背景（当选择 none 时显示基础背景色） -->
-    <div v-else class="absolute inset-0 bg-white dark:bg-gray-900"></div>
+    <!--    <div v-else class="absolute inset-0 bg-white dark:bg-gray-900"></div>-->
+    <DefaultBackground v-else />
   </div>
 </template>

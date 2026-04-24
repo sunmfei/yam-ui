@@ -2,7 +2,7 @@
   <nav class="app-navbar" :style="navbarStyle">
     <NavigationMenu>
       <NavigationMenuList>
-        <Navbar v-for="node in menuNodes" :key="node.id" :node="node" />
+        <NavbarItem v-for="node in menuNodes" :key="node.id" :node="node" />
       </NavigationMenuList>
     </NavigationMenu>
   </nav>
@@ -11,7 +11,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { NavigationMenu, NavigationMenuList } from '@/components/ui/navigation-menu'
-import Navbar from './Navbar.vue'
+import NavbarItem from './NavbarItem.vue'
 import { useAppStore } from '@/stores'
 import { NAVBAR_THEMES, type NavbarTheme, type NavbarThemeConfig } from './data/navbar-themes'
 import type { MenuNode } from '@/types'

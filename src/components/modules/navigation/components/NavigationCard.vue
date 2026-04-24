@@ -74,7 +74,7 @@ const IconComponent = computed(() => {
 
           <!-- 描述 -->
           <div class="text-sm text-muted-foreground line-clamp-2 min-h-[2.5rem]">
-            {{ item.description }}
+            {{ item.title }}
           </div>
 
           <!-- 分类标签 -->
