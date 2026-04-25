@@ -22,7 +22,7 @@ appStore.initFromStorage()
 const userStore = useUserStore()
 userStore.initFromStorage()
 
-await GlobalFunctions(app)
+await GlobalFunctions(app, router)
 
 // 挂载应用
 app.mount('#app')

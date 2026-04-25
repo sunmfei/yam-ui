@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { LocalCacheKey, type MenuNode } from '@/types'
-import { DEFAULT_MENU } from './data/MenuData'
+import { getDefaultMenu } from './data/MenuData'
 import LocalCache from '@/utils/cache/localCache.ts'
 import AppMenubar from '@/components/modules/menu/index.vue'
 import SearchBox from '@/views/searchBox/index.vue'
@@ -12,10 +13,13 @@ import {
   navigationList,
   NavigationPage,
 } from '@/components/modules/navigation'
+import { useUserStore } from '@/stores'
 
 const menuNodes = ref<MenuNode[]>([])
 const navigationItem = ref<NavigationItem[]>([])
 const currentPage = ref(0) // 0: 搜索页, 1: 导航页
+const router = useRouter()
+const userStore = useUserStore()
 
 onMounted(() => {
   menuNodes.value = getMenuData()
@@ -24,7 +28,7 @@ onMounted(() => {
 
 const getMenuData = () => {
   const localMenuData = LocalCache.get<MenuNode[]>(LocalCacheKey.MENU_CONFIG)
-  return localMenuData && localMenuData.length > 0 ? localMenuData : DEFAULT_MENU
+  return localMenuData && localMenuData.length > 0 ? localMenuData : getDefaultMenu()
 }
 
 const getNavigationData = () => {
@@ -33,6 +37,22 @@ const getNavigationData = () => {
     ? localNavigationData
     : navigationList
 }
+
+const displayMenus = computed<MenuNode[]>(() => {
+  const dynamicMenus = menuNodes.value.map((node) => {
+    // 如果是认证菜单，根据登录状态动态更新
+    if (node.actionKey === 'menu-auth-action') {
+      return {
+        ...node,
+        id: userStore.isLoggedIn ? 'auth-logout' : 'auth-login',
+        name: userStore.isLoggedIn ? '退出' : '登录',
+        icon: userStore.isLoggedIn ? 'LogOut' : 'LogIn',
+      }
+    }
+    return { ...node }
+  })
+  return dynamicMenus
+})
 
 const engines = [
   { id: 'google', name: 'Google', url: 'https://www.google.com/search?q=' },
@@ -63,7 +83,7 @@ const dockItems = computed(() => [
 <template>
   <div class="relative h-screen w-full overflow-hidden to-muted/20">
     <!-- 顶部菜单栏 -->
-    <AppMenubar :menus="menuNodes" />
+    <AppMenubar :menus="displayMenus" />
 
     <!-- 页面内容容器 -->
     <div class="relative h-[calc(100vh-64px)] overflow-hidden">

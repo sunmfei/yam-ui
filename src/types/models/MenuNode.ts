@@ -41,6 +41,8 @@ export interface MenuNode {
   hidden?: boolean
   /** 排序权重 */
   order?: number
+  /** 顶级菜单显示位置 */
+  position?: 'left' | 'right'
   /** 扩展元数据 */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   meta?: Record<string, any>

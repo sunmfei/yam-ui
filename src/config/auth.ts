@@ -23,7 +23,7 @@ export const AUTH_CONFIG = {
     userinfo: import.meta.env.VITE_AUTH_USERINFO_ENDPOINT || '/me',
     callback: import.meta.env.VITE_AUTH_CALLBACK_ENDPOINT || '/callback',
     refresh: import.meta.env.VITE_AUTH_REFRESH_ENDPOINT || '/refresh',
-    sessionLogout: import.meta.env.VITE_AUTH_LOGOUT_ENDPOINT || '/logout',
+    sessionLogout: import.meta.env.VITE_AUTH_LOGOUT_ENDPOINT || '/session/logout',
   },
 } as const
 

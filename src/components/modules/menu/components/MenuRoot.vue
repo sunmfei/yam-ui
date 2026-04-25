@@ -51,18 +51,39 @@ const menuStyle = computed(() => ({
   borderBottom: `1px solid ${appStore.isDark ? finalConfig.value.darkBorderColor : finalConfig.value.borderColor}`,
   padding: finalConfig.value.padding,
 }))
+
+function sortMenus(nodes: MenuNode[]) {
+  return [...nodes]
+    .filter((node) => !node.hidden)
+    .sort((a, b) => (a.order ?? Number.MAX_SAFE_INTEGER) - (b.order ?? Number.MAX_SAFE_INTEGER))
+}
+
+const leftMenus = computed(() => sortMenus(props.menus.filter((node) => node.position !== 'right')))
+const rightMenus = computed(() =>
+  sortMenus(props.menus.filter((node) => node.position === 'right'))
+)
 </script>
 
 <template>
   <!-- Menubar 容器 -->
   <Menubar class="menu-root" :style="menuStyle">
-    <!-- 递归渲染每个顶级菜单项 -->
-    <MenuRender v-for="node in menus" :key="node.id" :node="node" />
+    <div class="flex min-w-0 items-center gap-1">
+      <MenuRender v-for="node in leftMenus" :key="node.id" :node="node" />
+    </div>
+
+    <div class="flex-1" />
+
+    <div class="flex min-w-0 items-center gap-1">
+      <MenuRender v-for="node in rightMenus" :key="node.id" :node="node" />
+    </div>
   </Menubar>
 </template>
 
 <style scoped>
 .menu-root {
+  display: flex;
+  align-items: center;
+  width: 100%;
   transition: all 0.3s ease;
 }
 </style>

@@ -59,6 +59,11 @@ function getIconComponent(iconName: string) {
  * 执行动作（ACTION 类型）
  */
 function runAction() {
+  if (typeof props.node.meta?.onClick === 'function') {
+    props.node.meta.onClick(props.node)
+    return
+  }
+
   if (props.node.actionKey) {
     console.log('props.node.actionKey::::', props.node.actionKey)
     actionHub.executeAction(props.node.actionKey)

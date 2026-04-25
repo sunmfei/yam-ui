@@ -34,6 +34,7 @@ export const MenuActionKey = {
   GET_BG: 'menu-get-current-background',
   /** 获取图标 */
   GET_ICON: 'menu-get-icon',
+  AUTH_ACTION: 'menu-auth-action',
 } as const
 
 export type MenuActionKeyType = (typeof MenuActionKey)[keyof typeof MenuActionKey]

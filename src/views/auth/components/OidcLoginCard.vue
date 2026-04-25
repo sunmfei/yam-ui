@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { ShieldCheck, UserRound } from 'lucide-vue-next'
+import { GalleryVerticalEnd } from 'lucide-vue-next'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
 import {
   Field,
   FieldDescription,
@@ -29,8 +28,6 @@ const redirectTarget = computed(() => {
   return typeof redirect === 'string' && redirect ? redirect : '/'
 })
 
-const scopeText = computed(() => AUTH_CONFIG.scopes.join(' '))
-
 async function handleLogin() {
   if (isSubmitting.value) {
     return
@@ -54,127 +51,64 @@ async function handleLogin() {
 
 <template>
   <div :class="cn('flex flex-col gap-6')">
-    <Card
-      class="overflow-hidden border-white/60 bg-white/90 p-0 shadow-2xl shadow-slate-950/10 backdrop-blur"
-    >
-      <CardContent class="grid p-0 lg:grid-cols-[1.05fr_0.95fr]">
-        <form class="p-6 md:p-8" @submit.prevent="handleLogin">
-          <FieldGroup>
-            <div class="flex flex-col gap-3 text-center lg:text-left">
-              <div
-                class="mx-auto flex size-12 items-center justify-center rounded-2xl bg-sky-500 text-white shadow-lg shadow-sky-500/30 lg:mx-0"
-              >
-                <ShieldCheck class="size-6" />
-              </div>
-              <div>
-                <h1 class="text-2xl font-semibold tracking-tight text-slate-900">
-                  YAM 统一认证登录
-                </h1>
-                <p class="mt-2 text-sm leading-6 text-slate-500">
-                  使用 OAuth2 + OIDC 授权码模式接入认证中心，前端只负责发起授权，不直接处理
-                  `client_secret`。
-                </p>
-              </div>
-            </div>
-
-            <Field>
-              <FieldLabel for="yam-login-username">测试账号</FieldLabel>
-              <Input
-                id="yam-login-username"
-                v-model="username"
-                autocomplete="username"
-                placeholder="admin / user"
-              />
-              <FieldDescription>
-                输入认证中心账号，前端会调用 `POST /login` 完成登录。
-              </FieldDescription>
-            </Field>
-
-            <Field>
-              <FieldLabel for="yam-login-password">测试密码</FieldLabel>
-              <Input
-                id="yam-login-password"
-                v-model="password"
-                type="password"
-                autocomplete="current-password"
-                placeholder="123456"
-              />
-            </Field>
-
-            <Field>
-              <Button type="submit" class="h-11 w-full" :disabled="isSubmitting">
-                {{ isSubmitting ? '正在跳转认证中心...' : '前往认证中心登录' }}
-              </Button>
-            </Field>
-
-            <FieldSeparator class="*:data-[slot=field-separator-content]:bg-white/90">
-              对接摘要
-            </FieldSeparator>
-
-            <div
-              class="grid gap-3 rounded-2xl border border-slate-200/80 bg-slate-50/80 p-4 text-sm text-slate-600"
-            >
-              <div class="flex items-start gap-3">
-                <UserRound class="mt-0.5 size-4 text-sky-600" />
-                <div>
-                  <p class="font-medium text-slate-900">登录完成后自动回跳</p>
-                  <p class="mt-1 break-all text-xs text-slate-500">{{ redirectTarget }}</p>
-                </div>
-              </div>
-              <div>
-                <p class="font-medium text-slate-900">客户端</p>
-                <p class="mt-1 text-xs text-slate-500">{{ AUTH_CONFIG.clientId }}</p>
-              </div>
-              <div>
-                <p class="font-medium text-slate-900">Scopes</p>
-                <p class="mt-1 break-all text-xs text-slate-500">{{ scopeText }}</p>
-              </div>
-            </div>
-          </FieldGroup>
-        </form>
-
-        <div
-          class="relative hidden overflow-hidden bg-[radial-gradient(circle_at_top,#dbeafe,transparent_42%),linear-gradient(160deg,#0f172a_0%,#0f766e_55%,#cffafe_100%)] p-8 text-white lg:flex lg:flex-col lg:justify-between"
-        >
-          <div class="absolute inset-0 opacity-30">
-            <div class="absolute left-10 top-10 size-40 rounded-full bg-white/20 blur-3xl" />
-            <div class="absolute bottom-0 right-0 size-56 rounded-full bg-cyan-200/30 blur-3xl" />
-          </div>
-          <div class="relative space-y-4">
-            <div
-              class="inline-flex rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs tracking-[0.24em] text-cyan-50"
-            >
-              AUTH CENTER
-            </div>
-            <h2 class="max-w-sm text-3xl font-semibold leading-tight">
-              统一会话、回调换 token、前端只缓存系统态认证信息。
-            </h2>
-            <p class="max-w-md text-sm leading-6 text-cyan-50/85">
-              当前页面只做授权入口。认证成功后会在回调页完成 state 校验、code 换
-              token、拉取用户信息，再恢复到原始业务地址。
-            </p>
-          </div>
-
-          <div
-            class="relative grid gap-3 rounded-3xl border border-white/15 bg-black/15 p-5 backdrop-blur-sm"
-          >
-            <div class="flex items-center justify-between text-sm">
-              <span class="text-cyan-50/80">Issuer</span>
-              <span class="max-w-[15rem] truncate font-medium text-white">
-                {{ AUTH_CONFIG.issuer }}
-              </span>
-            </div>
-            <div class="flex items-center justify-between text-sm">
-              <span class="text-cyan-50/80">Callback</span>
-              <span class="font-medium text-white">/callback</span>
-            </div>
-            <div class="flex items-center justify-between text-sm">
-              <span class="text-cyan-50/80">Session Cache</span>
-              <span class="font-medium text-white">systemCache</span>
-            </div>
-          </div>
+    <form @submit.prevent="handleLogin">
+      <FieldGroup>
+        <div class="flex flex-col items-center gap-2 text-center">
+          <div class="flex flex-col items-center gap-2 font-medium"></div>
+          <h1 class="text-xl font-bold">统一认证登录</h1>
+          <FieldDescription>使用 OAuth2 + OIDC 授权码模式接入认证中心</FieldDescription>
         </div>
-      </CardContent>
-    </Card>
+        <Field>
+          <FieldLabel for="yam-login-username">账号</FieldLabel>
+          <Input
+            id="yam-login-username"
+            v-model="username"
+            autocomplete="username"
+            placeholder="admin / user"
+            required
+          />
+        </Field>
+        <Field>
+          <FieldLabel for="yam-login-password">密码</FieldLabel>
+          <Input
+            id="yam-login-password"
+            v-model="password"
+            type="password"
+            autocomplete="current-password"
+            placeholder="123456"
+            required
+          />
+        </Field>
+        <Field>
+          <Button type="submit" class="w-full" :disabled="isSubmitting">
+            {{ isSubmitting ? '正在跳转认证中心...' : '登录' }}
+          </Button>
+        </Field>
+        <FieldSeparator>或</FieldSeparator>
+        <Field class="grid gap-4 sm:grid-cols-2">
+          <Button variant="outline" type="button" disabled>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <path
+                d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"
+                fill="currentColor"
+              />
+            </svg>
+            Apple 登录
+          </Button>
+          <Button variant="outline" type="button" disabled>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <path
+                d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"
+                fill="currentColor"
+              />
+            </svg>
+            Google 登录
+          </Button>
+        </Field>
+      </FieldGroup>
+    </form>
+    <FieldDescription class="px-6 text-center">
+      <!--      客户端: {{ AUTH_CONFIG.clientId }}-->
+    </FieldDescription>
   </div>
 </template>

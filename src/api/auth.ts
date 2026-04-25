@@ -82,6 +82,10 @@ async function readJsonResponse(response: Response) {
   return response.json().catch(() => null)
 }
 
+function isSuccessCode(code: unknown) {
+  return code === 200 || code === '200'
+}
+
 async function postAuthJson<T>(path: string, payload: Record<string, unknown>): Promise<T> {
   const response = await fetch(getAuthServiceUrl(path), {
     method: 'POST',
@@ -94,7 +98,7 @@ async function postAuthJson<T>(path: string, payload: Record<string, unknown>): 
 
   const result = await readJsonResponse(response)
 
-  if (!response.ok || (result?.code && result.code !== 200)) {
+  if (!response.ok || (result?.code !== undefined && !isSuccessCode(result.code))) {
     throw new Error(result?.message || '认证请求失败')
   }
 
@@ -119,7 +123,7 @@ export const authApi = {
 
     const result = await response.json().catch(() => null)
 
-    if (!response.ok || result?.code !== 200) {
+    if (!response.ok || !isSuccessCode(result?.code)) {
       throw new Error(result?.message || '登录失败，请检查用户名和密码')
     }
   },
@@ -156,7 +160,7 @@ export const authApi = {
 
     const result = await readJsonResponse(response)
 
-    if (!response.ok || (result?.code && result.code !== 200)) {
+    if (!response.ok || (result?.code !== undefined && !isSuccessCode(result.code))) {
       throw new Error(result?.message || '获取用户信息失败')
     }
 
