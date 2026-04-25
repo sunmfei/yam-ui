@@ -86,24 +86,18 @@ export default defineConfig(({ mode }) => {
       open: false,
       cors: true,
       proxy: {
-        '/api/auth': {
-          target: authProxyTarget,
-          changeOrigin: true,
-          secure: false,
-          ws: false,
-        },
         '/api': {
           target: apiProxyTarget,
           changeOrigin: true,
           secure: false,
           ws: true,
         },
-        '/auth-server': {
+        '/auth': {
           target: authProxyTarget,
           changeOrigin: true,
           secure: false,
           ws: false,
-          rewrite: (path) => path.replace(/^\/auth-server/, ''),
+          rewrite: (path) => path.replace(/^\/auth/, ''),
         },
       },
     },

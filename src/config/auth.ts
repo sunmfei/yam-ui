@@ -1,13 +1,13 @@
 import { APP_CONFIG } from '@/config'
 
-const DEFAULT_AUTH_ORIGIN = 'http://localhost:48081'
+const DEFAULT_AUTH_ORIGIN = 'http://localhost:48081/auth'
 const DEFAULT_SCOPES = ['openid', 'profile', 'email', 'read', 'write']
 
 const trimTrailingSlash = (value: string) => value.replace(/\/+$/, '')
 
 export const AUTH_CONFIG = {
   issuer: trimTrailingSlash(import.meta.env.VITE_AUTH_ISSUER || DEFAULT_AUTH_ORIGIN),
-  browserBaseUrl: trimTrailingSlash(import.meta.env.VITE_AUTH_BROWSER_BASE_URL || '/auth-server'),
+  browserBaseUrl: trimTrailingSlash(import.meta.env.VITE_AUTH_BROWSER_BASE_URL || '/auth'),
   clientId: import.meta.env.VITE_AUTH_CLIENT_ID || 'web-app',
   scopes: (import.meta.env.VITE_AUTH_SCOPES || DEFAULT_SCOPES.join(' '))
     .split(/\s+/)
