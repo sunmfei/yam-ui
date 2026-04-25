@@ -56,7 +56,7 @@ router.beforeEach(async (to, _from) => {
 
           // 如果仍然没有用户信息，可能需要重新登录
           if (!userStore.userInfo) {
-            userStore.logout()
+            userStore.clearSession()
             return {
               path: '/login',
               query: { redirect: to.fullPath },
@@ -64,7 +64,7 @@ router.beforeEach(async (to, _from) => {
           }
         } catch (error) {
           console.error('Failed to restore user session:', error)
-          userStore.logout()
+          userStore.clearSession()
           return {
             path: '/login',
             query: { redirect: to.fullPath },

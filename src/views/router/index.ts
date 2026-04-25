@@ -7,6 +7,7 @@ import { searchRoutes } from '@/views/searchBox/router'
 import { demoRouter } from '@/views/demo/router'
 import { panelRoutes } from '@/views/panel/router'
 import { navigationRoutes } from '@/views/business/navigation/router'
+import { authRoutes } from '@/views/auth/router'
 
 // 在这里添加新模块的路由
 // import { dashboardRoutes } from '@/views/dashboard/router'
@@ -22,6 +23,7 @@ export const localRoutes = [
   ...demoRouter,
   ...panelRoutes,
   ...navigationRoutes,
+  ...authRoutes,
   // ...dashboardRoutes,
   // ...userRoutes,
 ]

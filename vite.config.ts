@@ -11,6 +11,8 @@ import { runScriptsParallel } from './scripts/utils/run-script'
 export default defineConfig(({ mode }) => {
   // 加载环境变量（仅 VITE_ 前缀）
   const env = loadEnv(mode, process.cwd(), 'VITE_')
+  const apiProxyTarget = env.VITE_API_PROXY_TARGET || 'http://localhost:48080'
+  const authProxyTarget = env.VITE_AUTH_ISSUER || 'http://localhost:48081'
 
   // 开发模式下自动生成代码
   if (mode === 'development') {
@@ -83,6 +85,27 @@ export default defineConfig(({ mode }) => {
       host: true,
       open: false,
       cors: true,
+      proxy: {
+        '/api/auth': {
+          target: authProxyTarget,
+          changeOrigin: true,
+          secure: false,
+          ws: false,
+        },
+        '/api': {
+          target: apiProxyTarget,
+          changeOrigin: true,
+          secure: false,
+          ws: true,
+        },
+        '/auth-server': {
+          target: authProxyTarget,
+          changeOrigin: true,
+          secure: false,
+          ws: false,
+          rewrite: (path) => path.replace(/^\/auth-server/, ''),
+        },
+      },
     },
     // 构建配置
     build: {

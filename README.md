@@ -80,6 +80,23 @@ const apiUrl = import.meta.env.VITE_API_BASE_URL
 const appTitle = import.meta.env.VITE_APP_TITLE
 ```
 
+认证联调时建议这样配置：
+
+- `VITE_API_BASE_URL=http://localhost:53001/api`
+- `VITE_API_PROXY_TARGET=http://localhost:48080`
+- `VITE_AUTH_ISSUER=http://localhost:48081`
+- `VITE_AUTH_BROWSER_BASE_URL=/auth-server`
+
+这样前端只请求同源 `/api` 和 `/auth-server`，由 Vite 开发服务器分别代理到业务后端和认证中心，浏览器侧不需要直接跨域访问业务接口或登录接口。
+
+### OAuth2/OIDC 联调与跨域
+
+- 前端登录表单先调用同源 `/auth-server/login`，由代理转发到认证中心 `POST /login` 建立会话。
+- 登录成功后再跳转到 `/auth-server/oauth2/authorize` 获取授权码。
+- 前端换 token、刷新 token、获取用户信息统一走 `/api/auth/*`，开发环境由 Vite 代理到后端。
+- 后端仍需要放开前端来源，至少允许 `http://localhost:53001` 作为 CORS Origin，并允许 `GET,POST,PUT,PATCH,DELETE,OPTIONS`。
+- 如果认证成功后要回跳到前端，认证中心还需要放行回调地址 `http://localhost:53001/callback`。
+
 ### Vite 优化
 
 #### 代码分割

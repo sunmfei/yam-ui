@@ -40,20 +40,7 @@ export const baseRoutes: FrontendRoute[] = [
 /**
  * 认证相关路由
  */
-export const authRoutes: FrontendRoute[] = [
-  // TODO: 创建 LoginView.vue 后取消注释
-  // {
-  //   name: 'Login',
-  //   path: '/login',
-  //   component: () => import('@/views/LoginView.vue'),
-  //   source: RouteSource.FRONTEND,
-  //   meta: {
-  //     title: '登录',
-  //     requiresAuth: false,
-  //     hidden: true,
-  //   },
-  // },
-]
+export const authRoutes: FrontendRoute[] = []
 
 /**
  * 错误页面路由

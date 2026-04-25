@@ -16,6 +16,11 @@ export type LocalCacheKeyType = (typeof LocalCacheKey)[keyof typeof LocalCacheKe
 export const SystemCacheKey = {
   USER_INFO: 'sys_userInfo',
   TOKEN: 'sys_token',
+  REFRESH_TOKEN: 'sys_refreshToken',
+  ID_TOKEN: 'sys_idToken',
+  TOKEN_EXPIRES_AT: 'sys_tokenExpiresAt',
+  OIDC_STATE: 'sys_oidcState',
+  OIDC_REDIRECT: 'sys_oidcRedirect',
   API_DATA: 'sys_apiData',
   CONFIG: 'sys_config',
   DICTIONARY: 'sys_dictionary',

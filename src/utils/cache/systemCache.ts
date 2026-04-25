@@ -56,7 +56,15 @@ class SystemCache extends BaseCache {
    * 清理认证相关缓存（登出时调用）
    */
   clearAuth(): void {
-    this.clearKeys('sys_token', 'sys_userInfo')
+    this.clearKeys(
+      'sys_token',
+      'sys_userInfo',
+      'sys_refreshToken',
+      'sys_idToken',
+      'sys_tokenExpiresAt',
+      'sys_oidcState',
+      'sys_oidcRedirect'
+    )
     console.log('✓ 认证缓存已清空')
   }
 }
