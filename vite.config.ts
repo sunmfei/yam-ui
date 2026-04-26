@@ -12,7 +12,10 @@ export default defineConfig(({ mode }) => {
   // 加载环境变量（仅 VITE_ 前缀）
   const env = loadEnv(mode, process.cwd(), 'VITE_')
   const apiProxyTarget = env.VITE_API_PROXY_TARGET || 'http://localhost:48080'
-  const authProxyTarget = env.VITE_AUTH_ISSUER || 'http://localhost:48081'
+  const authEntryUrl = env.VITE_AUTH_ENTRY_URL || env.VITE_AUTH_ISSUER || 'http://localhost:48081/auth'
+  const authUrl = new URL(authEntryUrl)
+  const authProxyTarget = authUrl.origin
+  const authProxyBasePath = authUrl.pathname.replace(/\/+$/, '') || '/auth'
 
   // 开发模式下自动生成代码
   if (mode === 'development') {
@@ -97,7 +100,7 @@ export default defineConfig(({ mode }) => {
           changeOrigin: true,
           secure: false,
           ws: false,
-          rewrite: (path) => path.replace(/^\/auth/, ''),
+          rewrite: (path) => path.replace(/^\/auth/, authProxyBasePath),
         },
       },
     },

@@ -1,13 +1,33 @@
 import { APP_CONFIG } from '@/config'
 
-const DEFAULT_AUTH_ORIGIN = 'http://localhost:48081/auth'
+const DEFAULT_AUTH_ENTRY_URL = 'http://localhost:48081/auth'
 const DEFAULT_SCOPES = ['openid', 'profile', 'email', 'read', 'write']
 
 const trimTrailingSlash = (value: string) => value.replace(/\/+$/, '')
 
+function toBrowserBaseUrl(entryUrl: string) {
+  const normalized = trimTrailingSlash(entryUrl)
+
+  if (normalized.startsWith('/')) {
+    return normalized || '/auth'
+  }
+
+  try {
+    const url = new URL(normalized)
+    return trimTrailingSlash(url.pathname) || '/'
+  } catch {
+    return '/auth'
+  }
+}
+
+const authEntryUrl = trimTrailingSlash(
+  import.meta.env.VITE_AUTH_ENTRY_URL || import.meta.env.VITE_AUTH_ISSUER || DEFAULT_AUTH_ENTRY_URL
+)
+
 export const AUTH_CONFIG = {
-  issuer: trimTrailingSlash(import.meta.env.VITE_AUTH_ISSUER || DEFAULT_AUTH_ORIGIN),
-  browserBaseUrl: trimTrailingSlash(import.meta.env.VITE_AUTH_BROWSER_BASE_URL || '/auth'),
+  entryUrl: authEntryUrl,
+  issuer: authEntryUrl,
+  browserBaseUrl: toBrowserBaseUrl(authEntryUrl),
   clientId: import.meta.env.VITE_AUTH_CLIENT_ID || 'web-app',
   scopes: (import.meta.env.VITE_AUTH_SCOPES || DEFAULT_SCOPES.join(' '))
     .split(/\s+/)
