@@ -47,7 +47,7 @@ export const useUserStore = defineStore('user', () => {
   const tokenExpiresAt = ref<number | null>(null)
   const refreshPromise = ref<Promise<string> | null>(null)
 
-  const isLoggedIn = computed(() => !!token.value && !!userInfo.value)
+  const isLoggedIn = computed(() => !!userInfo.value)
   const userName = computed(() => userInfo.value?.name || '')
   const userAvatar = computed(() => userInfo.value?.avatar || '')
   const userRoles = computed(() => userInfo.value?.roles || [])
@@ -114,6 +114,20 @@ export const useUserStore = defineStore('user', () => {
     idToken.value = systemCache.get<string>(SystemCacheKey.ID_TOKEN) || ''
     tokenExpiresAt.value = systemCache.get<number>(SystemCacheKey.TOKEN_EXPIRES_AT)
     userInfo.value = systemCache.get<UserInfo>(SystemCacheKey.USER_INFO)
+  }
+
+  async function hydrateSessionUser() {
+    if (userInfo.value) {
+      return userInfo.value
+    }
+
+    try {
+      const profile = await authApi.getUserInfo()
+      applyUserInfo(profile)
+      return userInfo.value
+    } catch {
+      return null
+    }
   }
 
   async function startLogin(payload: { username: string; password: string; redirect?: string }) {
@@ -235,6 +249,7 @@ export const useUserStore = defineStore('user', () => {
     userPermissions,
     shouldRefreshToken,
     initFromStorage,
+    hydrateSessionUser,
     startLogin,
     handleCallback,
     refreshAccessToken,

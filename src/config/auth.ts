@@ -1,6 +1,6 @@
 import { APP_CONFIG } from '@/config'
 
-const DEFAULT_AUTH_ENTRY_URL = 'http://localhost:48081/auth'
+const DEFAULT_AUTH_ENTRY_URL = '/auth'
 const DEFAULT_SCOPES = ['openid', 'profile', 'email', 'read', 'write']
 
 const trimTrailingSlash = (value: string) => value.replace(/\/+$/, '')

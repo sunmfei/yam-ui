@@ -13,9 +13,12 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), 'VITE_')
   const apiProxyTarget = env.VITE_API_PROXY_TARGET || 'http://localhost:48080'
   const authEntryUrl = env.VITE_AUTH_ENTRY_URL || env.VITE_AUTH_ISSUER || 'http://localhost:48081/auth'
-  const authUrl = new URL(authEntryUrl)
-  const authProxyTarget = authUrl.origin
-  const authProxyBasePath = authUrl.pathname.replace(/\/+$/, '') || '/auth'
+  const isAbsoluteAuthUrl = /^https?:\/\//i.test(authEntryUrl)
+  const authUrl = isAbsoluteAuthUrl ? new URL(authEntryUrl) : null
+  const authProxyTarget = authUrl?.origin || 'http://127.0.0.1:48088'
+  const authProxyBasePath = isAbsoluteAuthUrl
+    ? authUrl!.pathname.replace(/\/+$/, '') || '/auth'
+    : authEntryUrl.replace(/\/+$/, '') || '/auth'
 
   // 开发模式下自动生成代码
   if (mode === 'development') {

@@ -41,7 +41,11 @@ router.beforeEach(async (to, _from) => {
 
   if (requiresAuth) {
     // 需要登录的路由
-    if (!hasToken) {
+    if (!hasToken && !userStore.userInfo) {
+      await userStore.hydrateSessionUser()
+    }
+
+    if (!userStore.userInfo && !userStore.token) {
       // 没有 token，重定向到登录页
       return {
         path: '/login',
@@ -53,6 +57,7 @@ router.beforeEach(async (to, _from) => {
         try {
           // 尝试从存储恢复或重新获取用户信息
           userStore.initFromStorage()
+          await userStore.hydrateSessionUser()
 
           // 如果仍然没有用户信息，可能需要重新登录
           if (!userStore.userInfo) {
