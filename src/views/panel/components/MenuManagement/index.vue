@@ -140,7 +140,7 @@ import BaseButton from '@/components/base/button/BaseButton.vue'
 import { BaseTable } from '@/components/modules/table'
 import type { TreeTableNode } from '@/components/ui/tree-table/types'
 import type { MenuNode } from '@/types'
-import { DEFAULT_MENU } from '@/views/home/data/MenuData'
+import { getDefaultMenu } from '@/views/home/data/MenuData'
 import { SunMessage } from '@/utils/message'
 import MenuDialog from './components/MenuDialog.vue'
 import { useMenuData } from './composables/useMenuData'
@@ -172,7 +172,7 @@ function collectAllIds(nodes: MenuNode[]): string[] {
 }
 
 // 设置硬编码 ID（包含所有层级的节点）
-const HARDCODED_MENU_IDS = new Set(collectAllIds(DEFAULT_MENU))
+const HARDCODED_MENU_IDS = new Set(collectAllIds(getDefaultMenu()))
 crud.setHardcodedIds(HARDCODED_MENU_IDS)
 
 const columns = menuColumns

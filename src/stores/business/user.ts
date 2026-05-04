@@ -99,7 +99,7 @@ export const useUserStore = defineStore('user', () => {
       !!session.userInfo &&
       !!(session.userInfo.name || session.userInfo.preferred_username || session.userInfo.email)
 
-    if (hasUsableUserInfo) {
+    if (hasUsableUserInfo && session.userInfo) {
       applyUserInfo(session.userInfo)
       return
     }

@@ -36,6 +36,7 @@
     "@dnd-kit/sortable": "^10.0.0",
     "@dnd-kit/utilities": "^3.2.2",
     "@inspira-ui/plugins": "^0.0.2",
+    "@internationalized/date": "^3.12.1",
     "@tabler/icons-vue": "^3.41.1",
     "@tailwindcss/vite": "^4.2.2",
     "@tanstack/vue-table": "^8.21.3",

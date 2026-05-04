@@ -5,7 +5,7 @@
  */
 import { ref } from 'vue'
 import type { MenuNode } from '@/types'
-import { DEFAULT_MENU } from '@/views/home/data/MenuData'
+import { getDefaultMenu } from '@/views/home/data/MenuData'
 import { localCache } from '@/utils/cache/localCache'
 import { getMenus } from '@/api/menu'
 import { LocalCacheKey } from '@/types'
@@ -97,7 +97,7 @@ export function useMenuData() {
     if (cached && Array.isArray(cached) && cached.length > 0) {
       menus.value = cached
     } else {
-      menus.value = cloneTree(DEFAULT_MENU)
+      menus.value = cloneTree(getDefaultMenu())
       saveMenuData()
     }
   }
@@ -106,7 +106,7 @@ export function useMenuData() {
    * 重置为默认菜单
    */
   function resetToDefault() {
-    menus.value = cloneTree(DEFAULT_MENU)
+    menus.value = cloneTree(getDefaultMenu())
     saveMenuData()
   }
 

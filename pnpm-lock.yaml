@@ -26,6 +26,9 @@ importers:
       '@inspira-ui/plugins':
         specifier: ^0.0.2
         version: 0.0.2
+      '@internationalized/date':
+        specifier: ^3.12.1
+        version: 3.12.1
       '@tabler/icons-vue':
         specifier: ^3.41.1
         version: 3.41.1(vue@3.5.32(typescript@6.0.2))
