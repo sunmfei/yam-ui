@@ -1,0 +1,39 @@
+services:
+  yam-ui-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    image: ${PROJECT_NAME}/yam-ui-dev:${VERSION}
+    container_name: ${PROJECT_NAME}-yam-ui-dev
+    ports:
+      - "${VITE_SERVER_PORT:-53001}:53001"
+    environment:
+      - NODE_ENV=development
+      - VITE_API_PROXY_TARGET=${VITE_API_PROXY_TARGET:-http://host.docker.internal:48088}
+      - VITE_AUTH_ENTRY_URL=${VITE_AUTH_ENTRY_URL:-http://host.docker.internal:48088/auth}
+      - VITE_SERVER_PORT=${VITE_SERVER_PORT:-53001}
+    command: pnpm dev --host 0.0.0.0 --port 53001
+    networks:
+      - yam-network
+    restart: unless-stopped
+
+  yam-ui-prod:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    image: ${PROJECT_NAME}/yam-ui-prod:${VERSION}
+    container_name: ${PROJECT_NAME}-yam-ui-prod
+    ports:
+      - "${PROD_PORT:-80}:53001"
+    environment:
+      - NODE_ENV=production
+    networks:
+      - yam-network
+    restart: unless-stopped
+    profiles:
+      - prod
+
+networks:
+  yam-network:
+    driver: bridge
