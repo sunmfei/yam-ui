@@ -4,7 +4,7 @@ services:
       context: .
       dockerfile: Dockerfile.dev
     env_file:
-      - .env.docker
+      - .env.prod
     image: ${PROJECT_NAME}/yam-ui-dev:${VERSION}
     container_name: ${PROJECT_NAME}-yam-ui-dev
     ports:

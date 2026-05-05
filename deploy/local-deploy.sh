@@ -4,7 +4,7 @@ set -euo pipefail
 PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 GENERATED_DIR="$PROJECT_DIR/deploy/.generated"
 COMPOSE_FILE="${COMPOSE_FILE:-docker-compose.deploy.yml}"
-PROJECT_ENV="$PROJECT_DIR/.env"
+PROJECT_ENV="$PROJECT_DIR/.env.prod"
 COMPOSE_ENV_FILE="$GENERATED_DIR/compose.env"
 
 timestamp="$(date +%Y%m%d-%H%M%S)"
@@ -29,7 +29,7 @@ cat "$GENERATED_DIR/version.env" >> "$COMPOSE_ENV_FILE"
 echo "Using frontend version: $version"
 
 cd "$PROJECT_DIR"
-docker compose --env-file "$COMPOSE_ENV_FILE" -f "$COMPOSE_FILE" build
-docker compose --env-file "$COMPOSE_ENV_FILE" -f "$COMPOSE_FILE" up -d --force-recreate
+docker compose --env-file "$COMPOSE_ENV_FILE" -f "$COMPOSE_FILE" build yam-ui-prod
+docker compose --env-file "$COMPOSE_ENV_FILE" -f "$COMPOSE_FILE" --profile prod up -d --force-recreate yam-ui-prod
 
 echo "Frontend local deployment completed."

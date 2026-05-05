@@ -55,8 +55,8 @@ start_dev() {
     check_docker
     print_info "启动开发环境..."
     
-    if [ ! -f .env.docker ]; then
-        print_error ".env.docker 文件不存在"
+    if [ ! -f .env.prod ]; then
+        print_error ".env.prod 文件不存在"
         exit 1
     fi
     

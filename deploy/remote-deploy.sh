@@ -50,15 +50,15 @@ rm -rf current
 mkdir -p current/deploy/.generated
 tar -xzf yam-frontend.tar.gz -C current
 cp version.env current/deploy/.generated/version.env
-if [ -f current/.env ]; then
-  cat current/.env > current/deploy/.generated/compose.env
+if [ -f current/.env.prod ]; then
+  cat current/.env.prod > current/deploy/.generated/compose.env
 else
   : > current/deploy/.generated/compose.env
 fi
 cat current/deploy/.generated/version.env >> current/deploy/.generated/compose.env
 cd current
-docker compose --env-file deploy/.generated/compose.env -f '$COMPOSE_FILE' build
-docker compose --env-file deploy/.generated/compose.env -f '$COMPOSE_FILE' up -d --force-recreate
+docker compose --env-file deploy/.generated/compose.env -f '$COMPOSE_FILE' build yam-ui-prod
+docker compose --env-file deploy/.generated/compose.env -f '$COMPOSE_FILE' --profile prod up -d --force-recreate yam-ui-prod
 "
 
 echo "Frontend remote deployment completed. Version: $version"

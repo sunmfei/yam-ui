@@ -13,6 +13,9 @@ COPY package.json pnpm-lock.yaml ./
 # 安装依赖
 RUN pnpm install --frozen-lockfile
 
+# 复制环境变量文件
+COPY .env.prod .env
+
 # 复制源代码
 COPY . .
 
