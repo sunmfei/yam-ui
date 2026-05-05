@@ -107,39 +107,10 @@ async function postAuthJson<T>(path: string, payload: Record<string, unknown>): 
 
 export const authApi = {
   async login(payload: LoginPayload): Promise<void> {
-    const body = new URLSearchParams({
+    await postAuthJson('/api/auth/login', {
       username: payload.username,
       password: payload.password,
     })
-
-    const response = await fetch(getAuthLoginUrl(), {
-      method: 'POST',
-      redirect: 'manual',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: body.toString(),
-    })
-
-    if (response.type === 'opaqueredirect') {
-      return
-    }
-
-    const location = response.headers.get('Location') || response.headers.get('location') || ''
-
-    if (response.status >= 300 && response.status < 400) {
-      if (location.includes('error')) {
-        throw new Error('登录失败，请检查用户名和密码')
-      }
-      return
-    }
-
-    const result = await response.json().catch(() => null)
-
-    if (!response.ok || (result?.code !== undefined && !isSuccessCode(result.code))) {
-      throw new Error(result?.message || '登录失败，请检查用户名和密码')
-    }
   },
 
   async exchangeCode(payload: CallbackPayload): Promise<AuthSession> {

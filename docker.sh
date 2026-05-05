@@ -55,9 +55,9 @@ start_dev() {
     check_docker
     print_info "启动开发环境..."
     
-    if [ ! -f .env ]; then
-        print_warn ".env 文件不存在，从示例复制..."
-        cp .env.docker.example .env
+    if [ ! -f .env.docker ]; then
+        print_error ".env.docker 文件不存在"
+        exit 1
     fi
     
     docker compose up -d yam-ui-dev

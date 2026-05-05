@@ -9,8 +9,8 @@ import { runScriptsParallel } from './scripts/utils/run-script'
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
-  // 加载环境变量（仅 VITE_ 前缀）
-  const env = loadEnv(mode, process.cwd(), 'VITE_')
+  const effectiveMode = mode === 'production' ? 'prod' : mode
+  const env = loadEnv(effectiveMode, process.cwd(), 'VITE_')
   const apiProxyTarget = env.VITE_API_PROXY_TARGET || 'http://localhost:48080'
   const authEntryUrl = env.VITE_AUTH_ENTRY_URL || env.VITE_AUTH_ISSUER || 'http://localhost:48081/auth'
   const isAbsoluteAuthUrl = /^https?:\/\//i.test(authEntryUrl)

@@ -4,6 +4,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
+    env_file:
+      - .env.docker
     image: yam-ui/yam-ui-dev:local-dev
     container_name: yam-ui-dev
     ports:
@@ -24,6 +26,8 @@ services:
       context: .
       dockerfile: Dockerfile
       target: production
+    env_file:
+      - .env.prod
     image: yam-ui/yam-ui-prod:local-dev
     container_name: yam-ui-prod
     ports:
