@@ -13,7 +13,7 @@ REMOTE_DIR="${3:-/tmp/yam-frontend-deploy}"
 PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 GENERATED_DIR="$PROJECT_DIR/deploy/.generated"
 ARCHIVE_FILE="$GENERATED_DIR/yam-frontend.tar.gz"
-COMPOSE_FILE="${COMPOSE_FILE:-docker-compose.deploy.yml}"
+COMPOSE_FILE="${COMPOSE_FILE:-docker-compose.yml}"
 
 timestamp="$(date +%Y%m%d-%H%M%S)"
 git_sha="$(git -C "$PROJECT_DIR" rev-parse --short HEAD 2>/dev/null || echo nogit)"

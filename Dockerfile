@@ -5,7 +5,10 @@ FROM node:20-alpine AS builder
 WORKDIR /app
 
 # 安装 pnpm
-RUN corepack enable && corepack prepare pnpm@latest --activate
+RUN npm config set registry https://registry.npmmirror.com \
+ && corepack enable \
+ && corepack prepare pnpm@latest --activate
+
 
 # 复制 package.json 和 pnpm-lock.yaml
 COPY package.json pnpm-lock.yaml ./
@@ -17,7 +20,7 @@ RUN pnpm install --frozen-lockfile
 COPY . .
 
 # 构建应用
-RUN pnpm build
+RUN pnpm build --mode production
 
 # 生产阶段 - 使用 Nginx 提供静态文件服务
 FROM nginx:alpine AS production
