@@ -14,8 +14,20 @@ const loading = ref(true)
 const errorMessage = ref('')
 
 onMounted(async () => {
+  const authError = typeof route.query.error === 'string' ? route.query.error : ''
+  const authErrorDescription =
+    typeof route.query.error_description === 'string' ? route.query.error_description : ''
   const code = typeof route.query.code === 'string' ? route.query.code : ''
   const state = typeof route.query.state === 'string' ? route.query.state : ''
+
+  if (authError) {
+    errorMessage.value = authErrorDescription
+      ? `认证失败：${decodeURIComponent(authErrorDescription)}`
+      : `认证失败：${authError}`
+    SunMessage.error(errorMessage.value)
+    loading.value = false
+    return
+  }
 
   if (!code || !state) {
     errorMessage.value = '认证回调缺少 code 或 state 参数'

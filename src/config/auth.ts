@@ -59,7 +59,7 @@ export const AUTH_CONFIG = {
 
   // 认证端点配置
   endpoints: {
-    login: import.meta.env.VITE_AUTH_LOGIN_ENDPOINT || '/api/auth/login', // 登录端点
+    login: import.meta.env.VITE_AUTH_LOGIN_ENDPOINT || '/api/login', // 登录端点
     logout: import.meta.env.VITE_AUTH_SERVER_LOGOUT_ENDPOINT || '/logout', // 服务端登出端点
     authorize: import.meta.env.VITE_AUTH_AUTHORIZE_ENDPOINT || '/oauth2/authorize', // 授权端点
     userinfo: import.meta.env.VITE_AUTH_USERINFO_ENDPOINT || '/me', // 用户信息端点
