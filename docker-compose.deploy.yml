@@ -28,6 +28,7 @@ services:
       - "${PROD_PORT:-80}:53001"
     environment:
       - NODE_ENV=production
+      - GATEWAY_UPSTREAM=${GATEWAY_UPSTREAM:-yam-gateway:48088}
     networks:
       - yam-network
     restart: unless-stopped
@@ -36,4 +37,5 @@ services:
 
 networks:
   yam-network:
-    driver: bridge
+    external: true
+    name: ${PROJECT_NAME:-yam}-network

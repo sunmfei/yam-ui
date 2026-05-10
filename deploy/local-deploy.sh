@@ -10,7 +10,7 @@ COMPOSE_ENV_FILE="$GENERATED_DIR/compose.env"
 timestamp="$(date +%Y%m%d-%H%M%S)"
 git_sha="$(git -C "$PROJECT_DIR" rev-parse --short HEAD 2>/dev/null || echo nogit)"
 version="${VERSION:-${timestamp}-${git_sha}}"
-project_name="${PROJECT_NAME:-yam-ui}"
+project_name="${PROJECT_NAME:-yam}"
 
 mkdir -p "$GENERATED_DIR"
 

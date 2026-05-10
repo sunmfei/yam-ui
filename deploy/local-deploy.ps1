@@ -14,7 +14,7 @@ try {
 }
 
 $Version = if ($env:VERSION) { $env:VERSION } else { "$Timestamp-$GitSha" }
-$ProjectName = if ($env:PROJECT_NAME) { $env:PROJECT_NAME } else { "yam-ui" }
+$ProjectName = if ($env:PROJECT_NAME) { $env:PROJECT_NAME } else { "yam" }
 
 New-Item -ItemType Directory -Force -Path $GeneratedDir | Out-Null
 @"

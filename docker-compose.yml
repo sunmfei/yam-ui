@@ -24,12 +24,20 @@ services:
       context: .
       dockerfile: Dockerfile
     image: ${PROJECT_NAME:-yam-ui}:${VERSION:-latest}
-    container_name: ${PROJECT_NAME:-yam-ui}
+    container_name: ${PROJECT_NAME:-yam}-ui
 
     ports:
       - "${PORT:-53001}:53001"
 
     environment:
       - NODE_ENV=production
+      - GATEWAY_UPSTREAM=${GATEWAY_UPSTREAM:-yam-gateway:48088}
 
     restart: unless-stopped
+    networks:
+      - yam-network
+
+networks:
+  yam-network:
+    external: true
+    name: ${PROJECT_NAME:-yam}-network

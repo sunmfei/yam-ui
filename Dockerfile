@@ -26,7 +26,7 @@ RUN pnpm build --mode production
 FROM nginx:alpine AS production
 
 # 复制自定义 Nginx 配置
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/templates/default.conf.template
 
 # 从构建阶段复制构建产物到 Nginx 目录
 COPY --from=builder /app/dist /usr/share/nginx/html
